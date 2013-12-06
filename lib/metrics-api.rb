@@ -6,7 +6,7 @@ class MetricsApi < Sinatra::Base
     haml :index, :locals => {
         :title           => 'Metrics API',
         :text            => 'Metrics API',
-        :bootstrap_theme => '../lavish-bootstrap.css'
+#        :bootstrap_theme => '../lavish-bootstrap.css'
     }
   end
 
