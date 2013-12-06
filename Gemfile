@@ -6,7 +6,6 @@ ruby '2.0.0'
 
 gem 'sinatra'
 gem 'thin'
-gem 'curb'
 gem 'haml'
 gem 'kramdown'
 
