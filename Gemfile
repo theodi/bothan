@@ -8,6 +8,7 @@ gem 'sinatra'
 gem 'thin'
 gem 'haml'
 gem 'kramdown'
+gem 'foreman'
 
 group :test do
   gem 'capybara-webkit'
