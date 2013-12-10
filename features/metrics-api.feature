@@ -1,5 +1,7 @@
 Feature: Metrics API
 
+  Background:
+    Given I send and accept JSON
   
   Scenario: GET list of all metrics
     Given there is a metric in the database with the name "membership-coverage"
