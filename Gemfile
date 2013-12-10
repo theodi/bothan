@@ -5,6 +5,7 @@ ruby '2.0.0'
 #ruby-gemset=metrics-api
 
 gem 'sinatra'
+gem 'dotenv'
 gem 'thin'
 gem 'haml'
 gem 'kramdown'
