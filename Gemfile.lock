@@ -161,6 +161,7 @@ DEPENDENCIES
   cucumber-api-steps!
   cucumber-sinatra
   database_cleaner
+  dotenv
   foreman
   guard
   guard-cucumber
