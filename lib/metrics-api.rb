@@ -88,6 +88,17 @@ class MetricsApi < Sinatra::Base
       end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds rescue error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
     end
     
+    invalid = []
+        
+    invalid << "'#{params[:from]}' is not a valid ISO8601 date/time." if start_date.nil? && params[:from] != "*"
+    invalid << "'#{params[:to]}' is not a valid ISO8601 date/time." if end_date.nil? && params[:to] != "*"
+    
+    error_400(invalid.join(" ")) unless invalid.blank?
+    
+    if start_date != nil && end_date != nil
+      error_400("'from' date must be before 'to' date.") if start_date > end_date
+    end
+    
     metrics = Metric.where(:name => params[:metric])
     metrics = metrics.where(:time.gte => start_date) if start_date
     metrics = metrics.where(:time.lte => end_date) if end_date
