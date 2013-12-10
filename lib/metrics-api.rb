@@ -29,10 +29,7 @@ class MetricsApi < Sinatra::Base
     #        :bootstrap_theme => '../lavish-bootstrap.css'
         }
       }
-      wants.other { 
-        content_type 'text/plain'
-        error 406, "Not Acceptable" 
-      }
+      wants.other { error_406 }
     end
   end
   
@@ -47,10 +44,7 @@ class MetricsApi < Sinatra::Base
     }
     respond_to do |wants|
       wants.json { data.to_json }
-      wants.other { 
-        content_type 'text/plain'
-        error 406, "Not Acceptable" 
-      }
+      wants.other { error_406 }
     end
   end
   
@@ -68,11 +62,13 @@ class MetricsApi < Sinatra::Base
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
-      wants.other { 
-        content_type 'text/plain'
-        error 406, "Not Acceptable" 
-      }
+      wants.other { error_406 }
     end
+  end
+
+  def error_406
+    content_type 'text/plain'
+    error 406, "Not Acceptable" 
   end
 
   # start the server if ruby file executed directly
