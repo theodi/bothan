@@ -1,12 +1,12 @@
 development:
-  sessions:
-    default:
-      database: metrics_api_development
-      hosts:
+  sessions:
+    default:
+      database: metrics_api_development
+      hosts:
         - localhost
 test:
-  sessions:
-    default:
-      database: metrics_api_test
-      hosts:
+  sessions:
+    default:
+      database: metrics_api_test
+      hosts:
         - localhost
