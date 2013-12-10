@@ -17,7 +17,7 @@ class MetricsApi < Sinatra::Base
   post '/metrics/:metric' do
     content_type :json
     
-    @metric = Metric.new(params[:body])
+    @metric = Metric.new(JSON.parse request.body.read)
     
     if @metric.save
       return 201

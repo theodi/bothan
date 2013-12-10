@@ -9,7 +9,7 @@ Feature: Say Hello, World!
       """
       {
         "name": "membership-coverage",
-        "date": "2013-12-25 15:00:00",
+        "time": "2013-12-25 15:00:00",
         "value": {
                   "health": 0.33,
                   "telecoms": 0.33,
@@ -18,4 +18,10 @@ Feature: Say Hello, World!
       }
       """
     Then the response status should be "201"    
-    And the JSON should be stored in the database
+    And the data should be stored in the "membership-coverage" metric
+    And the time of the stored metric should be "2013-12-25 15:00:00"
+    And the value of the metric should be:
+      """
+      {"health":0.33,"telecoms":0.33,"energy":0.33}
+      """    
+    
