@@ -41,7 +41,7 @@ class MetricsApi < Sinatra::Base
   get '/metrics/:metric' do
     content_type :json
     
-    @metric = Metric.where(name: params[:metric]).last
+    @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     @metric.to_json
   end
 
