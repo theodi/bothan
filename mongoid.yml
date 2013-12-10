@@ -1,3 +1,9 @@
+production:
+  sessions:
+    default:
+      database: metrics_api_production
+      hosts:
+        - localhost
 development:
   sessions:
     default:
