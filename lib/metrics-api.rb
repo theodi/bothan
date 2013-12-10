@@ -28,6 +28,9 @@ class MetricsApi < Sinatra::Base
 
   get '/metrics/:metric' do
     content_type :json
+    
+    @metric = Metric.where(name: params[:metric]).last
+    @metric.to_json
   end
 
   # start the server if ruby file executed directly
