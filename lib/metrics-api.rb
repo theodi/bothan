@@ -14,6 +14,18 @@ class MetricsApi < Sinatra::Base
     }
   end
   
+  get '/metrics' do
+    content_type :json
+    {
+      "metrics" => Metric.all.distinct(:name).map do |name|
+        {
+          name: name,
+          url: "#{request.scheme}://#{request.host}/metrics/#{name}.json"
+        }
+      end
+    }.to_json
+  end
+  
   post '/metrics/:metric' do
     content_type :json
     
