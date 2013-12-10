@@ -9,7 +9,7 @@ Feature: Say Hello, World!
       """
       {
         "name": "membership-coverage",
-        "time": "2013-12-25 15:00:00",
+        "time": "2013-12-25T15:00:00+00:00",
         "value": {
                   "health": 0.33,
                   "telecoms": 0.33,
@@ -19,7 +19,7 @@ Feature: Say Hello, World!
       """
     Then the response status should be "201"    
     And the data should be stored in the "membership-coverage" metric
-    And the time of the stored metric should be "2013-12-25 15:00:00"
+    And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
       """
       {"health":0.33,"telecoms":0.33,"energy":0.33}
@@ -27,7 +27,7 @@ Feature: Say Hello, World!
       
   Scenario: GETing data
     Given there is a metric in the database with the name "membership-coverage"
-    And it has a time of "2013-12-25 15:00:00"
+    And it has a time of "2013-12-25T15:00:00+00:00"
     And it has a value of:
       """
       {"health":0.33,"telecoms":0.33,"energy":0.33}
