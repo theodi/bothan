@@ -36,7 +36,7 @@ class MetricsApi < Sinatra::Base
   
   get '/metrics' do
     data =     {
-      "metrics" => Metric.all.distinct(:name).map do |name|
+      "metrics" => Metric.all.distinct(:name).sort.map do |name|
         {
           name: name,
           url: "#{request.scheme}://#{request.host}/metrics/#{name}.json"
@@ -68,7 +68,7 @@ class MetricsApi < Sinatra::Base
   end
   
   get '/metrics/:metric/:time' do
-    time = DateTime.parse(params[:time]) rescue nil
+    time = DateTime.parse(params[:time]) rescue error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
     @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
@@ -81,11 +81,22 @@ class MetricsApi < Sinatra::Base
     end_date = DateTime.parse(params[:to]) rescue nil
     
     if params[:from] =~ /^P/
-      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds
+      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds rescue error_400("'#{params[:from]}' is not a valid ISO8601 duration.")
     end
     
     if params[:to] =~ /^P/
-      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds
+      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds rescue error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
+    end
+    
+    invalid = []
+        
+    invalid << "'#{params[:from]}' is not a valid ISO8601 date/time." if start_date.nil? && params[:from] != "*"
+    invalid << "'#{params[:to]}' is not a valid ISO8601 date/time." if end_date.nil? && params[:to] != "*"
+    
+    error_400(invalid.join(" ")) unless invalid.blank?
+    
+    if start_date != nil && end_date != nil
+      error_400("'from' date must be before 'to' date.") if start_date > end_date
     end
     
     metrics = Metric.where(:name => params[:metric])
@@ -114,6 +125,11 @@ class MetricsApi < Sinatra::Base
   def error_406
     content_type 'text/plain'
     error 406, "Not Acceptable" 
+  end
+  
+  def error_400(error)
+    content_type 'text/plain'
+    error 400, {:status => error}.to_json 
   end
 
   # start the server if ruby file executed directly
