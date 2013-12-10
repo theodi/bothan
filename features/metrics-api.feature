@@ -55,3 +55,30 @@ Feature: Metrics API
     And the JSON response should have "$.value.telecoms" with the text "0.34"
     And the JSON response should have "$.value.energy" with the text "0.34"  
     
+  Scenario: GETing data
+    Given there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-25T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      """
+    And there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-24T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.33,"telecoms":0.33,"energy":0.33}
+      """
+    And there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-23T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.32,"telecoms":0.32,"energy":0.32}
+      """
+    When I send a GET request to "metrics/membership-coverage/2013-12-25T12:00:00+00:00"
+    Then the response status should be "200"
+    Then the JSON response should have "$.name" with the text "membership-coverage"
+    And the JSON response should have "$.time" with the text "2013-12-24T15:00:00+00:00"
+    And the JSON response should have "$.value.health" with the text "0.33"
+    And the JSON response should have "$.value.telecoms" with the text "0.33"
+    And the JSON response should have "$.value.energy" with the text "0.33"  
+    
