@@ -14,6 +14,7 @@ Feature: Metrics API
     And the JSON response should have "$.metrics[1].url" with the text "http://example.org/metrics/membership-coverage.json"
     
   Scenario: POSTing data
+    Given I authenticate as the user "foo" with the password "bar"
     When I send a POST request to "metrics/membership-coverage" with the following:
       """
       {

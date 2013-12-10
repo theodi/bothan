@@ -11,6 +11,19 @@ Dotenv.load unless ENV['RACK_ENV'] == 'test'
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 
 class MetricsApi < Sinatra::Base
+  
+  helpers do
+    def protected!
+      return if authorized?
+      headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+      halt 401, "Not authorized\n"
+    end
+
+    def authorized?
+      @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+      @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [ENV['METRICS_API_USERNAME'], ENV['METRICS_API_PASSWORD']]
+    end
+  end
 
   use(Rack::Conneg) { |conneg|
     conneg.set :accept_all_extensions, false
@@ -53,8 +66,9 @@ class MetricsApi < Sinatra::Base
   end
   
   post '/metrics/:metric' do
+    protected!
     @metric = Metric.new(JSON.parse request.body.read)
-    
+  
     if @metric.save
       return 201
     else
