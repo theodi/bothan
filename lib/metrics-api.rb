@@ -13,6 +13,22 @@ class MetricsApi < Sinatra::Base
 #        :bootstrap_theme => '../lavish-bootstrap.css'
     }
   end
+  
+  post '/metrics/:metric' do
+    content_type :json
+    
+    @metric = Metric.new(params[:body])
+    
+    if @metric.save
+      return 201
+    else
+      return 500
+    end
+  end
+
+  get '/metrics/:metric' do
+    content_type :json
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
