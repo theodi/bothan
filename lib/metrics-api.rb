@@ -126,6 +126,11 @@ class MetricsApi < Sinatra::Base
     content_type 'text/plain'
     error 406, "Not Acceptable" 
   end
+  
+  def error_400(error)
+    content_type 'text/plain'
+    error 400, {:status => error}.to_json 
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
