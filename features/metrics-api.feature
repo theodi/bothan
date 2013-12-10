@@ -55,7 +55,7 @@ Feature: Metrics API
     And the JSON response should have "$.value.telecoms" with the text "0.34"
     And the JSON response should have "$.value.energy" with the text "0.34"  
     
-  Scenario: GETing data
+  Scenario: GETing data for a single date
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
     And it has a value of:
