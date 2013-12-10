@@ -1,5 +1,9 @@
 require 'sinatra/base'
 require 'haml'
+require 'mongoid'
+require_relative 'models/metrics'
+
+Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 
 class MetricsApi < Sinatra::Base
   get '/' do

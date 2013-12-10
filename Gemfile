@@ -9,6 +9,7 @@ gem 'thin'
 gem 'haml'
 gem 'kramdown'
 gem 'foreman'
+gem 'mongoid', '~> 3.0.0'
 
 group :test do
   gem 'capybara-webkit'
