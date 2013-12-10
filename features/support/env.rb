@@ -8,6 +8,10 @@ require 'capybara'
 require 'capybara/cucumber'
 require 'rspec'
 require 'cucumber/api_steps'
+require 'database_cleaner'
+require 'database_cleaner/cucumber'
+
+DatabaseCleaner.strategy = :truncation
 
 Capybara.app = MetricsApi
 
