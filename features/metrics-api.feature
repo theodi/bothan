@@ -1,8 +1,5 @@
-Feature: Say Hello, World!
+Feature: Metrics API
 
-  Scenario: View the home page
-    Given I am on "the home page"
-    Then I should see "Metrics API"
   
   Scenario: GET list of all metrics
     Given there is a metric in the database with the name "membership-coverage"
