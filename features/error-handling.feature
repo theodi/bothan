@@ -33,7 +33,7 @@ Feature: Error handling
     Then the response status should be "400"
     Then the JSON response should have "$.status" with the text "'P24H' is not a valid ISO8601 duration."
   
-  Scenario: GETing a range with invalid from duration
+  Scenario: GETing a range with invalid to duration
     When I send a GET request to "metrics/membership-coverage/2013-01-01/P24H"
     Then the response status should be "400"
     Then the JSON response should have "$.status" with the text "'P24H' is not a valid ISO8601 duration."
