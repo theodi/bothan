@@ -3,6 +3,7 @@ require 'haml'
 require 'mongoid'
 require_relative 'models/metrics'
 require 'rack/conneg'
+require 'iso8601'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 

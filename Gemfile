@@ -11,6 +11,7 @@ gem 'kramdown'
 gem 'foreman'
 gem 'mongoid', '~> 3.0.0'
 gem 'rack-conneg'
+gem 'iso8601'
 
 group :test do
   gem 'capybara-webkit'
