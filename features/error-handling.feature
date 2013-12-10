@@ -6,7 +6,7 @@ Feature: Error handling
   Scenario: GETing data for a single date
     When I send a GET request to "metrics/membership-coverage/wtf"
     Then the response status should be "400"
-    Then the JSON response should have "$.status" with the text "Invalid ISO8601 date/time format"
+    Then the JSON response should have "$.status" with the text "'wtf' is not a valid ISO8601 date/time."
     
   Scenario: GETing a range with invalid from date
     When I send a GET request to "metrics/membership-coverage/wtf/2013-01-01"
