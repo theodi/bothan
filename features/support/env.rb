@@ -7,6 +7,7 @@ require File.join(File.dirname(__FILE__), '..', '..', 'lib/metrics-api.rb')
 require 'capybara'
 require 'capybara/cucumber'
 require 'rspec'
+require 'cucumber/api_steps'
 
 Capybara.app = MetricsApi
 
@@ -14,6 +15,10 @@ class MetricsApiWorld
   include Capybara::DSL
   include RSpec::Expectations
   include RSpec::Matchers
+  
+  def app
+    MetricsApi
+  end
 end
 
 World do
