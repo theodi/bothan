@@ -67,6 +67,15 @@ class MetricsApi < Sinatra::Base
     end
   end
   
+  get '/metrics/:metric/:time' do
+    time = DateTime.parse(params[:time]) rescue nil
+    @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
+    respond_to do |wants|
+      wants.json { @metric.to_json }
+      wants.other { error_406 }
+    end
+  end
+
   get '/metrics/:metric/:from/:to' do      
     start_date = DateTime.parse(params[:from]) rescue nil
     end_date = DateTime.parse(params[:to]) rescue nil
