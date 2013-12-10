@@ -51,7 +51,7 @@ Feature: Metrics API
     Then the response status should be "200"
     Then the JSON response should have "$.name" with the text "membership-coverage"
     And the JSON response should have "$.time" with the text "2013-12-25T15:00:00+00:00"
-    And the JSON response should have "$.value.health" with the text "0.33"
-    And the JSON response should have "$.value.telecoms" with the text "0.33"
-    And the JSON response should have "$.value.energy" with the text "0.33"
+    And the JSON response should have "$.value.health" with the text "0.34"
+    And the JSON response should have "$.value.telecoms" with the text "0.34"
+    And the JSON response should have "$.value.energy" with the text "0.34"  
     

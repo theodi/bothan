@@ -3,6 +3,7 @@ require 'haml'
 require 'mongoid'
 require_relative 'models/metrics'
 require 'rack/conneg'
+require 'iso8601'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 
@@ -62,6 +63,41 @@ class MetricsApi < Sinatra::Base
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
+      wants.other { error_406 }
+    end
+  end
+  
+  get '/metrics/:metric/:from/:to' do      
+    start_date = DateTime.parse(params[:from]) rescue nil
+    end_date = DateTime.parse(params[:to]) rescue nil
+    
+    if params[:from] =~ /^P/
+      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds
+    end
+    
+    if params[:to] =~ /^P/
+      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds
+    end
+    
+    metrics = Metric.where(:name => params[:metric])
+    metrics = metrics.where(:time.gte => start_date) if start_date
+    metrics = metrics.where(:time.lte => end_date) if end_date
+        
+    metrics = metrics.order_by(:time.asc)
+
+    data = {
+      :count => metrics.count,
+      :values => []
+    }
+    
+    metrics.each do |metric|
+      data[:values] << {
+        :value => metric.value
+      }
+    end
+    
+    respond_to do |wants|
+      wants.json { data.to_json }
       wants.other { error_406 }
     end
   end
