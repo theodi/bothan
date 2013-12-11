@@ -55,7 +55,7 @@ class MetricsApi < Sinatra::Base
       "metrics" => Metric.all.distinct(:name).sort.map do |name|
         {
           name: name,
-          url: "#{request.scheme}://#{request.host}/metrics/#{name}.json"
+          url: "https://#{request.host}/metrics/#{name}.json"
         }
       end
     }
