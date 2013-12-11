@@ -1,2 +1,2 @@
-web: bundle exec ruby lib/metrics-api.rb
+web: bundle exec thin start -p $PORT
 
