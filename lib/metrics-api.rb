@@ -5,6 +5,7 @@ require_relative 'models/metrics'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
+require 'kramdown'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 
