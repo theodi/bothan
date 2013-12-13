@@ -13,7 +13,7 @@ Feature: Metrics API
     And the JSON response should have "$.metrics[1].name" with the text "membership-coverage"
     And the JSON response should have "$.metrics[1].url" with the text "https://example.org/metrics/membership-coverage.json"
     
-  Scenario: POSTing data
+  Scenario: POSTing structured data
     Given I authenticate as the user "foo" with the password "bar"
     When I send a POST request to "metrics/membership-coverage" with the following:
       """
@@ -35,7 +35,25 @@ Feature: Metrics API
       {"health":0.33,"telecoms":0.33,"energy":0.33}
       """ 
       
-  Scenario: GETing data
+  Scenario: POSTing simple data
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/membership-count" with the following:
+      """
+      {
+        "name": "membership-count",
+        "time": "2013-12-25T15:00:00+00:00",
+        "value": 10
+      }
+      """
+    Then the response status should be "201"    
+    And the data should be stored in the "membership-count" metric
+    And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
+    And the value of the metric should be:
+      """
+      10
+      """ 
+      
+  Scenario: GETing structured data
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
     And it has a value of:
@@ -56,6 +74,25 @@ Feature: Metrics API
     And the JSON response should have "$.value.telecoms" with the text "0.34"
     And the JSON response should have "$.value.energy" with the text "0.34"  
     
+  Scenario: GETing simple data
+    Given there is a metric in the database with the name "membership-count"
+    And it has a time of "2013-12-25T15:00:00+00:00"
+    And it has a value of:
+      """
+      11
+      """
+    And there is a metric in the database with the name "membership-count"
+    And it has a time of "2013-12-24T15:00:00+00:00"
+    And it has a value of:
+      """
+      10
+      """
+    When I send a GET request to "metrics/membership-count"
+    Then the response status should be "200"
+    Then the JSON response should have "$.name" with the text "membership-count"
+    And the JSON response should have "$.time" with the text "2013-12-25T15:00:00+00:00"
+    And the JSON response should have "$.value" with the text "11"
+      
   Scenario: GETing data for a single date
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
