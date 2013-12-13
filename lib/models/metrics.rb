@@ -5,6 +5,6 @@ class Metric
   
   field :name,  type: String
   field :time,  type: DateTime
-  field :value, type: Hash
+  field :value
   
 end
