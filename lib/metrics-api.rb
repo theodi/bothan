@@ -130,6 +130,7 @@ class MetricsApi < Sinatra::Base
     
     metrics.each do |metric|
       data[:values] << {
+        :time => metric.time,
         :value => metric.value
       }
     end
