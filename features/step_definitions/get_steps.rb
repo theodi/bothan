@@ -8,7 +8,7 @@ Given(/^it has a time of "(.*?)"$/) do |time|
 end
 
 Given(/^it has a value of:$/) do |value|
-  @metric.value = JSON.parse value
+  @metric.value = value.include?('{') ? JSON.parse(value) : value.to_i
   @metric.save
 end
 
