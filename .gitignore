@@ -2,3 +2,5 @@
 .chef
 .vagrant
 /.env
+
+/coverage/
