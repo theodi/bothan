@@ -1,8 +1,11 @@
-# ODI Metrics API
+[![Build Status](http://img.shields.io/travis/theodi/metrics-api.svg)](https://travis-ci.org/theodi/metrics-api)
+[![Dependency Status](http://img.shields.io/gemnasium/theodi/metrics-api.svg)](https://gemnasium.com/theodi/metrics-api)
+[![Coverage Status](http://img.shields.io/coveralls/theodi/metrics-api.svg)](https://coveralls.io/r/theodi/metrics-api)
+[![Code Climate](http://img.shields.io/codeclimate/github/theodi/metrics-api.svg)](https://codeclimate.com/github/theodi/metrics-api)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://theodi.mit-license.org)
+[![Badges](http://img.shields.io/:badges-6/6-ff6799.svg)](https://github.com/pikesley/badger)
 
-[![Build Status](http://jenkins.theodi.org/buildStatus/icon?job=metrics-api-master)](http://jenkins.theodi.org/job/metrics-api-master/)
-[![Dependency Status](https://gemnasium.com/theodi/metrics-api.png)](https://gemnasium.com/theodi/metrics-api)
-[![Code Climate](https://codeclimate.com/github/theodi/metrics-api.png)](https://codeclimate.com/github/theodi/metrics-api)
+# ODI Metrics API
 
 A simple wrapper around MongoDB to allow storage of time series metrics.
 
