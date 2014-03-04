@@ -4,11 +4,11 @@ source 'https://rubygems.org'
 ruby '1.9.3'
 #ruby-gemset=metrics-api
 
+gem 'rake'
 gem 'sinatra'
 gem 'dotenv'
 gem 'thin'
 gem 'haml'
-gem 'kramdown'
 gem 'foreman'
 gem 'mongoid', '~> 3.0.0'
 gem 'rack-conneg'
