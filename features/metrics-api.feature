@@ -120,3 +120,14 @@ Feature: Metrics API
     And the JSON response should have "$.value.telecoms" with the text "0.33"
     And the JSON response should have "$.value.energy" with the text "0.33"  
     
+Scenario: GETing data with a referer
+  Given there is a metric in the database with the name "membership-coverage"
+  And it has a time of "2013-12-25T15:00:00+00:00"
+  And it has a value of:
+    """
+    {"health":0.34,"telecoms":0.34,"energy":0.34}
+    """
+  And I set headers:
+    | Referer | http://theodi.org |
+  When I send a GET request to "metrics/membership-coverage.json"
+  Then the response status should be "200"
