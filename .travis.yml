@@ -11,14 +11,6 @@ after_success:
 branches:
   except:
   - CURRENT
-notifications:
-  irc:
-    channels:
-    - irc.freenode.net#theodi
-    template:
-    - ! '%{repository} %{branch} - %{message} %{build_url}'
-    on_success: change
-    on_failure: always
 env:
   global:
   - secure: ka+NvS4u2oaNcEN/pJMbSWXPVcrN2ExK936q2juVbOg4CTNjpbVhleU8LhpM8+f8Ly7Ur6WFEIrEM8XzLXKlmlslQqYFnKVB0zaXvyUcRgtWygO3YFhkTwjl+g8FOpkzyo42rk4SBFrDHtOTbYIpbTbUmifn5BGJ8Y7fS4Y3cGg=
@@ -26,3 +18,10 @@ env:
   - secure: pl5TWg1MBYYwn0U6bvpcIzs0XoXjrEkn8YmkwKHu4XMXJ0LDHjzQp5/6NVROa5BKntHXLzi+rFRO1csZVuDcEOqE/cKKwEJzZ/k68XURod3gWDYS+m6n9JosAH8h43BHE4H+8oe7I/HCsSfakE0s+dN131VuZvAUlYlU3gGxn9Y=
   - secure: ccMcTlK/AXhp4t1rxZdZ/UomAt5uaJ6AERitrQRbNijeS7HxMCjAe/XM99NJX98/Vp55chWq0M1SJwjb9RnGSJ0zuhTzIzYZ/eHaPzMiKA3ntvKBbJCuqcSeGTkOBieBa6xICqlvAepPLrw5/c9mWa1ILvr9oeHQeHnBkh5LWdM=
   - secure: pcWqFi7kfMGvC9OcVeMtAlFqSYak9pvLuihxCm3gxJ8sEvnt6FEO7NsJYq/bdcqol6aAON89P1t+oPDoGEr5VZgHiDksb57HtunOA51veMTncMm/EnY1sHWgIVr/DV9kNBtWAu12NDxR8nFm6wENXCPKR1vXZLIrVhNnpQjo4Tw=
+deploy:
+  provider: heroku
+  api_key:
+    secure: O+PX1JfDHC7h0RE5y9l21y0digLpn8d45NDQym+GuU23Ua3naRe9gg2ZlsU+gTfoeUPtNv4xicL3MtFw4SH0yjJbgXVa+fvRBU7xtbpFv7fszmQFpSLT5gYGb3AT989MEMZ/2IRcfb72c0mXarEsh6wemhG3nH+lReAkJaYKyaI=
+  app: oa-metrics-api
+  on:
+    repo: OpenAddressesUK/metrics-api
