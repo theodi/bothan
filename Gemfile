@@ -1,9 +1,5 @@
 source 'https://rubygems.org'
 
-#ruby=ruby-1.9.3
-ruby '1.9.3'
-#ruby-gemset=metrics-api
-
 gem 'rake'
 gem 'sinatra'
 gem 'dotenv'
@@ -12,6 +8,7 @@ gem 'haml'
 gem 'foreman'
 gem 'mongoid', '~> 3.0.0'
 gem 'rack-conneg'
+gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
 gem 'kramdown'
 
