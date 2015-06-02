@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-#ruby=ruby-1.9.3
-ruby '1.9.3'
 #ruby-gemset=metrics-api
 
 gem 'rake'
