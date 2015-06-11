@@ -13,6 +13,8 @@ Dotenv.load unless ENV['RACK_ENV'] == 'test'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 
+Metric.create_indexes
+
 class MetricsApi < Sinatra::Base
 
   # Disable JSON CSRF protection - this is a JSON API goddammit.
