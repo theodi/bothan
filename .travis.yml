@@ -21,9 +21,15 @@ env:
   - secure: ccMcTlK/AXhp4t1rxZdZ/UomAt5uaJ6AERitrQRbNijeS7HxMCjAe/XM99NJX98/Vp55chWq0M1SJwjb9RnGSJ0zuhTzIzYZ/eHaPzMiKA3ntvKBbJCuqcSeGTkOBieBa6xICqlvAepPLrw5/c9mWa1ILvr9oeHQeHnBkh5LWdM=
   - secure: pcWqFi7kfMGvC9OcVeMtAlFqSYak9pvLuihxCm3gxJ8sEvnt6FEO7NsJYq/bdcqol6aAON89P1t+oPDoGEr5VZgHiDksb57HtunOA51veMTncMm/EnY1sHWgIVr/DV9kNBtWAu12NDxR8nFm6wENXCPKR1vXZLIrVhNnpQjo4Tw=
 deploy:
-  provider: heroku
-  api_key:
-    secure: O+PX1JfDHC7h0RE5y9l21y0digLpn8d45NDQym+GuU23Ua3naRe9gg2ZlsU+gTfoeUPtNv4xicL3MtFw4SH0yjJbgXVa+fvRBU7xtbpFv7fszmQFpSLT5gYGb3AT989MEMZ/2IRcfb72c0mXarEsh6wemhG3nH+lReAkJaYKyaI=
-  app: oa-metrics-api
-  on:
-    repo: OpenAddressesUK/metrics-api
+  - provider: heroku
+    api_key:
+      secure: QltOg+AwR8MovsjARqI9VVlOR/9hVKfYXklCO+Zki+GOBryNVyecqT9ZisYoPLwhgAk+9wUk8ckYtrdUTO7tISML0RqFk5WPspQZdPcFYQ266RlEyUJ2I4mBJAHk9SF/Yr1TnxG9ZdtAd+7p8tAeSEE3s2eritXnJUYF1/jwgnY=
+    app: odi-metrics-api
+    on:
+      repo: theodi/metrics-api
+  - provider: heroku
+    api_key:
+      secure: O+PX1JfDHC7h0RE5y9l21y0digLpn8d45NDQym+GuU23Ua3naRe9gg2ZlsU+gTfoeUPtNv4xicL3MtFw4SH0yjJbgXVa+fvRBU7xtbpFv7fszmQFpSLT5gYGb3AT989MEMZ/2IRcfb72c0mXarEsh6wemhG3nH+lReAkJaYKyaI=
+    app: oa-metrics-api
+    on:
+      repo: OpenAddressesUK/metrics-api
