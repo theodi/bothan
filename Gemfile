@@ -14,7 +14,7 @@ gem 'kramdown'
 
 group :test do
   gem 'capybara-webkit'
-  gem 'cucumber'
+  gem 'cucumber', "~> 1.3"
   gem 'cucumber-sinatra'
   gem 'rspec'
   gem 'rack-test'
