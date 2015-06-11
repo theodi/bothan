@@ -6,15 +6,16 @@ gem 'dotenv'
 gem 'thin'
 gem 'haml'
 gem 'foreman'
-gem 'mongoid', '~> 3.0.0'
+gem 'mongoid', '~> 4.0'
 gem 'rack-conneg'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
 gem 'kramdown'
+gem 'exception_notification'
 
 group :test do
   gem 'capybara-webkit'
-  gem 'cucumber'
+  gem 'cucumber', "~> 1.3"
   gem 'cucumber-sinatra'
   gem 'rspec'
   gem 'rack-test'
