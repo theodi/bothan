@@ -11,6 +11,7 @@ gem 'rack-conneg'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
 gem 'kramdown'
+gem 'exception_notification'
 
 group :test do
   gem 'capybara-webkit'
