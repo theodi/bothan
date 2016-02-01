@@ -73,5 +73,15 @@ describe('metrics.js', function() {
         }
       )
     })
+
+    it('extracts a title from a URL', function() {
+      expect(
+        extractTitle(
+          'http://localhost:9292/metrics/certificated-datasets/2013-01-01T00:00:00/2016-02-01T00:00:00'
+        )
+      ).toEqual(
+        'Certificated Datasets'
+      )
+    })
   })
 })
