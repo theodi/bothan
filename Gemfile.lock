@@ -125,6 +125,12 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     iso8601 (0.8.6)
+    jasmine (2.4.0)
+      jasmine-core (~> 2.4)
+      phantomjs
+      rack (>= 1.2.1)
+      rake
+    jasmine-core (2.4.1)
     json (1.8.3)
     jsonpath (0.5.6)
       multi_json
@@ -162,6 +168,7 @@ GEM
       shellany (~> 0.0)
     optionable (0.2.0)
     origin (2.1.1)
+    phantomjs (1.9.8.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -257,6 +264,7 @@ DEPENDENCIES
   guard-shotgun!
   haml
   iso8601
+  jasmine
   kramdown
   mongoid (~> 4.0)
   puma

@@ -27,4 +27,5 @@ group :test do
   gem 'cucumber-api-steps', require: false, github: 'theodi/cucumber-api-steps', branch: 'feature-test-content-type'
   gem 'database_cleaner'
   gem 'guard-shotgun', :git => 'https://github.com/rchampourlier/guard-shotgun.git'
+  gem 'jasmine'
 end
