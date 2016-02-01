@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'rack/cors'
-require 'haml'
+require 'tilt/erubis'
+require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
 require 'rack/conneg'
@@ -21,20 +22,20 @@ class MetricsApi < Sinatra::Base
   set :protection, :except => [:json_csrf]
 
   use ExceptionNotification::Rack,
-      :email => {
-        :email_prefix => "[Metrics API] ",
-        :sender_address => %{"errors" <errors@metrics.theodi.org>},
-        :exception_recipients => %w{ops@theodi.org},
-        :smtp_settings => {
-          :user_name => ENV["MANDRILL_USERNAME"],
-          :password => ENV["MANDRILL_PASSWORD"],
-          :domain => "theodi.org",
-          :address => "smtp.mandrillapp.com",
-          :port => 587,
-          :authentication => :plain,
-          :enable_starttls_auto => true
-        }
+    :email => {
+      :email_prefix => "[Metrics API] ",
+      :sender_address => %{"errors" <errors@metrics.theodi.org>},
+      :exception_recipients => %w{ops@theodi.org},
+      :smtp_settings => {
+        :user_name => ENV["MANDRILL_USERNAME"],
+        :password => ENV["MANDRILL_PASSWORD"],
+        :domain => "theodi.org",
+        :address => "smtp.mandrillapp.com",
+        :port => 587,
+        :authentication => :plain,
+        :enable_starttls_auto => true
       }
+    }
 
   helpers do
     def protected!
@@ -49,11 +50,15 @@ class MetricsApi < Sinatra::Base
     end
   end
 
-  use(Rack::Conneg) { |conneg|
+  use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
     conneg.set :fallback, :html
-    conneg.provide([:json])
-  }
+    conneg.ignore_contents_of 'lib/public'
+    conneg.provide [
+      :json,
+      :html
+    ]
+  end
 
   before do
     if negotiated?
@@ -63,13 +68,12 @@ class MetricsApi < Sinatra::Base
 
   get '/' do
     respond_to do |wants|
-      wants.html {
-        haml :index, :locals => {
-            :title           => 'Metrics API',
-            :text            => 'Metrics API',
-    #        :bootstrap_theme => '../lavish-bootstrap.css'
-        }
-      }
+
+      wants.html do
+        @title = 'Metrics API'
+        erb :index
+      end
+
       wants.other { error_406 }
     end
   end
@@ -104,6 +108,7 @@ class MetricsApi < Sinatra::Base
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
+
       wants.other { error_406 }
     end
   end
@@ -160,6 +165,11 @@ class MetricsApi < Sinatra::Base
 
     respond_to do |wants|
       wants.json { data.to_json }
+
+      wants.html do
+        erb :chart
+      end
+
       wants.other { error_406 }
     end
   end

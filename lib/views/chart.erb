@@ -1,0 +1,43 @@
+<div id='chart'></div>
+
+<script src='/javascripts/metrics.js'></script>
+<script>
+$.getJSON(document.URL, function(json) {
+  graph(json)
+})
+
+function graph(json) {
+  var points = getPoints(json['values'])
+  var data = {
+    x: points['x'],
+    y: points['y'],
+    type: 'scatter'
+  }
+
+  var layout = {
+    title: extractTitle(document.URL),
+    xaxis: {
+      type: 'datetime',
+      tickangle: 315,
+      tickformat: "%Y-%m-%d"
+    },
+    yaxis: {
+      tickangle: 315
+    },
+    margin: {
+      l: 70, r: 30
+    }
+  }
+
+  Plotly.newPlot(
+    'chart',
+    [
+      data
+    ],
+    layout,
+    {
+      displayModeBar: false
+    }
+  );
+}
+</script>

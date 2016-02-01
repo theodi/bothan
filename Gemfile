@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'sinatra'
 gem 'dotenv'
-gem 'thin'
+gem 'puma'
 gem 'haml'
 gem 'foreman'
 gem 'mongoid', '~> 4.0'
@@ -26,4 +26,6 @@ group :test do
   gem 'coveralls', require: false
   gem 'cucumber-api-steps', require: false, github: 'theodi/cucumber-api-steps', branch: 'feature-test-content-type'
   gem 'database_cleaner'
+  gem 'guard-shotgun', :git => 'https://github.com/rchampourlier/guard-shotgun.git'
+  gem 'jasmine'
 end
