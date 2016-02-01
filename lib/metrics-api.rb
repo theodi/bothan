@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'rack/cors'
-require 'haml'
+require 'tilt/erubis'
+require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
 require 'rack/conneg'
@@ -21,20 +22,20 @@ class MetricsApi < Sinatra::Base
   set :protection, :except => [:json_csrf]
 
   use ExceptionNotification::Rack,
-      :email => {
-        :email_prefix => "[Metrics API] ",
-        :sender_address => %{"errors" <errors@metrics.theodi.org>},
-        :exception_recipients => %w{ops@theodi.org},
-        :smtp_settings => {
-          :user_name => ENV["MANDRILL_USERNAME"],
-          :password => ENV["MANDRILL_PASSWORD"],
-          :domain => "theodi.org",
-          :address => "smtp.mandrillapp.com",
-          :port => 587,
-          :authentication => :plain,
-          :enable_starttls_auto => true
-        }
+    :email => {
+      :email_prefix => "[Metrics API] ",
+      :sender_address => %{"errors" <errors@metrics.theodi.org>},
+      :exception_recipients => %w{ops@theodi.org},
+      :smtp_settings => {
+        :user_name => ENV["MANDRILL_USERNAME"],
+        :password => ENV["MANDRILL_PASSWORD"],
+        :domain => "theodi.org",
+        :address => "smtp.mandrillapp.com",
+        :port => 587,
+        :authentication => :plain,
+        :enable_starttls_auto => true
       }
+    }
 
   helpers do
     def protected!
@@ -52,7 +53,7 @@ class MetricsApi < Sinatra::Base
   use(Rack::Conneg) { |conneg|
     conneg.set :accept_all_extensions, false
     conneg.set :fallback, :html
-    conneg.provide([:json])
+    conneg.provide([:json, :html])
   }
 
   before do
@@ -63,13 +64,12 @@ class MetricsApi < Sinatra::Base
 
   get '/' do
     respond_to do |wants|
-      wants.html {
-        haml :index, :locals => {
-            :title           => 'Metrics API',
-            :text            => 'Metrics API',
-    #        :bootstrap_theme => '../lavish-bootstrap.css'
-        }
-      }
+
+      wants.html do
+        @title = 'Metrics API'
+        erb :index
+      end
+
       wants.other { error_406 }
     end
   end

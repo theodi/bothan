@@ -9,5 +9,6 @@ end
 
 guard 'shotgun', :server => 'puma' do
   watch %r{^(app|lib)/.*\.rb}
+  watch %r{^(views)/.*\.erb}
   watch 'config.ru'
 end
