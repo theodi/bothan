@@ -50,11 +50,15 @@ class MetricsApi < Sinatra::Base
     end
   end
 
-  use(Rack::Conneg) { |conneg|
+  use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
     conneg.set :fallback, :html
-    conneg.provide([:json, :html])
-  }
+    conneg.ignore_contents_of 'lib/public'
+    conneg.provide [
+      :json,
+      :html
+    ]
+  end
 
   before do
     if negotiated?
@@ -104,6 +108,7 @@ class MetricsApi < Sinatra::Base
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
+
       wants.other { error_406 }
     end
   end
