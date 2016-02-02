@@ -51,9 +51,9 @@ Feature: Content Types
     Given I send and accept HTML
     And there is a metric in the database with the name "membership-coverage"
     When I send a GET request to "metrics/membership-coverage"
-    Then the response status should be "406"
+    Then the response status should be "302"
 
   Scenario: GET metric with HTML extension
     Given there is a metric in the database with the name "membership-coverage"
     When I send a GET request to "metrics/membership-coverage.html"
-    Then the response status should be "406"
+    Then the response status should be "302"

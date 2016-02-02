@@ -28,4 +28,5 @@ group :test do
   gem 'database_cleaner'
   gem 'guard-shotgun', :git => 'https://github.com/rchampourlier/guard-shotgun.git'
   gem 'jasmine'
+  gem 'timecop'
 end

@@ -15,6 +15,7 @@ require 'rspec'
 require 'cucumber/api_steps'
 require 'database_cleaner'
 require 'database_cleaner/cucumber'
+require 'timecop'
 
 DatabaseCleaner.strategy = :truncation
 
@@ -24,7 +25,7 @@ class MetricsApiWorld
   include Capybara::DSL
   include RSpec::Expectations
   include RSpec::Matchers
-  
+
   def app
     MetricsApi
   end

@@ -118,6 +118,15 @@ class MetricsApi < Sinatra::Base
     respond_to do |wants|
       wants.json { @metric.to_json }
 
+      wants.html do
+        days = 30
+        now = Time.now.iso8601
+        before = (Time.now - (60 * 60 * 24 * days)).iso8601
+
+        @subhead = "Last #{days} days"
+        redirect to "/metrics/#{params[:metric]}/#{before}/#{now}"
+      end
+
       wants.other { error_406 }
     end
   end
