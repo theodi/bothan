@@ -19,7 +19,7 @@ Metric.create_indexes
 class MetricsApi < Sinatra::Base
 
   # Disable JSON CSRF protection - this is a JSON API goddammit.
-  set :protection, :except => [:json_csrf]
+  set :protection, :except => [:json_csrf, :frame_options]
 
   use ExceptionNotification::Rack,
     :email => {
