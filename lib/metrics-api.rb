@@ -87,8 +87,10 @@ class MetricsApi < Sinatra::Base
         }
       end
     }
+
     respond_to do |wants|
       wants.json { data.to_json }
+      wants.html { erb :frames }
       wants.other { error_406 }
     end
   end

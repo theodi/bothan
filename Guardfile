@@ -7,7 +7,7 @@
 #  watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
 #end
 
-guard 'shotgun', :server => 'puma' do
+guard 'shotgun', :server => 'thin' do
   watch %r{^(app|lib)/.*\.rb}
   watch %r{^(views)/.*\.erb}
   watch 'config.ru'
