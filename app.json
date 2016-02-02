@@ -20,6 +20,6 @@
     }
   },
   "addons": [
-    "mongolab"
+    "mongolab:sandbox"
   ]
 }
