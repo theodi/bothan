@@ -61,6 +61,8 @@ class MetricsApi < Sinatra::Base
   end
 
   before do
+    headers 'Vary' => 'Accept'
+
     if negotiated?
       content_type negotiated_type
     end
@@ -165,8 +167,6 @@ class MetricsApi < Sinatra::Base
     end
 
     respond_to do |wants|
-      headers 'Vary' => 'Accept'
-
       wants.json { data.to_json }
 
       wants.html do
