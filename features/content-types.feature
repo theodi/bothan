@@ -24,11 +24,11 @@ Feature: Content Types
   Scenario: GET list with HTML content type
     Given I send and accept HTML
     When I send a GET request to "metrics"
-    Then the response status should be "406"
+    Then the response status should be "200"
 
   Scenario: GET list with HTML extension
     When I send a GET request to "metrics.html"
-    Then the response status should be "406"
+    Then the response status should be "200"
 
   Scenario: GET list with JSON extension
     When I send a GET request to "metrics.json"
