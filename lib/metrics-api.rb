@@ -71,7 +71,7 @@ class MetricsApi < Sinatra::Base
 
       wants.html do
         @title = 'Metrics API'
-        erb :index
+        erb :index, layout: 'layouts/default'.to_sym
       end
 
       wants.other { error_406 }
@@ -165,10 +165,15 @@ class MetricsApi < Sinatra::Base
     end
 
     respond_to do |wants|
+      headers 'Vary' => 'Accept'
+
       wants.json { data.to_json }
 
       wants.html do
-        erb :chart
+        @layout = params.fetch('layout', 'rich')
+        @plotly_modebar = (@layout == 'rich')
+
+        erb :chart, layout: "layouts/#{@layout}".to_sym
       end
 
       wants.other { error_406 }

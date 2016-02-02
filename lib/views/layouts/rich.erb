@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <%= erb :'includes/header' %>
+  <body>
+    <%= erb :'includes/nav' %>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-2'></div>
+        <div class='col-md-8'>
+          <div class='row'>
+            <div class='col-md-12'>
+              <%= yield %>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-md-12'>
+              <a href='<%= "#{request.url}.json" %>' class='btn btn-success pull-right'>Get the JSON for this metric</a>
+            </div>
+          </div>
+        <div class='col-md-2'></div>
+      </div>
+    </div>
+  </body>
+</html>
