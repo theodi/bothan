@@ -92,6 +92,12 @@ class MetricsApi < Sinatra::Base
 
     respond_to do |wants|
       wants.json { data.to_json }
+
+      wants.html do
+        @title = 'Metrics API'
+        erb :metrics, layout: 'layouts/default'.to_sym
+      end
+
       wants.other { error_406 }
     end
   end

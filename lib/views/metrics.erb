@@ -1,0 +1,13 @@
+<h1>ALL the Metrics</h1>
+
+<ul id='metrics'></ul>
+
+<script>
+$.getJSON(document.URL, function(json) {
+
+  $.each(json['metrics'], function (index, metric) {
+    var link = '<a href="' + snipExtension(metric['url']) + '">' + extractTitle(metric['url']) + '</a>'
+    $('#metrics').append('<li>' + link + '</li>')
+  })
+})
+</script>

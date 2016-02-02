@@ -82,6 +82,18 @@ describe('metrics.js', function() {
       ).toEqual(
         'Certificated Datasets'
       )
+
+      expect(
+        extractTitle(
+          'http://localhost:9292/metrics/2013-q1-completed-tasks.json'
+        )
+      ).toEqual(
+        '2013 Q1 Completed Tasks'
+      )
+    })
+
+    it('snips an extension', function() {
+      expect(snipExtension('http://some.long.url/with/a/path.json')).toEqual('http://some.long.url/with/a/path')
     })
   })
 })
