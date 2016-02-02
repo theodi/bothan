@@ -1,0 +1,15 @@
+body {
+  font-family: 'Open Sans'
+}
+
+#readme img {
+  display: none;
+}
+
+#number {
+  text-align: center;
+}
+
+#metric-value {
+  font-size: 10em;
+}

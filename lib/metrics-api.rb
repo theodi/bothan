@@ -61,6 +61,8 @@ class MetricsApi < Sinatra::Base
   end
 
   before do
+    headers 'Vary' => 'Accept'
+
     if negotiated?
       content_type negotiated_type
     end
@@ -71,7 +73,7 @@ class MetricsApi < Sinatra::Base
 
       wants.html do
         @title = 'Metrics API'
-        erb :index
+        erb :index, layout: 'layouts/default'.to_sym
       end
 
       wants.other { error_406 }
@@ -90,7 +92,12 @@ class MetricsApi < Sinatra::Base
 
     respond_to do |wants|
       wants.json { data.to_json }
-      wants.html { erb :frames }
+
+      wants.html do
+        @title = 'Metrics API'
+        erb :metrics, layout: 'layouts/default'.to_sym
+      end
+
       wants.other { error_406 }
     end
   end
@@ -110,6 +117,15 @@ class MetricsApi < Sinatra::Base
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
+
+      wants.html do
+        days = 30
+        now = Time.now.iso8601
+        before = (Time.now - (60 * 60 * 24 * days)).iso8601
+
+        @subhead = "Last #{days} days"
+        redirect to "/metrics/#{params[:metric]}/#{before}/#{now}"
+      end
 
       wants.other { error_406 }
     end
@@ -169,7 +185,11 @@ class MetricsApi < Sinatra::Base
       wants.json { data.to_json }
 
       wants.html do
-        erb :chart
+        @layout = params.fetch('layout', 'rich')
+        @plotly_modebar = (@layout == 'rich')
+        @type = params.fetch('type', 'chart')
+
+        erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
       wants.other { error_406 }
