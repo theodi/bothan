@@ -5,3 +5,11 @@ body {
 #readme img {
   display: none;
 }
+
+#number {
+  text-align: center;
+}
+
+#metric-value {
+  font-size: 16em;
+}

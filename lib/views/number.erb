@@ -1,0 +1,18 @@
+<div id='number'></div>
+
+<script>
+$.getJSON(document.URL, function (json) {
+  var values = json['values']
+  var last = values[values.length - 1]
+
+  var title = extractTitle(document.URL)
+  var date = moment(last['time']).format('MMMM Do YYYY')
+  var number = moment(last['value'])
+
+  var content = '<h1>' + title
+  content += ' <small>(as of ' + date + ')</small></h1>'
+  content += '<span id="metric-value">' + number + '</span>'
+
+  $('#number').html(content)
+})
+</script>

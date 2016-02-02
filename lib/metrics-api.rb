@@ -187,8 +187,9 @@ class MetricsApi < Sinatra::Base
       wants.html do
         @layout = params.fetch('layout', 'rich')
         @plotly_modebar = (@layout == 'rich')
+        @type = params.fetch('type', 'chart')
 
-        erb :chart, layout: "layouts/#{@layout}".to_sym
+        erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
       wants.other { error_406 }
