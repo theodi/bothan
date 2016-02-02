@@ -1,0 +1,25 @@
+{
+  "name": "metrics-api",
+  "scripts": {
+  },
+  "env": {
+    "LANG": {
+      "required": true
+    },
+    "METRICS_API_BASE_URL": {
+      "required": true
+    },
+    "METRICS_API_PASSWORD": {
+      "required": true
+    },
+    "METRICS_API_USERNAME": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    }
+  },
+  "addons": [
+    "mongolab:sandbox"
+  ]
+}
