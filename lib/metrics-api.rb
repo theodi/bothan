@@ -113,7 +113,7 @@ class MetricsApi < Sinatra::Base
     end
   end
 
-  get '/metrics/:metric' do
+  get '/metrics/:metric/?' do
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
@@ -122,9 +122,8 @@ class MetricsApi < Sinatra::Base
         days = 30
         now = Time.now.iso8601
         before = (Time.now - (60 * 60 * 24 * days)).iso8601
-
         @subhead = "Last #{days} days"
-        redirect to "/metrics/#{params[:metric]}/#{before}/#{now}"
+        redirect to "/metrics/#{params[:metric]}/#{before}/#{now}?#{request.query_string}"
       end
 
       wants.other { error_406 }
