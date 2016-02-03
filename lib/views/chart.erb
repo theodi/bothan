@@ -15,19 +15,37 @@ function graph(json) {
     line: {
       shape: 'spline',
       width: 2,
-      smoothing: 1.3
-    }
+      smoothing: 1.3,
+      color: '<%= @textcolour %>'
+    },
   }
 
   var layout = {
     title: extractTitle(document.URL),
+    titlefont: {
+      color: '<%= @textcolour %>'
+    },
+    paper_bgcolor: '<%= @boxcolour %>',
+    plot_bgcolor: '<%= @boxcolour %>',
     xaxis: {
+      gridcolor: '#333',
       type: 'datetime',
       tickangle: 315,
-      tickformat: "%Y-%m-%d"
+      tickformat: "%Y-%m-%d",
+      tickfont: {
+        font: {
+          color: '<%= @textcolour %>'
+        }
+      }
     },
     yaxis: {
-      tickangle: 315
+      gridcolor: '#333',
+      tickangle: 315,
+      tickfont: {
+        font: {
+          color: '<%= @textcolour %>'
+        }
+      }
     },
     margin: {
       l: 70, r: 30
@@ -36,13 +54,9 @@ function graph(json) {
 
   Plotly.newPlot(
     'chart',
-    [
-      data
-    ],
+    [ data ],
     layout,
-    {
-      displayModeBar: <%= @plotly_modebar %>
-    }
+    { displayModeBar: <%= @plotly_modebar %> }
   );
 }
 </script>
