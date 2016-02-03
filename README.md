@@ -109,4 +109,4 @@ The rendering can be manipulated by the following query-string options:
 * `meta-refresh` interval for the page
 * Default: none
 
-Example: http://metrics.theodi.org/metrics/github-open-issue-count/2016-01-04T15:51:22+00:00/2016-02-03T15:51:22+00:00?boxcolour=fa8100&textcolour=00ffff&layout=bare
+Example: http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
