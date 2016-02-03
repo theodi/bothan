@@ -96,6 +96,9 @@ describe('metrics.js', function() {
   })
 
   describe('gets a number or a fails nicely', function() {
+    beforeEach(function() {
+      spyOn(jasmine.getGlobal(), 'unknowns').and.returnValue(['Unknown'])
+    })
 
     it('gets a plain number', function () {
       is_a_number = {
