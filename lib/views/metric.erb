@@ -1,7 +1,11 @@
-<% case @type %>
-  <% when 'number' %>
-    <%= erb :number %>
+<div id='wrapper' style='background-color: <%= @boxcolour %>; color: <%= @textcolour %>'>
 
-  <% else %>
-    <%= erb :chart %>
-<% end %>
+  <% case @type %>
+    <% when 'number' %>
+      <%= erb :number %>
+
+    <% else %>
+      <%= erb :chart %>
+  <% end %>
+
+</div>

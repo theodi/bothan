@@ -186,8 +186,12 @@ class MetricsApi < Sinatra::Base
 
       wants.html do
         @layout = params.fetch('layout', 'rich')
-        @plotly_modebar = (@layout == 'rich')
         @type = params.fetch('type', 'chart')
+        @boxcolour = params.fetch('boxcolour', '#ddd')
+        @btextcolour = params.fetch('textcolour', '#222')
+        @autorefresh = params.fetch('autorefresh', nil)
+
+        @plotly_modebar = (@layout == 'rich')
 
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
