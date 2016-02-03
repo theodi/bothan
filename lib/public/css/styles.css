@@ -13,3 +13,21 @@ body {
 #metric-value {
   font-size: 10em;
 }
+
+.bare h1 {
+  margin-top: 0px;
+  padding-top: 0.25em;
+  font-size: 7vw;
+}
+
+.bare #wrapper {
+  height: 100%;
+}
+
+.bare #number span {
+  font-size: 25vw;
+}
+
+.bare #number small {
+  font-size: 5vw;
+}
