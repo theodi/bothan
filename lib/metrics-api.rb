@@ -185,11 +185,17 @@ class MetricsApi < Sinatra::Base
       wants.json { data.to_json }
 
       wants.html do
+        @alternatives = [
+          'chart',
+          'number'
+        ]
+        
         @layout = params.fetch('layout', 'rich')
         @type = params.fetch('type', 'chart')
         @boxcolour = params.fetch('boxcolour', '#ddd')
         @btextcolour = params.fetch('textcolour', '#222')
         @autorefresh = params.fetch('autorefresh', nil)
+        @alternatives.delete @type
 
         @plotly_modebar = (@layout == 'rich')
 
