@@ -7,20 +7,8 @@ $.getJSON(document.URL, function (json) {
 
   var title = extractTitle(document.URL)
   var date = moment(last['time']).format('MMMM Do YYYY')
-  var number = last['value']
+  var number = extractNumber(last)
 
-  var unknowns = [
-    'Unknown',
-    'Uncharted',
-    'Undiscovered',
-    'Ineffable',
-    'Transcendent',
-    'Ethereal'
-  ]
-
-  if(number.constructor === Array) {
-    number = getRandom(unknowns)
-  }
 
   var content = '<h1>' + title
   content += ' <small>(as of ' + date + ')</small></h1>'

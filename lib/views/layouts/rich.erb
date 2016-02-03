@@ -14,16 +14,21 @@
           </div>
           <div class='row'>
             <div class='col-md-6'>
-              <% alternatives = ['chart', 'number'] %>
-              <% type = request.query_string.split('=')[1] || 'chart' %>
-              <% alternatives.delete type %>
-              <% alternatives.each do |alternative| %>
+              <% @alternatives.each do |alternative| %>
                 <a href='<%= request.path %>?type=<%= alternative %>' class='btn btn-success'>This metric might make more sense as a <%= alternative %></a>
               <% end %>
             </div>
             <div class='col-md-6'>
               <a href='<%= "#{request.path}.json" %>' class='btn btn-info pull-right'>Get the JSON for this metric</a>
             </div>
+          </div>
+          <div class='row'>
+            <hr />
+            <% if @autorefresh %>
+              <div class='col-md-12 text-center'>
+                Autorefreshing every <%= @autorefresh %> seconds
+              </div>
+            <% end %>
           </div>
         <div class='col-md-2'></div>
       </div>

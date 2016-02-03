@@ -22,4 +22,7 @@
   <script src='/javascripts/metrics.js'></script>
   <script src='//cdn.plot.ly/plotly-latest.min.js'></script>
   <title><%= @title %></title>
+  <% if @autorefresh %>
+    <meta http-equiv='refresh' content='<%= @autorefresh %>'>
+  <% end %>
 </head>
