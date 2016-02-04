@@ -1,0 +1,7 @@
+labs:
+  - metric: github-forks
+    type: chart
+    boxcolour: fa8100
+    textcolour: ffffff
+
+  - metric: github-repository-count

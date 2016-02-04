@@ -200,6 +200,17 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  get '/dashboards/:dashboard' do
+    @title = "#{params[:dashboard]} dashboard".titleise
+    @board = get_dashboard_data params[:dashboard]
+
+    respond_to do |wants|
+      wants.html do
+        erb :dashboard
+      end
+    end
+  end
+
   def error_406
     content_type 'text/plain'
     error 406, "Not Acceptable"

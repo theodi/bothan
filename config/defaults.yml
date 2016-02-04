@@ -1,0 +1,4 @@
+dashboards:
+  type: number
+  boxcolour: ffffff
+  textcolour: '000000'
