@@ -21,6 +21,7 @@ group :test do
   gem 'rack-test'
   gem 'guard'
   gem 'guard-rspec', require: false
+  gem 'guard-jasmine'
   gem 'guard-cucumber'
   gem 'terminal-notifier-guard'
   gem 'coveralls', require: false

@@ -10,6 +10,8 @@ require 'dotenv'
 require 'kramdown'
 require 'exception_notification'
 
+require_relative 'metrics-api/helpers'
+
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
@@ -37,18 +39,7 @@ class MetricsApi < Sinatra::Base
       }
     }
 
-  helpers do
-    def protected!
-      return if authorized?
-      headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-      halt 401, "Not authorized\n"
-    end
-
-    def authorized?
-      @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-      @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [ENV['METRICS_API_USERNAME'], ENV['METRICS_API_PASSWORD']]
-    end
-  end
+  helpers Helpers
 
   use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
@@ -131,7 +122,9 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:time' do
-    time = DateTime.parse(params[:time]) rescue error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
+    time = DateTime.parse(params[:time]) rescue
+      error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
+
     @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
@@ -144,11 +137,13 @@ class MetricsApi < Sinatra::Base
     end_date = DateTime.parse(params[:to]) rescue nil
 
     if params[:from] =~ /^P/
-      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds rescue error_400("'#{params[:from]}' is not a valid ISO8601 duration.")
+      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds rescue
+        error_400("'#{params[:from]}' is not a valid ISO8601 duration.")
     end
 
     if params[:to] =~ /^P/
-      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds rescue error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
+      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds rescue
+        error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
     end
 
     invalid = []
