@@ -31,3 +31,15 @@ body {
 .bare #number small {
   font-size: 5vw;
 }
+
+body.dashboard {
+  background-color: black;
+}
+
+.board-member {
+  padding-top: 50px;
+}
+.dashboard h1 {
+  color: white;
+  text-align: center;
+}
