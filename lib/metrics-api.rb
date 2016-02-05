@@ -60,6 +60,10 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/' do
+    redirect to '/metrics'
+  end
+
+  get '/documentation' do
     respond_to do |wants|
 
       wants.html do

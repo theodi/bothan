@@ -30,4 +30,6 @@ group :test do
   gem 'guard-shotgun', :git => 'https://github.com/rchampourlier/guard-shotgun.git'
   gem 'jasmine'
   gem 'timecop'
+  gem 'data_kitten'
+  gem 'webmock'
 end
