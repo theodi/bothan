@@ -90,6 +90,8 @@ class MetricsApi < Sinatra::Base
 
       wants.html do
         @title = 'Metrics API'
+        @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
+        @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
         erb :metrics, layout: 'layouts/default'.to_sym
       end
 
