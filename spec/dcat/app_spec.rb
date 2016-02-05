@@ -31,7 +31,7 @@ describe MetricsApi do
   end
 
   it 'has a good description' do
-    expect(@dataset.description).to eq 'Open Data Institute Metrics'
+    expect(@dataset.description).to match(/This API contains a list of all metrics collected by the Open Data Institute since 2013/)
   end
 
   it 'has a license' do

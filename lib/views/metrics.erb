@@ -5,25 +5,26 @@
   <div typeof="dcat:Dataset" resource="<%= request.url %>">
 
     <h1 property="dct:title">ODI Metrics</h1>
-    <p property="dct:created" content='<%= @created.iso8601 %>' datatype='xsd:dateTime'>Created: <%= @created %></p>
-    <p property="dct:modified" content='<%= @updated.iso8601 %>' datatype='xsd:dateTime'>Modified: <%= @updated %></p>
-    <p property="dct:description">Open Data Institute Metrics</p>
-
-    <div property="dct:license"
-      resource="https://creativecommons.org/licenses/by-sa/4.0/">
-      <a href="https://creativecommons.org/licenses/by-sa/4.0/">
-        <span property="dct:title">Creative Commons Attribution-ShareAlike</span>
-      </a>
+    <div property="dct:description">
+      <p>This API contains a list of all metrics collected by the Open Data Institute since 2013</p>
     </div>
 
-    <div property="dct:publisher"
-      resource="http://theodi.org">
-      <a href="http://theodi.org" about="http://theodi.org" property="foaf:homepage">
-        <span property="foaf:name">Open Data Institute</span>
-      </a>
-    </div>
+    <p>
+      Each metric redirects to a HTML version with chart. To access the raw data, simply
+      append <code>.json</code> to the URI, or add a <code>application/json</code> accept header to your request
+    </p>
+    <p>
+      See the <a href="/documentation">Detailed documentation</a> for more information
+    </p>
 
-    <a href="http://purl.org/linked-data/sdmx/2009/code#freq-D" property="dcat:accrualPeriodicity">Daily</a>
+    <h2>License</h2>
+
+      <div property="dct:license" resource="https://creativecommons.org/licenses/by-sa/4.0/">
+        <p>This data is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/"><span property="dct:title">Creative Commons Attribution-ShareAlike</span></a>License</p>
+        <p><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></p>
+      </div>
+
+    <h2>Current Metrics</h2>
 
     <ul id='metrics'>
       <% @metrics[:metrics].each do |metric| %>
@@ -34,6 +35,25 @@
         </li>
       <% end %>
     </ul>
+
+    <h2>About this dataset</h2>
+    <dl class="dl-horizontal">
+      <dt>Created</dt>
+      <dd property="dct:created" content='<%= @created.iso8601 %>' datatype='xsd:dateTime'><%= @created.strftime('%B %e %Y at %H:%I') %></dd>
+
+      <dt>Modified</dt>
+      <dd property="dct:modified" content='<%= @updated.iso8601 %>' datatype='xsd:dateTime'><%= @updated.strftime('%B %e %Y at %H:%I') %></dd>
+
+      <dt>Published by</dt>
+      <dd property="dct:publisher" resource="http://theodi.org">
+        <a href="http://theodi.org" about="http://theodi.org" property="foaf:homepage">
+          <span property="foaf:name">Open Data Institute</span>
+        </a>
+      </dd>
+
+      <dt>Updated</dt>
+      <dd><a href="http://purl.org/linked-data/sdmx/2009/code#freq-D" property="dcat:accrualPeriodicity">Daily</a></dd>
+    </dl>
 
   </div>
 </div>
