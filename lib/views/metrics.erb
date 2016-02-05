@@ -25,17 +25,11 @@
 
     <a href="http://purl.org/linked-data/sdmx/2009/code#freq-D" property="dcat:accrualPeriodicity">Daily</a>
 
-    <ul id='metrics'></ul>
+    <ul id='metrics'>
+      <% @metrics[:metrics].each do |metric| %>
+        <li><a href="<%= metric[:url].gsub('.json', '') %>"><%= extract_title(metric[:url]) %></a></li>
+      <% end %>
+    </ul>
 
   </div>
 </div>
-
-<script>
-$.getJSON(document.URL, function(json) {
-
-  $.each(json['metrics'], function (index, metric) {
-    var link = '<a href="' + snipExtension(metric['url']) + '">' + extractTitle(metric['url']) + '</a>'
-    $('#metrics').append('<li>' + link + '</li>')
-  })
-})
-</script>

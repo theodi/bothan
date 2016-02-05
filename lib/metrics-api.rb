@@ -76,8 +76,8 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics' do
-    data =     {
-      "metrics" => Metric.all.distinct(:name).sort.map do |name|
+    @metrics = {
+      metrics: Metric.all.distinct(:name).sort.map do |name|
         {
           name: name,
           url: "#{request.base_url}/metrics/#{name}.json"
@@ -86,7 +86,7 @@ class MetricsApi < Sinatra::Base
     }
 
     respond_to do |wants|
-      wants.json { data.to_json }
+      wants.json { @metrics.to_json }
 
       wants.html do
         @title = 'Metrics API'

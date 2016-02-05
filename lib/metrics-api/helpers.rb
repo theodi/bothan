@@ -25,6 +25,15 @@ module Helpers
 
     qs.join '&'
   end
+
+  def extract_title url
+    regex = /http.*metrics\/([^\/]*)[\/|\.].*/
+    result = url.match(regex)
+    words = result[1].split('-')
+    words.map { |word|
+      word[0].upcase + word[1..-1].downcase
+    }.join(' ')
+  end
 end
 
 class String
