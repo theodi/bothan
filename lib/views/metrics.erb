@@ -5,6 +5,25 @@
   <div typeof="dcat:Dataset" resource="<%= request.url %>">
 
     <h1 property="dct:title">ODI Metrics</h1>
+    <p property="dct:created" content='<%= Metric.first.time.iso8601 %>' datatype='xsd:dateTime'>Created: <%= Metric.first.time %></p>
+    <p property="dct:modified" content='<%= Metric.last.time.iso8601 %>' datatype='xsd:dateTime'>Modified: <%= Metric.last.time %></p>
+    <p property="dct:description">Open Data Institute Metrics</p>
+
+    <div property="dct:license"
+      resource="https://creativecommons.org/licenses/by-sa/4.0/">
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/">
+        <span property="dct:title">Creative Commons Attribution-ShareAlike</span>
+      </a>
+    </div>
+
+    <div property="dct:publisher"
+      resource="http://theodi.org">
+      <a href="http://theodi.org" about="http://theodi.org" property="foaf:homepage">
+        <span property="foaf:name">Open Data Institute</span>
+      </a>
+    </div>
+
+    <a href="http://purl.org/linked-data/sdmx/2009/code#freq-D" property="dcat:accrualPeriodicity">Daily</a>
 
     <ul id='metrics'></ul>
 

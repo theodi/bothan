@@ -2,6 +2,8 @@ require 'metrics-api'
 require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
 
 class TestHelper
   include Helpers
