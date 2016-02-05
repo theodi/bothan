@@ -1,5 +1,5 @@
 Given(/^there is a metric in the database with the name "(.*?)"$/) do |name|
-  @metric = Metric.create(name: name)
+  @metric = Metric.create(name: name, time: DateTime.now)
 end
 
 Given(/^it has a time of "(.*?)"$/) do |time|
