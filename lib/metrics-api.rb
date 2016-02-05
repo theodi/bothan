@@ -60,6 +60,10 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/' do
+    redirect to '/metrics'
+  end
+
+  get '/documentation' do
     respond_to do |wants|
 
       wants.html do
@@ -72,8 +76,8 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics' do
-    data =     {
-      "metrics" => Metric.all.distinct(:name).sort.map do |name|
+    @metrics = {
+      metrics: Metric.all.distinct(:name).sort.map do |name|
         {
           name: name,
           url: "#{request.base_url}/metrics/#{name}.json"
@@ -82,10 +86,12 @@ class MetricsApi < Sinatra::Base
     }
 
     respond_to do |wants|
-      wants.json { data.to_json }
+      wants.json { @metrics.to_json }
 
       wants.html do
         @title = 'Metrics API'
+        @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
+        @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
         erb :metrics, layout: 'layouts/default'.to_sym
       end
 

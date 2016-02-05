@@ -33,6 +33,24 @@ describe Helpers do
 
     expect(helpers.query_string data).to eq 'type=number&boxcolour=ffffff&textcolour=000000'
   end
+
+  it 'extracts a title from a URL' do
+    expect(
+      helpers.extract_title(
+        'http://localhost:9292/metrics/certificated-datasets/2013-01-01T00:00:00/2016-02-01T00:00:00'
+      )
+    ).to eq(
+      'Certificated Datasets'
+    )
+
+    expect(
+      helpers.extract_title(
+        'http://localhost:9292/metrics/2013-q1-completed-tasks.json'
+      )
+    ).to eq(
+      '2013 Q1 Completed Tasks'
+    )
+  end
 end
 
 describe String do

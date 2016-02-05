@@ -2,13 +2,14 @@ Feature: Content Types
 
   Scenario: GET root with HTML content type
     Given I send and accept HTML
-    When I send a GET request to "/"
+    When I send a GET request to "/documentation"
     Then the response status should be "200"
 
   Scenario: GET list with JSON content type
     Given I send and accept JSON
     When I send a GET request to "/"
-    Then the response status should be "406"
+    Then the response status should be "302"
+    And I should get redirected to "http://example.org/metrics"
 
   Scenario: GET list with JSON content type
     Given I send and accept JSON
