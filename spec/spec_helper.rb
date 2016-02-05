@@ -1,3 +1,6 @@
+
+ENV['RACK_ENV'] = 'test'
+
 require 'metrics-api'
 require 'data_kitten'
 require 'rack/test'
