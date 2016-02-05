@@ -47,6 +47,12 @@ describe MetricsApi do
   it 'has the update frequency' do
     expect(@dataset.update_frequency).to eq 'http://purl.org/linked-data/sdmx/2009/code#freq-D'
   end
+
+  it 'has some distributions' do
+    expect(@dataset.distributions.count).to eq(1)
+    expect(@dataset.distributions.first.title).to eq('Metrique')
+    expect(@dataset.distributions.first.access_url).to eq('http://example.org/metrics/metrique')
+  end
 end
 
 def create_data
