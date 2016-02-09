@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  background-color: #222222;
+  font-size: 20px;
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, 'Open Sans', 'FreeSans', Arial, sans-serif;
+}
+
+#header h1 {
+  font-size: 55px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  color: #AAA;
+  position: absolute;
+  right: 0;
+}
+
+#header img {
+  position: absolute;
+  left: 0;
+  height: 70px;
+}
+
+#header {
+  width: 100%;
+  position: relative;
+  height: 70px;
+}
+
+#dashboard {
+  position: relative;
+  width: 100%;
+}
+
+#dashboard ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#dashboard ul li {
+  margin: 0;
+  padding: 5px 5px 0 0;
+  width: 33%;
+  height: 260px;
+}
