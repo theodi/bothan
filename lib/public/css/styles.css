@@ -45,10 +45,13 @@ body.dashboard {
   text-align: center;
 }
 
-#target {
-  height: 200px;
+#caption {
   text-align: center;
+}
 
+#target {
+  height: 100px;
+  text-align: center;
 }
 
 .target-row {
@@ -60,17 +63,21 @@ body.dashboard {
 }
 
 .ytd-target-bar {
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
+  top: 30px;
+  opacity: 0.6;
 }
 
 .ytd-progress-bar {
   background-color: white;
   color: black;
+  top: 15px;
+  opacity: 0.4;
 }
 
 .annual-target-bar {
   background-color: white;
   color: black;
-  opacity: 0.5;
+  opacity: 0.2;
 }

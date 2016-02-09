@@ -1,6 +1,13 @@
 <div id='target-container' class='row'>
   <div class='col-md-1'></div>
-  <div id='target' class='col-md-10'></div>
+  <div class='col-md-10'>
+    <div class='row'>
+      <div id='caption' class='col-md-12'></div>
+    </div>
+    <div class='row'>
+      <div id='target' class='col-md-12'></div>
+    </div>
+  </div>
   <div class='col-md-1'></div>
 </div>
 
@@ -20,11 +27,11 @@ $.getJSON(document.URL, function (json) {
 
   var content = '<h1>' + title + '</h1>'
 
-  $('#target').html(content)
+  $('#caption').html(content)
 
-  $('#target').append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress) + '">' + progress + '%</div>'))
-  $('#target').append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected) + '">' + expected + '%</div>'))
-  $('#target').append(asRow('<div class="annual-target-bar with-target ' + asColumns(100) + '">100%</div>'))
+  $('#target').append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress) + '">' + last['actual'] + '</div>'))
+  $('#target').append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected) + '">' + last['ytd_target'] + '</div>'))
+  $('#target').append(asRow('<div class="annual-target-bar with-target ' + asColumns(100) + '">' + last['annual_target'] + '</div>'))
 })
 
 function asRow(content) {
