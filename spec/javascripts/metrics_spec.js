@@ -151,4 +151,48 @@ describe('metrics.js', function() {
       expect(extractNumber(is_a_pathological_edge_case)).toEqual('Unknown')
     })
   })
+
+  describe('get a number as a bootstrap column width', function() {
+    it('gets a 12 for 100%', function() {
+      expect(asColumns(100)).toEqual('col-md-12')
+    })
+
+    it('gets a 1 for 0%', function() {
+      expect(asColumns(0)).toEqual('col-md-1')
+    })
+
+    it('gets a 6 for 50%', function() {
+      expect(asColumns(50)).toEqual('col-md-6')
+    })
+  })
+
+  describe('scale numbers appropriately', function() {
+    it('does nothing with a number in normal range', function() {
+      expect(scaleNumber(100)).toEqual(100)
+    })
+
+    describe('thousands', function() {
+      it('represents thousands correctly', function() {
+        expect(scaleNumber(4000)).toEqual('4K')
+      })
+
+      it('with fractional parts', function() {
+        expect(scaleNumber(6300)).toEqual('6.3K')
+      })
+
+      it('with sensible rounding', function() {
+        expect(scaleNumber(89754)).toEqual('89.8K')
+      })
+    })
+
+    describe('millions', function() {
+      it('represents millions correctly', function() {
+        expect(scaleNumber(12000000)).toEqual('12M')
+      })
+
+      it('with sensible rounding', function() {
+        expect(scaleNumber(35656421)).toEqual('35.7M')
+      })
+    })
+  })
 })

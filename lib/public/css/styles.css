@@ -39,7 +39,45 @@ body.dashboard {
 .board-member {
   padding-top: 50px;
 }
+
 .dashboard h1 {
   color: white;
   text-align: center;
+}
+
+#caption {
+  text-align: center;
+}
+
+#target {
+  height: 100px;
+  text-align: center;
+}
+
+.target-row {
+}
+
+.with-target {
+  position: absolute;
+  height: 3em;
+}
+
+.ytd-target-bar {
+  background-color: white;
+  color: black;
+  top: 30px;
+  opacity: 0.6;
+}
+
+.ytd-progress-bar {
+  background-color: white;
+  color: black;
+  top: 15px;
+  opacity: 0.4;
+}
+
+.annual-target-bar {
+  background-color: white;
+  color: black;
+  opacity: 0.2;
 }

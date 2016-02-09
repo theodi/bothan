@@ -1,11 +1,7 @@
 <div id='wrapper' style='background-color: <%= @boxcolour %>; color: <%= @textcolour %>'>
-
-  <% case @type %>
-    <% when 'number' %>
-      <%= erb :number %>
-
-    <% else %>
-      <%= erb :chart %>
+  <% if @alternatives.include? @type %>
+    <%= erb @type.to_sym %>
+  <% else %>
+    <%= erb :chart %>
   <% end %>
-
 </div>
