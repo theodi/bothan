@@ -1,5 +1,6 @@
 <div id='number'></div>
 
+<script src="/javascripts/countup.js"></script>
 <script>
 $.getJSON(document.URL, function (json) {
   var values = json['values']
@@ -11,8 +12,18 @@ $.getJSON(document.URL, function (json) {
 
   var content = '<h1>' + title + '</h1>'
   content += '<span id="metric-value">' + number + '</span>'
-  content += '<br/><small>' + date + '</small>'
+  content += '<br/><small>Last updated: ' + date + '</small>'
 
   $('#number').html(content)
+
+  var options = {
+    useEasing : true,
+    useGrouping : true,
+    separator : ',',
+    decimal : '.'
+  }
+  var number = new CountUp("metric-value", 0, number, 0, 1, options);
+  number.start();
+
 })
 </script>

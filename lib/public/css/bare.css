@@ -1,0 +1,31 @@
+.bare {
+  text-align: center;
+}
+
+.bare h1 {
+  font-size: 7vw;
+  font-weight: normal;
+  opacity: 0.7;
+  margin-bottom: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.bare #wrapper {
+  margin-top: 12.5%;
+  height: 100%;
+}
+
+.bare #number span {
+  font-size: 18vw;
+  font-weight: bold;
+}
+
+.bare #number small {
+  font-size: 2.5vw;
+  opacity: 0.6;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+}

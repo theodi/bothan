@@ -212,7 +212,7 @@ class MetricsApi < Sinatra::Base
 
     respond_to do |wants|
       wants.html do
-        erb :dashboard
+        erb :dashboard, layout: :"layouts/dashboard"
       end
     end
   end

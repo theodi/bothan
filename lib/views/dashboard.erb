@@ -1,17 +1,26 @@
-<!DOCTYPE html>
-<html lang='en'>
-  <%= erb :'includes/header' %>
-  <body class='dashboard'>
-    <h1><%= @title %></h1>
-    <% @board.in_groups_of(3, false) do |group| %>
-      <div class='row'>
-        <% group.each do |member| %>
-          <div class='col-md-4 board-member text-center'>
-            <% url = "/metrics/#{member['metric']}" %>
-            <iframe src='<%= url %>?layout=bare&<%= query_string member %>' class='embed-responsive-item' width='360' height='200' frameBorder='0' scrolling='no'></iframe>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </body>
-</html>
+<div id="header">
+  <img src="/img/odi_dashboard_logo.svg" />
+  <h1><%= @title %></h1>
+</div>
+<div id="dashboard">
+  <ul class="grid">
+  <% @board.each do |member| %>
+    <li>
+      <% url = "/metrics/#{member['metric']}" %>
+      <iframe src='<%= url %>?layout=bare&<%= query_string member %>' class='embed-responsive-item' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>
+    </li>
+  <% end %>
+  </ul>
+</div>
+
+<script>
+$(function(){
+
+  $('.grid li').height((window.innerHeight - 85) / 2)
+
+  var $grid = $('.grid').masonry({
+    itemSelector: 'li'
+  });
+
+});
+</script>
