@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <%= erb :'includes/header', locals: { css: 'bare' } %>
+  <% @css = 'bare' %>
+  <%= erb :'includes/header' %>
   <body style='background-color: <%= @boxcolour %>' class="bare">
     <%= yield %>
   </body>
