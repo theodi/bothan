@@ -48,24 +48,25 @@ body.dashboard {
 #target {
   height: 200px;
   text-align: center;
-  border: 3px solid blue;
-  margin: 20px;
+
+}
+
+.target-row {
 }
 
 .with-target {
   position: absolute;
-  border: 3px solid #73AD21;
   height: 3em;
 }
 
 .ytd-target-bar {
   background-color: black;
-  color: black;
+  color: white;
 }
 
 .ytd-progress-bar {
   background-color: white;
-  color: white;
+  color: black;
 }
 
 .annual-target-bar {

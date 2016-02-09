@@ -1,5 +1,7 @@
-<div id='target-container'>
-  <div id='target'></div>
+<div id='target-container' class='row'>
+  <div class='col-md-1'></div>
+  <div id='target' class='col-md-10'></div>
+  <div class='col-md-1'></div>
 </div>
 
 <script>
@@ -20,9 +22,13 @@ $.getJSON(document.URL, function (json) {
 
   $('#target').html(content)
 
-  $('#target').append('<div class="ytd-progress-bar with-target" style="width: ' + progress + '%">' + progress + '%</div>')
-  $('#target').append('<div class="ytd-target-bar with-target" style="width: ' + expected + '%">' + expected + '%</div>')
-  $('#target').append('<div class="annual-target-bar with-target" style="width: 100%">100%</div>')
+  $('#target').append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress) + '">' + progress + '%</div>'))
+  $('#target').append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected) + '">' + expected + '%</div>'))
+  $('#target').append(asRow('<div class="annual-target-bar with-target ' + asColumns(100) + '">100%</div>'))
 })
+
+function asRow(content) {
+  return '<div class="row target-row">' + content + '</div>'
+}
 
 </script>
