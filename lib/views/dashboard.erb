@@ -3,23 +3,22 @@
   <h1><%= @title %></h1>
 </div>
 <div id="dashboard">
-  <div class="grid">
-    <ul>
-    <% @board.each do |member| %>
-      <li>
-        <% url = "/metrics/#{member['metric']}" %>
-        <iframe src='<%= url %>?layout=bare&<%= query_string member %>' class='embed-responsive-item' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>
-      </li>
-    <% end %>
-    </ul>
-  </div>
+  <ul class="grid">
+  <% @board.each do |member| %>
+    <li>
+      <% url = "/metrics/#{member['metric']}" %>
+      <iframe src='<%= url %>?layout=bare&<%= query_string member %>' class='embed-responsive-item' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>
+    </li>
+  <% end %>
+  </ul>
 </div>
 
 <script>
-$(function(){ //DOM Ready
+$(function(){
 
-  $('.grid').masonry({
-    // options
+  $('.grid li').height((window.innerHeight - 85) / 2)
+
+  var $grid = $('.grid').masonry({
     itemSelector: 'li'
   });
 
