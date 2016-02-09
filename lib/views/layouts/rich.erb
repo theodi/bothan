@@ -13,13 +13,15 @@
             </div>
           </div>
           <div class='row'>
-            <div class='col-md-6'>
+            <div class='col-md-8'>
+              This metric might make more sense as a
+              <% @alternatives.delete @type %>
               <% @alternatives.each do |alternative| %>
-                <a href='<%= request.path %>?type=<%= alternative %>' class='btn btn-success'>This metric might make more sense as a <%= alternative %></a>
+                <a href='<%= request.path %>?type=<%= alternative %>' class='btn btn-success'><%= alternative %></a>
               <% end %>
             </div>
-            <div class='col-md-6'>
-              <a href='<%= "#{request.path}.json" %>' class='btn btn-info pull-right'>Get the JSON for this metric</a>
+            <div class='col-md-4'>
+              <a href='<%= "#{request.path}.json" %>' class='btn btn-info pull-right'>Get the JSON</a>
             </div>
           </div>
           <div class='row'>

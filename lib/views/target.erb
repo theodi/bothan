@@ -1,0 +1,28 @@
+<div id='target-container'>
+  <div id='target'></div>
+</div>
+
+<script>
+$.getJSON(document.URL, function (json) {
+  var values = json['values']
+  var last = values[values.length - 1]['value']
+
+  var title = extractTitle(document.URL)
+  var date = moment(last['time']).format('YYYY-DD-MM HH:mm')
+  //var nums = last['actual'] + ' -- ' + last['annual_target'] + ' -- ' + last['ytd_target']
+
+  // 99 -- 400 -- 12
+
+  var progress = (last['actual'] / last['annual_target']) * 100
+  var expected = (last['ytd_target'] / last['annual_target']) * 100
+
+  var content = '<h1>' + title + '</h1>'
+
+  $('#target').html(content)
+
+  $('#target').append('<div class="ytd-progress-bar with-target" style="width: ' + progress + '%">' + progress + '%</div>')
+  $('#target').append('<div class="ytd-target-bar with-target" style="width: ' + expected + '%">' + expected + '%</div>')
+  $('#target').append('<div class="annual-target-bar with-target" style="width: 100%">100%</div>')
+})
+
+</script>

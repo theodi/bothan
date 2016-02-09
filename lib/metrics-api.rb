@@ -187,7 +187,8 @@ class MetricsApi < Sinatra::Base
       wants.html do
         @alternatives = [
           'chart',
-          'number'
+          'number',
+          'target'
         ]
 
         @layout = params.fetch('layout', 'rich')
@@ -195,7 +196,6 @@ class MetricsApi < Sinatra::Base
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
         @autorefresh = params.fetch('autorefresh', nil)
-        @alternatives.delete @type
 
         @plotly_modebar = (@layout == 'rich')
 
