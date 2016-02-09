@@ -1,24 +1,24 @@
 labs:
   - metric: github-forks
-    boxcolor: ff0000
-    textcolour: 00ffff
+    boxcolour: 2254f4
+    textcolour: fff
 
   - metric: github-watchers
-    boxcolour: ff00ff
-    textcolour: 00ff00
+    boxcolour: 0dbc37
+    textcolour: fff
 
   - metric: github-repository-count
-    boxcolour: 0000ff
-    textcolour: ffff00
+    boxcolour: ff6700
+    textcolour: fff
 
   - metric: github-open-issue-count
-    boxcolour: 00ffff
-    textcolour: ff0000
+    boxcolour: d60303
+    textcolour: fff
 
   - metric: github-watchers
-    boxcolour: 00ff00
-    textcolour: ff00ff
+    boxcolour: e6007c
+    textcolour: fff
 
   - metric: github-repository-count
-    boxcolour: ffff00
-    textcolour: 0000ff
+    boxcolour: ef3aab
+    textcolour: fff
