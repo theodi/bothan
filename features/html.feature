@@ -20,4 +20,4 @@ Feature: Metrics API
     And I return to the present in my DeLorean
 
   Scenario: Preserve query_string
-    
+    Given there is a metric in the database with the name "membership-coverage"
