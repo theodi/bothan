@@ -3,8 +3,13 @@
 <script>
 $.getJSON(document.URL, function (json) {
   var values = json['values']
-  var last = values[values.length - 1]
-
+  var last
+  if(values === undefined) {
+    var last = json
+  } else {
+    var last = values[values.length - 1]
+  }
+  
   var title = extractTitle(document.URL)
   var date = moment(last['time']).format('YYYY-DD-MM HH:mm')
   var number = extractNumber(last)

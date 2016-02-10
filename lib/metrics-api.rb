@@ -134,6 +134,25 @@ class MetricsApi < Sinatra::Base
     @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
+
+      wants.html do
+        @alternatives = [
+          'chart',
+          'number',
+          'target'
+        ]
+
+        @layout = params.fetch('layout', 'rich')
+        @type = params.fetch('type', 'chart')
+        @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
+        @textcolour = "##{params.fetch('textcolour', '222')}"
+        @autorefresh = params.fetch('autorefresh', nil)
+
+        @plotly_modebar = (@layout == 'rich')
+
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+      end
+
       wants.other { error_406 }
     end
   end
