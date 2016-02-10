@@ -49,35 +49,37 @@ body.dashboard {
   text-align: center;
 }
 
-#target {
-  height: 100px;
+#target, #target-little {
+  height: 10vw; // THIS IS A MAGIC NUMBER AND NEEDS FIXING. TF IS A VW?
   text-align: center;
 }
 
-.target-row {
+#target-little {
+  margin: 40px;
 }
 
 .with-target {
   position: absolute;
   height: 3em;
+  text-align: right;
 }
 
 .ytd-target-bar {
   background-color: white;
   color: black;
   top: 30px;
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
 .ytd-progress-bar {
   background-color: white;
   color: black;
   top: 15px;
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .annual-target-bar {
   background-color: white;
   color: black;
-  opacity: 0.2;
+  opacity: 0.25;
 }

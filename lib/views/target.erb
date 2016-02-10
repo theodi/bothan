@@ -5,7 +5,8 @@
       <div id='caption' class='col-md-12'></div>
     </div>
     <div class='row'>
-      <div id='target' class='col-md-12'></div>
+      <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
+      <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
     </div>
   </div>
   <div class='col-md-1'></div>
@@ -29,9 +30,16 @@ $.getJSON(document.URL, function (json) {
 
   $('#caption').html(content)
 
-  $('#target').append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress) + '">' + last['actual'] + '</div>'))
-  $('#target').append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected) + '">' + last['ytd_target'] + '</div>'))
-  $('#target').append(asRow('<div class="annual-target-bar with-target ' + asColumns(100) + '">' + last['annual_target'] + '</div>'))
+  var sizes = {
+    'target': 'md',
+    'target-little': 'xs'
+  }
+
+  $.each(sizes, function(div, size) {
+    $('#' + div).append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress, size) + '">' + last['actual'] + '</div>'))
+    $('#' + div).append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected, size) + '">' + last['ytd_target'] + '</div>'))
+    $('#' + div).append(asRow('<div class="annual-target-bar with-target ' + asColumns(100, size) + '">' + last['annual_target'] + '</div>'))
+  })
 })
 
 function asRow(content) {
