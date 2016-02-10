@@ -19,28 +19,29 @@ $.getJSON(document.URL, function (json) {
   var values = json['values']
   var last = values[values.length - 1]['value']
 
-  //var nums = last['actual'] + ' -- ' + last['annual_target'] + ' -- ' + last['ytd_target']
-  // 99 -- 400 -- 12
-
-  var actual = (last['actual'] / last['annual_target']) * 100
-  var ytd_target = (last['ytd_target'] / last['annual_target']) * 100
-  var annual_target = (last['annual_target'] / last['annual_target']) * 100 // REDUNDANT REDUNDANCY
+  var metrics = {
+    actual: (last['actual'] / last['annual_target']) * 100,
+    ytd_target: (last['ytd_target'] / last['annual_target']) * 100,
+    annual_target: (last['annual_target'] / last['annual_target']) * 100 // REDUNDANT REDUNDANCY
+  }
 
   var sizes = {
     'target': 'md',
     'target-little': 'xs'
   }
 
-  var metrics = {
-    actual,
-    ytd_target,
-    annual_target
-  }
-
   $.each(sizes, function(div, size) {
-    $('#' + div).append(asRow('<div class="actual-bar with-target ' + asColumns(actual, size) + '">' + last['actual'] + '</div>'))
-    $('#' + div).append(asRow('<div class="ytd_target-bar with-target ' + asColumns(ytd_target, size) + '">' + last['ytd_target'] + '</div>'))
-    $('#' + div).append(asRow('<div class="annual_target-bar with-target ' + asColumns(annual_target, size) + '">' + last['annual_target'] + '</div>'))
+    $.each(metrics, function(metric, data) {
+      $(
+        '#' + div
+      ).append(
+        asRow(
+          '<div class="' + metric + '-bar with-target ' + asColumns(
+            data, size
+          ) + '">' + last[metric] + '</div>'
+        )
+      )
+    })
   })
 })
 
