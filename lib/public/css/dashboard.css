@@ -40,8 +40,7 @@ body {
 }
 
 #dashboard ul li {
-  margin: 0;
-  padding: 5px 5px 0 0;
+  margin: 0 0 4px 0;
+  padding: 0;
   width: 33%;
-  height: 260px;
 }
