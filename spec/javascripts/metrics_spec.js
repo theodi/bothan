@@ -195,4 +195,70 @@ describe('metrics.js', function() {
       })
     })
   })
+
+  describe('get either the last value or the only value', function() {
+    single_metric = {
+      name: "i-am-skynet",
+      time: "1997-08-29T02:14:00.000-05:00",
+      value: {
+        actual: 3526939.9699999997,
+        annual_target: 5939066.66666667,
+        ytd_target: 5939066.66666667
+      }
+    }
+
+    it('gets the value', function() {
+      expect(lastOrOnlyValue(single_metric)).toEqual(
+        {
+          actual: 3526939.9699999997,
+          annual_target: 5939066.66666667,
+          ytd_target: 5939066.66666667
+        }
+      )
+    })
+
+    list_of_metrics = {
+      count: 3,
+      values: [
+        {
+          time: "2016-01-29T00:28:23.000+00:00",
+          value: {
+            actual: 0,
+            annual_target: 0,
+            ytd_target: 0,
+            breakdown: { }
+          }
+        },
+        {
+          time: "2016-01-29T01:27:44.000+00:00",
+          value: {
+            actual: 0,
+            annual_target: 0,
+            ytd_target: 0,
+            breakdown: { }
+          }
+        },
+        {
+          time: "2016-01-29T02:27:54.000+00:00",
+          value: {
+            actual: 0,
+            annual_target: 0,
+            ytd_target: 0,
+            breakdown: { }
+          }
+        }
+      ]
+    }
+
+    it('gets the last value', function() {
+      expect(lastOrOnlyValue(list_of_metrics)).toEqual(
+        {
+          actual: 0,
+          annual_target: 0,
+          ytd_target: 0,
+          breakdown: { }
+        }
+      )
+    })
+  })
 })

@@ -16,13 +16,22 @@
 $.getJSON(document.URL, function (json) {
   $('#caption').html('<h1>' + extractTitle(document.URL) + '</h1>')
 
-  var values = json['values']
-  var last = values[values.length - 1]['value']
+  var last = lastOrOnlyValue(json)
+  var barcolour = '<%= @barcolour %>'
 
   var metrics = {
-    actual: (last['actual'] / last['annual_target']) * 100,
-    ytd_target: (last['ytd_target'] / last['annual_target']) * 100,
-    annual_target: (last['annual_target'] / last['annual_target']) * 100 // REDUNDANT REDUNDANCY
+    actual: {
+      data: (last['actual'] / last['annual_target']) * 100,
+      name: 'Actual progress'
+    },
+    ytd_target: {
+      data: (last['ytd_target'] / last['annual_target']) * 100,
+      name: 'Year-to-date target'
+    },
+    annual_target: {
+      data: (last['annual_target'] / last['annual_target']) * 100, // REDUNDANT REDUNDANCY
+      name: 'Annual target'
+    }
   }
 
   var sizes = {
@@ -33,20 +42,34 @@ $.getJSON(document.URL, function (json) {
   $.each(sizes, function(div, size) {
     $.each(metrics, function(metric, data) {
       $(
-        '#' + div
+        '#' +
+        div
       ).append(
         asRow(
-          '<div class="' + metric + '-bar with-target ' + asColumns(
-            data, size
-          ) + '">' + last[metric] + '</div>'
+          '<div class="' +
+          metric +
+          '-bar with-target ' +
+          asColumns(
+            data['data'], size
+          ) +
+          '" style="background-color: ' +
+          barcolour +
+          '"><span data-toggle="tooltip" title="' + data['name'] + '" class="bar-label">' +
+          scaleNumber(
+            last[
+              metric
+            ]
+          ) +
+          '</span></div>'
         )
       )
     })
   })
+
+  $('[data-toggle="tooltip"]').tooltip()
 })
 
 function asRow(content) {
   return '<div class="row target-row">' + content + '</div>'
 }
-
 </script>

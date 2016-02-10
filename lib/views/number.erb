@@ -3,8 +3,8 @@
 <script src="/javascripts/countup.js"></script>
 <script>
 $.getJSON(document.URL, function (json) {
-  var values = json['values']
-  var last = values[values.length - 1]
+
+  var last = lastOrOnlyValue(json)
 
   var title = extractTitle(document.URL)
   var date = moment(last['time']).format('YYYY-DD-MM HH:mm')
