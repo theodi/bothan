@@ -5,7 +5,8 @@
       <div id='caption' class='col-md-12'></div>
     </div>
     <div class='row'>
-      <div id='target' class='col-md-12'></div>
+      <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
+      <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
     </div>
   </div>
   <div class='col-md-1'></div>
@@ -13,25 +14,35 @@
 
 <script>
 $.getJSON(document.URL, function (json) {
+  $('#caption').html('<h1>' + extractTitle(document.URL) + '</h1>')
+
   var values = json['values']
   var last = values[values.length - 1]['value']
 
-  var title = extractTitle(document.URL)
-  var date = moment(last['time']).format('YYYY-DD-MM HH:mm')
-  //var nums = last['actual'] + ' -- ' + last['annual_target'] + ' -- ' + last['ytd_target']
+  var metrics = {
+    actual: (last['actual'] / last['annual_target']) * 100,
+    ytd_target: (last['ytd_target'] / last['annual_target']) * 100,
+    annual_target: (last['annual_target'] / last['annual_target']) * 100 // REDUNDANT REDUNDANCY
+  }
 
-  // 99 -- 400 -- 12
+  var sizes = {
+    'target': 'md',
+    'target-little': 'xs'
+  }
 
-  var progress = (last['actual'] / last['annual_target']) * 100
-  var expected = (last['ytd_target'] / last['annual_target']) * 100
-
-  var content = '<h1>' + title + '</h1>'
-
-  $('#caption').html(content)
-
-  $('#target').append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress) + '">' + last['actual'] + '</div>'))
-  $('#target').append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected) + '">' + last['ytd_target'] + '</div>'))
-  $('#target').append(asRow('<div class="annual-target-bar with-target ' + asColumns(100) + '">' + last['annual_target'] + '</div>'))
+  $.each(sizes, function(div, size) {
+    $.each(metrics, function(metric, data) {
+      $(
+        '#' + div
+      ).append(
+        asRow(
+          '<div class="' + metric + '-bar with-target ' + asColumns(
+            data, size
+          ) + '">' + last[metric] + '</div>'
+        )
+      )
+    })
+  })
 })
 
 function asRow(content) {

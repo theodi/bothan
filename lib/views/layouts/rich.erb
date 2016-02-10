@@ -14,7 +14,7 @@
           </div>
           <div class='row'>
             <div class='col-md-8'>
-              This metric might make more sense as a
+              View this as a
               <% @alternatives.delete @type %>
               <% @alternatives.each do |alternative| %>
                 <a href='<%= request.path %>?type=<%= alternative %>' class='btn btn-success'><%= alternative %></a>
