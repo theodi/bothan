@@ -4,6 +4,7 @@ body {
   font-size: 20px;
   color: white;
   font-family: "Helvetica Neue", Helvetica, 'Open Sans', 'FreeSans', Arial, sans-serif;
+  height: 100%;
 }
 
 #header h1 {
@@ -13,12 +14,12 @@ body {
   margin: 0;
   color: #AAA;
   position: absolute;
-  right: 0;
+  right: 5px;
 }
 
 #header img {
   position: absolute;
-  left: 0;
+  left: 5px;
   height: 70px;
 }
 
@@ -26,6 +27,7 @@ body {
   width: 100%;
   position: relative;
   height: 70px;
+  padding: 5px 0;
 }
 
 #dashboard {
