@@ -64,21 +64,21 @@ body.dashboard {
   text-align: right;
 }
 
-.ytd-target-bar {
+.ytd_target-bar {
   background-color: white;
   color: black;
   top: 30px;
   opacity: 0.75;
 }
 
-.ytd-progress-bar {
+.actual-bar {
   background-color: white;
   color: black;
   top: 15px;
   opacity: 0.5;
 }
 
-.annual-target-bar {
+.annual_target-bar {
   background-color: white;
   color: black;
   opacity: 0.25;

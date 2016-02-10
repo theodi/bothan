@@ -14,31 +14,33 @@
 
 <script>
 $.getJSON(document.URL, function (json) {
+  $('#caption').html('<h1>' + extractTitle(document.URL) + '</h1>')
+
   var values = json['values']
   var last = values[values.length - 1]['value']
 
-  var title = extractTitle(document.URL)
-  var date = moment(last['time']).format('YYYY-DD-MM HH:mm')
   //var nums = last['actual'] + ' -- ' + last['annual_target'] + ' -- ' + last['ytd_target']
-
   // 99 -- 400 -- 12
 
-  var progress = (last['actual'] / last['annual_target']) * 100
-  var expected = (last['ytd_target'] / last['annual_target']) * 100
-
-  var content = '<h1>' + title + '</h1>'
-
-  $('#caption').html(content)
+  var actual = (last['actual'] / last['annual_target']) * 100
+  var ytd_target = (last['ytd_target'] / last['annual_target']) * 100
+  var annual_target = (last['annual_target'] / last['annual_target']) * 100 // REDUNDANT REDUNDANCY
 
   var sizes = {
     'target': 'md',
     'target-little': 'xs'
   }
 
+  var metrics = {
+    actual,
+    ytd_target,
+    annual_target
+  }
+
   $.each(sizes, function(div, size) {
-    $('#' + div).append(asRow('<div class="ytd-progress-bar with-target ' + asColumns(progress, size) + '">' + last['actual'] + '</div>'))
-    $('#' + div).append(asRow('<div class="ytd-target-bar with-target ' + asColumns(expected, size) + '">' + last['ytd_target'] + '</div>'))
-    $('#' + div).append(asRow('<div class="annual-target-bar with-target ' + asColumns(100, size) + '">' + last['annual_target'] + '</div>'))
+    $('#' + div).append(asRow('<div class="actual-bar with-target ' + asColumns(actual, size) + '">' + last['actual'] + '</div>'))
+    $('#' + div).append(asRow('<div class="ytd_target-bar with-target ' + asColumns(ytd_target, size) + '">' + last['ytd_target'] + '</div>'))
+    $('#' + div).append(asRow('<div class="annual_target-bar with-target ' + asColumns(annual_target, size) + '">' + last['annual_target'] + '</div>'))
   })
 })
 
