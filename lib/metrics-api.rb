@@ -214,6 +214,7 @@ class MetricsApi < Sinatra::Base
         @type = params.fetch('type', 'chart')
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
+        @barcolour = "##{params.fetch('barcolour', 'fff')}"
         @autorefresh = params.fetch('autorefresh', nil)
 
         @plotly_modebar = (@layout == 'rich')

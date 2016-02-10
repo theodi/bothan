@@ -16,13 +16,8 @@
 $.getJSON(document.URL, function (json) {
   $('#caption').html('<h1>' + extractTitle(document.URL) + '</h1>')
 
-  var values = json['values']
-  var last
-  if(values === undefined) {
-    var last = json['value']
-  } else {
-    var last = values[values.length - 1]['value']
-  }
+  var last = lastOrOnlyValue(json)
+  var barcolour = '<%= @barcolour %>'
 
   var metrics = {
     actual: (last['actual'] / last['annual_target']) * 100,
@@ -43,7 +38,7 @@ $.getJSON(document.URL, function (json) {
         asRow(
           '<div class="' + metric + '-bar with-target ' + asColumns(
             data, size
-          ) + '">' + scaleNumber(last[metric]) + '</div>'
+          ) + '" style="background-color: ' + barcolour + '">' + scaleNumber(last[metric]) + '</div>'
         )
       )
     })
