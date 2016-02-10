@@ -21,3 +21,4 @@ Feature: Metrics API
 
   Scenario: Preserve query_string
     Given there is a metric in the database with the name "membership-coverage"
+    When I send a GET request to "metrics/membership-count"
