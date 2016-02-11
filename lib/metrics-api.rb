@@ -116,7 +116,7 @@ class MetricsApi < Sinatra::Base
       wants.json { @metric.to_json }
 
       wants.html do
-        url = generate_url(@metric.name, request)
+        url = generate_url(@metric.name, request.params)
         redirect to url
       end
 

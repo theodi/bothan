@@ -43,17 +43,29 @@ module Helpers
     metrics_config[metric] || {}
   end
 
-  def generate_url(metric, request)
+  def generate_url(metric, params)
     config = metric_config(metric)
+    url = datetime_path(config.delete('default-datetime'), metric)
+    params.merge!(config)
+    build_url(url, params.to_query)
+  end
+
+  def build_url(url, params)
+    params = params.empty? ? nil : params 
+    [url, params].compact.join('?')
+  end
+
+  def datetime_path(datetime, metric)
     now = Time.now.iso8601
-    if config['default-datetime'] == 'single'
-      "/metrics/#{metric}/#{now}?#{request.query_string}"
+    if datetime == 'single'
+      "/metrics/#{metric}/#{now}"
     else
       days = 30
       before = (Time.now - (60 * 60 * 24 * days)).iso8601
-      "/metrics/#{metric}/#{before}/#{now}?#{request.query_string}"
+      "/metrics/#{metric}/#{before}/#{now}"
     end
   end
+
 end
 
 class String
