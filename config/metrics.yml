@@ -79,7 +79,7 @@ cumulative-income:
 cumulative-network-size:
 cumulative-people-trained:
 cumulative-reach:
-    default-view: 'line'
+    type: 'line'
     value-path: 'total'
 cumulative-value-unlocked:
 current-year-active-reach:
@@ -108,7 +108,7 @@ current-year-press-spokespeople:
 current-year-press-totals:
 current-year-reach:
 current-year-total-costs:
-    default-view: 'target'
+    type: 'target'
     default-datetime: 'single'
 current-year-trainers-trained:
 current-year-value-unlocked:
