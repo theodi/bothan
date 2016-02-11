@@ -115,6 +115,8 @@ cumulative-income:
 cumulative-network-size:
 cumulative-people-trained:
 cumulative-reach:
+  value-path:
+    '//value/total'
 cumulative-value-unlocked:
 current-year-active-reach:
 current-year-bookings:
@@ -149,6 +151,8 @@ current-year-trainers-trained:
 current-year-value-unlocked:
 diversity-gender:
 gemnasium-dependencies:
+  value-path:
+    '//value/current'
 github-forks:
 github-open-issue-count:
 github-open-pull-requests:
