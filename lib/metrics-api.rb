@@ -190,6 +190,8 @@ class MetricsApi < Sinatra::Base
       :values => []
     }
 
+    data[:path] = metric_config(params[:metric])['value-path'] if params[:with_path]
+
     metrics.each do |metric|
       data[:values] << {
         :time => metric.time,
