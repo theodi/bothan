@@ -1,75 +1,111 @@
 2013-q1-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q1-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q1-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q2-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q2-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q2-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q3-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q3-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q3-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q4-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q4-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2013-q4-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q1-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q1-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q1-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q2-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q2-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q2-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q3-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q3-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q3-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q4-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q4-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2014-q4-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q1-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q1-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q1-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q2-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q2-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q2-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q3-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q3-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q3-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q4-completed-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q4-outstanding-tasks:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 2015-q4-tasks-to-discuss:
-    default-datetime: 'single'
+  defaults:
+    datetime: 'single'
 application-errors:
 average-opportunity-age:
 cash-reserves:
@@ -79,8 +115,6 @@ cumulative-income:
 cumulative-network-size:
 cumulative-people-trained:
 cumulative-reach:
-    type: 'line'
-    value-path: 'total'
 cumulative-value-unlocked:
 current-year-active-reach:
 current-year-bookings:
@@ -108,8 +142,9 @@ current-year-press-spokespeople:
 current-year-press-totals:
 current-year-reach:
 current-year-total-costs:
+  defaults:
     type: 'target'
-    default-datetime: 'single'
+    datetime: 'single'
 current-year-trainers-trained:
 current-year-value-unlocked:
 diversity-gender:
