@@ -34,6 +34,42 @@ module Helpers
       word[0].upcase + word[1..-1].downcase
     }.join(' ')
   end
+
+  def metrics_config
+    @metrics_config ||= YAML.load File.read('config/metrics.yml')
+  end
+
+  def metric_config(metric)
+    metrics_config[metric] || {}
+  end
+
+  def metric_defaults(metric)
+    metric_config(metric)['defaults'] || {}
+  end
+
+  def generate_url(metric, params)
+    defaults = metric_defaults(metric)
+    url = datetime_path(defaults.delete('datetime'), metric)
+    params.merge!(defaults)
+    build_url(url, params.to_query)
+  end
+
+  def build_url(url, params)
+    params = params.empty? ? nil : params
+    [url, params].compact.join('?')
+  end
+
+  def datetime_path(datetime, metric)
+    now = Time.now.iso8601
+    if datetime == 'single'
+      "/metrics/#{metric}/#{now}"
+    else
+      days = 30
+      before = (Time.now - (60 * 60 * 24 * days)).iso8601
+      "/metrics/#{metric}/#{before}/#{now}"
+    end
+  end
+
 end
 
 class String

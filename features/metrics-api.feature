@@ -2,7 +2,7 @@ Feature: Metrics API
 
   Background:
     Given I send and accept JSON
-  
+
   Scenario: GET list of all metrics
     Given there is a metric in the database with the name "membership-coverage"
     And there is a metric in the database with the name "membership-count"
@@ -27,14 +27,14 @@ Feature: Metrics API
                  }
       }
       """
-    Then the response status should be "201"    
+    Then the response status should be "201"
     And the data should be stored in the "membership-coverage" metric
     And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
       """
       {"health":0.33,"telecoms":0.33,"energy":0.33}
-      """ 
-      
+      """
+
   Scenario: POSTing simple data
     Given I authenticate as the user "foo" with the password "bar"
     When I send a POST request to "metrics/membership-count" with the following:
@@ -45,14 +45,14 @@ Feature: Metrics API
         "value": 10
       }
       """
-    Then the response status should be "201"    
+    Then the response status should be "201"
     And the data should be stored in the "membership-count" metric
     And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
       """
       10
-      """ 
-      
+      """
+
   Scenario: GETing structured data
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
@@ -72,8 +72,8 @@ Feature: Metrics API
     And the JSON response should have "$.time" with the text "2013-12-25T15:00:00.000+00:00"
     And the JSON response should have "$.value.health" with the text "0.34"
     And the JSON response should have "$.value.telecoms" with the text "0.34"
-    And the JSON response should have "$.value.energy" with the text "0.34"  
-    
+    And the JSON response should have "$.value.energy" with the text "0.34"
+
   Scenario: GETing simple data
     Given there is a metric in the database with the name "membership-count"
     And it has a time of "2013-12-25T15:00:00+00:00"
@@ -92,7 +92,7 @@ Feature: Metrics API
     Then the JSON response should have "$.name" with the text "membership-count"
     And the JSON response should have "$.time" with the text "2013-12-25T15:00:00.000+00:00"
     And the JSON response should have "$.value" with the text "11"
-      
+
   Scenario: GETing data for a single date
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
@@ -118,16 +118,40 @@ Feature: Metrics API
     And the JSON response should have "$.time" with the text "2013-12-24T15:00:00.000+00:00"
     And the JSON response should have "$.value.health" with the text "0.33"
     And the JSON response should have "$.value.telecoms" with the text "0.33"
-    And the JSON response should have "$.value.energy" with the text "0.33"  
-    
-Scenario: GETing data with a referer
-  Given there is a metric in the database with the name "membership-coverage"
-  And it has a time of "2013-12-25T15:00:00+00:00"
-  And it has a value of:
-    """
-    {"health":0.34,"telecoms":0.34,"energy":0.34}
-    """
-  And I set headers:
-    | Referer | http://theodi.org |
-  When I send a GET request to "metrics/membership-coverage.json"
-  Then the response status should be "200"
+    And the JSON response should have "$.value.energy" with the text "0.33"
+
+  Scenario: GETing data with a referer
+    Given there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-25T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      """
+    And I set headers:
+      | Referer | http://theodi.org |
+    When I send a GET request to "metrics/membership-coverage.json"
+    Then the response status should be "200"
+
+  Scenario: Add path to json response
+    Given there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-25T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      """
+    And that metric has a value-path of "//total"
+    When I send a GET request to "metrics/membership-coverage/2013-12-23T12:00:00+00:00/2013-12-25T12:00:00+00:00?with_path=true"
+    Then the response status should be "200"
+    And the JSON response should have "$.path" with the text "//total"
+
+  Scenario: Don't add path to json response
+    Given there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-25T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      """
+    And that metric has a value-path of "//total"
+    When I send a GET request to "metrics/membership-coverage/2013-12-23T12:00:00+00:00/2013-12-25T12:00:00+00:00"
+    Then the response status should be "200"
+    And the JSON response should not have "$.path" with the text "//total"

@@ -29,10 +29,17 @@ describe('metrics.js', function() {
     )
   })
 
-  it('extracts the y-axis field', function() {
+  it('extracts the y-axis', function() {
     expect(extractY(
       { time: '2014-11-30T00:11:09.000+00:00', value: 9653 }
-    )).toEqual('value')
+    )).toEqual(9653)
+  })
+
+  it('extracts the y-axis with an xpath expression', function() {
+    expect(extractY(
+      { time: '2014-11-30T00:11:09.000+00:00', value: { total: 9653 } },
+      '//total'
+    )).toEqual(9653)
   })
 
   it('transforms an array of keys->values into two arrays', function() {

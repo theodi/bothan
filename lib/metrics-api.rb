@@ -116,11 +116,8 @@ class MetricsApi < Sinatra::Base
       wants.json { @metric.to_json }
 
       wants.html do
-        days = 30
-        now = Time.now.iso8601
-        before = (Time.now - (60 * 60 * 24 * days)).iso8601
-        @subhead = "Last #{days} days"
-        redirect to "/metrics/#{params[:metric]}/#{before}/#{now}?#{request.query_string}"
+        url = generate_url(@metric.name, request.params)
+        redirect to url
       end
 
       wants.other { error_406 }
@@ -192,6 +189,8 @@ class MetricsApi < Sinatra::Base
       :count => metrics.count,
       :values => []
     }
+
+    data[:path] = metric_config(params[:metric])['value-path'] if params[:with_path]
 
     metrics.each do |metric|
       data[:values] << {
