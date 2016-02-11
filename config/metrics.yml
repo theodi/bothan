@@ -158,6 +158,8 @@ github-total-pull-requests:
 github-watchers:
 irc-theodi-users:
 membership-count:
+  value-path:
+    '//value/total'
 membership-coverage:
 membership-renewals:
 old-opportunity-count:
