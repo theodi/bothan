@@ -18,3 +18,12 @@ Feature: Metrics API
     Then the response status should be "302"
     And I should get redirected to "http://example.org/metrics/membership-count/2014-12-02T00:00:00+00:00/2015-01-01T00:00:00+00:00?"
     And I return to the present in my DeLorean
+
+  Scenario: Redirected to default set in YAML
+    Given the time is "2015-01-01T00:00:00"
+    And there is a metric in the database with the name "membership-count"
+    And that metric has a default datetime of "single"
+    When I send a GET request to "metrics/membership-count"
+    Then the response status should be "302"
+    And I should get redirected to "http://example.org/metrics/membership-count/2015-01-01T00:00:00+00:00?"
+    And I return to the present in my DeLorean

@@ -116,11 +116,8 @@ class MetricsApi < Sinatra::Base
       wants.json { @metric.to_json }
 
       wants.html do
-        days = 30
-        now = Time.now.iso8601
-        before = (Time.now - (60 * 60 * 24 * days)).iso8601
-        @subhead = "Last #{days} days"
-        redirect to "/metrics/#{params[:metric]}/#{before}/#{now}?#{request.query_string}"
+        url = generate_url(@metric.name, request)
+        redirect to url
       end
 
       wants.other { error_406 }

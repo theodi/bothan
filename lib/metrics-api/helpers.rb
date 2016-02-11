@@ -34,6 +34,26 @@ module Helpers
       word[0].upcase + word[1..-1].downcase
     }.join(' ')
   end
+
+  def metrics_config
+    @metrics_config ||= YAML.load File.read('config/metrics.yml')
+  end
+
+  def metric_config(metric)
+    metrics_config[metric] || {}
+  end
+
+  def generate_url(metric, request)
+    config = metric_config(metric)
+    now = Time.now.iso8601
+    if config['default-datetime'] == 'single'
+      "/metrics/#{metric}/#{now}?#{request.query_string}"
+    else
+      days = 30
+      before = (Time.now - (60 * 60 * 24 * days)).iso8601
+      "/metrics/#{metric}/#{before}/#{now}?#{request.query_string}"
+    end
+  end
 end
 
 class String
