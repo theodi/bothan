@@ -186,6 +186,9 @@ current-year-total-costs:
 current-year-trainers-trained:
 current-year-value-unlocked:
 diversity-gender:
+  defaults:
+    type: 'pie'
+    datetime: 'single'
 gemnasium-dependencies:
   value-path:
     '//value/current'
