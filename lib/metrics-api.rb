@@ -11,6 +11,7 @@ require 'kramdown'
 require 'exception_notification'
 
 require_relative 'metrics-api/helpers'
+require_relative 'metrics-api/date-wrangler'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 
@@ -163,13 +164,13 @@ class MetricsApi < Sinatra::Base
     start_date = DateTime.parse(params[:from]) rescue nil
     end_date = DateTime.parse(params[:to]) rescue nil
 
-    if params[:from] =~ /^P/
-      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds rescue
+    if params[:from].is_duration?
+      start_date = get_start_date params rescue
         error_400("'#{params[:from]}' is not a valid ISO8601 duration.")
     end
 
-    if params[:to] =~ /^P/
-      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds rescue
+    if params[:to].is_duration?
+      end_date = get_end_date params rescue
         error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
     end
 

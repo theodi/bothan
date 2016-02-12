@@ -35,6 +35,14 @@ module Helpers
     }.join(' ')
   end
 
+  def get_start_date params
+    DateTime.parse(params[:to]) - params[:from].to_seconds
+  end
+
+  def get_end_date params
+    DateTime.parse(params[:from]) + params[:to].to_seconds
+  end
+
   def metrics_config
     @metrics_config ||= YAML.load File.read('config/metrics.yml')
   end
@@ -101,5 +109,14 @@ end
 class String
   def titleise
     self.split(' ').map { |w| "#{w[0].upcase}#{w[1..-1]}" }.join ' '
+  end
+
+  def is_duration?
+    return true if self =~ /^P/
+    false
+  end
+
+  def to_seconds
+    ISO8601::Duration.new(self).to_seconds.seconds
   end
 end
