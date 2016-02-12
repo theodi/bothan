@@ -74,7 +74,7 @@ body.dashboard {
 
 #tasklist {
   margin: 0;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   list-style-type: none;
 }
 
@@ -86,4 +86,8 @@ body.dashboard {
 #tasklist progress {
   position: absolute;
   right: 0;
+}
+
+h1#title {
+  padding: 20px 20px 10px 20px;
 }
