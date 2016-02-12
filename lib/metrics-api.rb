@@ -129,7 +129,7 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:time' do
-    time = DateTime.parse(params[:time]) rescue
+    time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
     @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
@@ -164,13 +164,9 @@ class MetricsApi < Sinatra::Base
     dates = DateWrangler.new params[:from], params[:to]
     error_400 dates.errors.join ' ' if dates.errors
 
-    start_date = dates.from
-    end_date = dates.to
-
     metrics = Metric.where(:name => params[:metric])
-    metrics = metrics.where(:time.gte => start_date) if start_date
-    metrics = metrics.where(:time.lte => end_date) if end_date
-
+    metrics = metrics.where(:time.gte => dates.from) if dates.from
+    metrics = metrics.where(:time.lte => dates.to) if dates.to
     metrics = metrics.order_by(:time.asc)
 
     data = {
