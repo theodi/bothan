@@ -71,3 +71,19 @@ body.dashboard {
   right: 10px;
   z-index: 1000;
 }
+
+#tasklist {
+  margin: 0;
+  padding: 20px;
+  list-style-type: none;
+}
+
+#tasklist li {
+  position: relative;
+  padding: 2px 0;
+}
+
+#tasklist progress {
+  position: absolute;
+  right: 0;
+}
