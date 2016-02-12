@@ -42,6 +42,12 @@ class DateWrangler
       end
     end
 
+    check_ordering
+
+    @failures.uniq if @failures
+  end
+
+  def check_ordering
     unless @failures
       unless[from, to].include? nil
         unless from < to
@@ -49,8 +55,6 @@ class DateWrangler
         end
       end
     end
-
-    @failures.uniq if @failures
   end
 
   def accrue_failures failure
