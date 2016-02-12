@@ -136,7 +136,8 @@ class MetricsApi < Sinatra::Base
         @alternatives = [
           'chart',
           'number',
-          'target'
+          'target',
+          'tasklist'
         ]
 
         @layout = params.fetch('layout', 'rich')

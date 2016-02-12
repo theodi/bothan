@@ -1,111 +1,147 @@
 2013-q1-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q1-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q1-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q2-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q2-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q2-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q3-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q3-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q3-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q4-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q4-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2013-q4-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q1-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q1-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q1-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q2-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q2-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q2-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q3-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q3-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q3-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q4-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q4-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2014-q4-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q1-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q1-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q1-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q2-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q2-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q2-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q3-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q3-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q3-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q4-completed-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q4-outstanding-tasks:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 2015-q4-tasks-to-discuss:
   defaults:
     datetime: 'single'
+    type: 'tasklist'
 application-errors:
 average-opportunity-age:
 cash-reserves:

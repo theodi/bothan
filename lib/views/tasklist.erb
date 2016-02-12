@@ -1,0 +1,10 @@
+<ul id="tasklist">
+
+</ul>
+
+<script src='/javascripts/tasklist.js'></script>
+<script>
+$.getJSON(document.URL + '?with_path=true', function(json) {
+  tasklist(json.value)
+})
+</script>
