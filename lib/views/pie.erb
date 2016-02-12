@@ -16,10 +16,17 @@ function pie(json) {
   }];
 
   var layout = {
-    height: 400,
-    width: 500
+    title: extractTitle(document.URL),
+    titlefont: {
+      color: '<%= @textcolour %>'
+    },
+    paper_bgcolor: '<%= @boxcolour %>',
+    plot_bgcolor: '<%= @boxcolour %>',
+    margin: {
+      l: 70, r: 30
+    }
   };
 
-  Plotly.newPlot('chart', data, layout);
+  Plotly.newPlot('chart', data, layout, { displayModeBar: <%= @plotly_modebar %> });
 }
 </script>
