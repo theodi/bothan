@@ -11,7 +11,10 @@ function pie(json) {
   var data = [{
     values: extractValues(json.value, '//total'),
     labels: extractKeys(json.value, '//total'),
-    type: 'pie'
+    type: 'pie',
+    marker: {
+      colors: ['#FF6700', '#D60303']
+    }
   }];
 
   var layout = {
