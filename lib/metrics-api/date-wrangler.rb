@@ -28,18 +28,6 @@ class DateWrangler
   def initialize left, right
     @left = left
     @right = right
-    
-    if DateWrangler.is_duration? left
-      @from = DateTime.parse(right) - start
-    else
-      @from = DateTime.parse left
-    end
-
-    if DateWrangler.is_duration? right
-      @to = @from + finish
-    else
-      @to = DateTime.parse right
-    end
   end
 
   def finish
@@ -48,6 +36,26 @@ class DateWrangler
 
   def start
     @start ||= ISO8601::Duration.new(@left).to_seconds.seconds
+  end
+
+  def to
+    if DateWrangler.is_duration? @right
+      @to = from + finish
+    else
+      @to = DateTime.parse @right
+    end
+
+    @to
+  end
+
+  def from
+    if DateWrangler.is_duration? @left
+      @from = DateTime.parse(@right) - start
+    else
+      @from = DateTime.parse @left
+    end
+
+    @from
   end
 
   def self.is_duration? thing
