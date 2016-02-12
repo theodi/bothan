@@ -43,8 +43,8 @@ class DateWrangler
     end
 
     unless @failures
-      unless[from.to_s, to.to_s].include? '*'
-        if from > to
+      unless[from, to].include? nil
+        unless from < to
           accrue_failures "'from' date must be before 'to' date."
         end
       end
@@ -72,7 +72,7 @@ class String
   end
 
   def to_datetime
-    return '*' if self == '*'
+    return nil if self == '*'
     DateTime.parse self
   end
 end

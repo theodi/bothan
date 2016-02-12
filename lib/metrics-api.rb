@@ -161,32 +161,7 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:from/:to' do
-  #  start_date = DateTime.parse(params[:from]) rescue nil
-  #  end_date = DateTime.parse(params[:to]) rescue nil
-
-  #  if params[:from].is_duration?
-  #    start_date = get_start_date params rescue
-  #      error_400("'#{params[:from]}' is not a valid ISO8601 duration.")
-  #  end
-
-  #  if params[:to].is_duration?
-  #    end_date = get_end_date params rescue
-  #      error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
-  #  end
-
-  #  invalid = []
-
-  #  invalid << "'#{params[:from]}' is not a valid ISO8601 date/time." if start_date.nil? && params[:from] != "*"
-  #  invalid << "'#{params[:to]}' is not a valid ISO8601 date/time." if end_date.nil? && params[:to] != "*"
-
-  #  error_400(invalid.join(" ")) unless invalid.blank?
-
-  #  if start_date != nil && end_date != nil
-  #    error_400("'from' date must be before 'to' date.") if start_date > end_date
-  #  end
-
     dates = DateWrangler.new params[:from], params[:to]
-
     error_400 dates.errors.join ' ' if dates.errors
 
     start_date = dates.from
