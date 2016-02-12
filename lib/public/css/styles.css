@@ -32,8 +32,11 @@ body.dashboard {
 }
 
 #target, #target-little {
-  height: 20vh; // THIS IS A MAGIC NUMBER AND NEEDS FIXING. TF IS A VW?
   text-align: center;
+  position: relative;
+  margin: 1em 0 4em 0;
+  height: 6.9em;
+  border-right: 2px solid #000;
 }
 
 #target-little {
@@ -49,26 +52,48 @@ body.dashboard {
 .ytd_target-bar {
   background-color: white;
   color: black;
-  top: 4em;
-  opacity: 0.8;
+  bottom: 0;
+  background-color: rgba(255,255,255,0.4);
+}
+
+.ytd_target-bar .bar-label {
+  top: -2em;
+  background-color: #fff;
+  padding: .3em;
+  margin-left: -.7em;
 }
 
 .actual-bar {
-  background-color: white;
+  background-color: rgba(255,255,255,0.8);
   color: black;
-  top: 2em;
-  opacity: 0.6;
+  bottom: 0;
+}
+
+.actual-bar .bar-label {
+  bottom: -2em;
+  background-color: #fff;
+  padding: .3em;
+  margin-left: -.7em;
 }
 
 .annual_target-bar {
-  background-color: white;
+  background-color: rgba(255,255,255,0.2);
   color: black;
-  opacity: 0.4;
+  bottom: 0;
+}
+
+.annual_target-bar .bar-label {
+  top: -200%;
+  right: -2px;
+  background-color: #000;
+  padding: .3em;
+  margin-left: -.7em;
+  color: #fff;
+  margin: 0;
 }
 
 .bar-label {
   position: absolute;
-  right: 10px;
   z-index: 1000;
 }
 
