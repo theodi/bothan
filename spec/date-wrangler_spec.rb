@@ -92,11 +92,12 @@ describe DateWrangler do
 
     context 'bad datetimes' do
       let(:bad_datetime) { described_class.new 'grassy-knoll', '1963-11-22T12:30:00-06:00' }
+      subject(:errors) { bad_datetime.errors }
 
       it 'recognises a duff date' do
-        expect(bad_datetime.errors).to be_an Array
-        expect(bad_datetime.errors.first).to eq "'grassy-knoll' is not a valid ISO8601 date/time."
-        expect(bad_datetime.errors.count).to eq 1
+        expect(errors).to be_an Array
+        expect(errors.first).to eq "'grassy-knoll' is not a valid ISO8601 date/time."
+        expect(errors.count).to eq 1
       end
 
       let(:bad_datetimes) { described_class.new 'bad', 'worse' }
