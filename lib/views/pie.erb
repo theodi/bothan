@@ -8,7 +8,6 @@ $.getJSON(document.URL + '?with_path=true', function(json) {
 })
 
 function pie(json) {
-  debugger;
   var data = [{
     values: extractValues(json.value, '//total'),
     labels: extractKeys(json.value, '//total'),
