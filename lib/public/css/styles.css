@@ -95,6 +95,7 @@ body.dashboard {
 .bar-label {
   position: absolute;
   z-index: 1000;
+  right: 0;
 }
 
 #tasklist {
