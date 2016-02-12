@@ -26,19 +26,28 @@ class DateWrangler
   attr_reader :from, :to
 
   def initialize left, right
+    @left = left
+    @right = right
+    
     if DateWrangler.is_duration? left
-      @start = ISO8601::Duration.new(left).to_seconds.seconds
-      @from = DateTime.parse(right) - @start
+      @from = DateTime.parse(right) - start
     else
       @from = DateTime.parse left
     end
 
     if DateWrangler.is_duration? right
-      @end = ISO8601::Duration.new(right).to_seconds.seconds
-      @to = @from + @end
+      @to = @from + finish
     else
       @to = DateTime.parse right
     end
+  end
+
+  def finish
+    @finish ||= ISO8601::Duration.new(@right).to_seconds.seconds
+  end
+
+  def start
+    @start ||= ISO8601::Duration.new(@left).to_seconds.seconds
   end
 
   def self.is_duration? thing
