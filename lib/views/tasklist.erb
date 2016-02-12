@@ -1,3 +1,5 @@
+<h1 id="title"></h1>
+
 <ul id="tasklist">
 
 </ul>
@@ -5,6 +7,7 @@
 <script src='/javascripts/tasklist.js'></script>
 <script>
 $.getJSON(document.URL + '?with_path=true', function(json) {
+  addTitle(json.name)
   tasklist(json.value)
 })
 </script>

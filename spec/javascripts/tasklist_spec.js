@@ -32,6 +32,18 @@ describe('tasklist.js', function() {
       )
     })
 
+    it('titleizes a metric name', function() {
+      expect(titleize('my-awesome-metric')).toEqual('My Awesome Metric')
+    });
+
+    it('adds a metric title', function() {
+      var fixture = setFixtures("<h1 id='title'></h1>")
+
+      addTitle('my-awesome-metric')
+
+      expect(fixture).toHaveText('My Awesome Metric')
+    })
+
   })
 
 });
