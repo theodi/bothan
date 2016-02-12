@@ -53,20 +53,28 @@ describe DateWrangler do
     end
   end
 
+  context 'wildcards' do
+    let(:wildcard) { described_class.new '1970-01-01T00:00:00', '*' }
+
+    it 'is fine with a *' do
+      expect(wildcard.errors).to be nil
+    end
+  end
+
   context 'non-happy paths' do
     context 'bad durations' do
       let(:duration_bad) { described_class.new 'P24H', '1962-10-28T00:00:00' }
 
       it 'knows what a invalid duration is' do
         expect(duration_bad.errors).to be_an Array
-        expect(duration_bad.errors.first).to eq "'P24H' is not a valid ISO8601 duration"
+        expect(duration_bad.errors.first).to eq "'P24H' is not a valid ISO8601 duration."
       end
 
       let(:bad_duration) { described_class.new '1962-10-16T00:00:00', 'P36H' }
 
       it 'knows what a invalid duration is' do
         expect(bad_duration.errors).to be_an Array
-        expect(bad_duration.errors.first).to eq "'P36H' is not a valid ISO8601 duration"
+        expect(bad_duration.errors.first).to eq "'P36H' is not a valid ISO8601 duration."
       end
     end
 
@@ -75,7 +83,16 @@ describe DateWrangler do
 
       it 'recognises a duff date' do
         expect(bad_datetime.errors).to be_an Array
-        expect(bad_datetime.errors.first).to eq "'grassy-knoll' is not a valid ISO8601 date/time"
+        expect(bad_datetime.errors.first).to eq "'grassy-knoll' is not a valid ISO8601 date/time."
+        expect(bad_datetime.errors.count).to eq 1
+      end
+
+      let(:bad_datetimes) { described_class.new 'bad', 'worse' }
+
+      it 'knows both dates are duff' do
+        expect(bad_datetimes.errors).to be_an Array
+        expect(bad_datetimes.errors.first).to eq "'bad' is not a valid ISO8601 date/time."
+        expect(bad_datetimes.errors[1]).to eq "'worse' is not a valid ISO8601 date/time."
       end
     end
 
