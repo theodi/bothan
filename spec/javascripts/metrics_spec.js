@@ -193,6 +193,10 @@ describe('metrics.js', function() {
     it('gets a 6 for 50%', function() {
       expect(asColumns(50)).toEqual('col-md-6')
     })
+
+    it('goes to a maximum of 12 columns', function() {
+      expect(asColumns(120)).toEqual('col-md-12')
+    })
   })
 
   describe('scale numbers appropriately', function() {
