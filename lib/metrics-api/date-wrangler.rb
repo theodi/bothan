@@ -31,35 +31,36 @@ class DateWrangler
   end
 
   def finish
-    @finish ||= ISO8601::Duration.new(@right).to_seconds.seconds
+    @finish ||= @right.to_seconds
   end
 
   def start
-    @start ||= ISO8601::Duration.new(@left).to_seconds.seconds
+    @start ||= @left.to_seconds
   end
 
   def to
-    if DateWrangler.is_duration? @right
-      @to = from + finish
+    @to ||= if @right.is_duration?
+      from + finish
     else
-      @to = DateTime.parse @right
+      DateTime.parse @right
     end
-
-    @to
   end
 
   def from
-    if DateWrangler.is_duration? @left
-      @from = DateTime.parse(@right) - start
+    @from ||= if @left.is_duration?
+      to - start
     else
-      @from = DateTime.parse @left
+      DateTime.parse @left
     end
+  end
+end
 
-    @from
+class String
+  def is_duration?
+    !self.match(/^P/).nil?
   end
 
-  def self.is_duration? thing
-    return true if thing =~ /^P/
-    false
+  def to_seconds
+    ISO8601::Duration.new(self).to_seconds.seconds
   end
 end
