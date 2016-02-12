@@ -60,17 +60,23 @@ class DateWrangler
       begin
         self.send(method)
       rescue ArgumentError => ae
-        @fail = "'#{attribute}' is not a valid ISO8601 date/time"
+        @fail = "'#{attribute}' is not a valid ISO8601 date/time" if ae.message == 'invalid date'
       rescue ISO8601::Errors::UnknownPattern
         @fail = "'#{attribute}' is not a valid ISO8601 duration"
       end
+    end
 
-      if @fail
-        begin
-          @failures.push @fail
-        rescue NameError
-          @failures = [@fail]
-        end
+    unless @fail
+      if from > to
+        @fail = "'from' date must be before 'to' date"
+      end
+    end
+
+    if @fail
+      begin
+        @failures.push @fail
+      rescue NameError
+        @failures = [@fail]
       end
     end
 
