@@ -11,6 +11,10 @@ describe DateWrangler do
       expect(two_dates.to).to be_a DateTime
       expect(two_dates.to).to eq '1969-07-20T20:17:00'
     end
+
+    it 'does not have errors' do
+      expect(two_dates.errors).to be nil
+    end
   end
 
   context 'a date and a duration' do
@@ -25,6 +29,10 @@ describe DateWrangler do
       expect(date_with_duration.to).to be_a DateTime
       expect(date_with_duration.to).to eq '1966-07-30T17:15:00'
     end
+
+    it 'does not have errors' do
+      expect(date_with_duration.errors).to be nil
+    end
   end
 
   context 'a duration and a date' do
@@ -38,6 +46,26 @@ describe DateWrangler do
     it 'has a from date' do
       expect(duration_with_date.from).to be_a DateTime
       expect(duration_with_date.from).to eq '1939-09-01T00:00:00'
+    end
+
+    it 'does not have errors' do
+      expect(duration_with_date.errors).to be nil
+    end
+  end
+
+  context 'bad durations' do
+    let(:duration_bad) { described_class.new 'P24H', '1974-06-15T08:00:00' }
+
+    it 'knows what a invalid duration is' do
+      expect(duration_bad.errors).to be_an Array
+      expect(duration_bad.errors.first).to eq "'P24H' is not a valid ISO8601 duration"
+    end
+
+    let(:bad_duration) { described_class.new '1974-06-15T08:00:00', 'P36H' }
+
+    it 'knows what a invalid duration is' do
+      expect(bad_duration.errors).to be_an Array
+      expect(bad_duration.errors.first).to eq "'P36H' is not a valid ISO8601 duration"
     end
   end
 end

@@ -51,6 +51,26 @@ class DateWrangler
       @left.to_datetime
     end
   end
+
+  def errors
+    {
+      from: @left,
+      to: @right
+    }.each_pair do |method, attribute|
+      begin
+        self.send(method)
+      rescue ISO8601::Errors::UnknownPattern
+        error = "'#{attribute}' is not a valid ISO8601 duration"
+        begin
+          @e.push error
+        rescue NameError
+          @e = [error]
+        end
+      end
+    end
+
+    @e
+  end
 end
 
 class String
