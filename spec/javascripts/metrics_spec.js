@@ -42,6 +42,28 @@ describe('metrics.js', function() {
     )).toEqual(9653)
   })
 
+  it('extracts multiple values for a pie chart', function() {
+    var hash = {
+      total: {
+        male: 24,
+        female: 37
+      }
+    }
+
+    expect(extractValues(hash, '//total')).toEqual([24, 37])
+  })
+
+  it('extracts multiple keys for a pie chart', function() {
+    var hash = {
+      total: {
+        male: 24,
+        female: 37
+      }
+    }
+
+    expect(extractKeys(hash, '//total')).toEqual(['male', 'female'])
+  })
+
   it('transforms an array of keys->values into two arrays', function() {
     var metrics = [
       { time: '2014-11-30T00:11:09.000+00:00', value: 9653 },

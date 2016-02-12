@@ -1,0 +1,25 @@
+<div id='chart'></div>
+
+<script src='/javascripts/metrics.js'></script>
+<script src='/javascripts/defiant.js'></script>
+<script>
+$.getJSON(document.URL + '?with_path=true', function(json) {
+  pie(json)
+})
+
+function pie(json) {
+  debugger;
+  var data = [{
+    values: extractValues(json.value, '//total'),
+    labels: extractKeys(json.value, '//total'),
+    type: 'pie'
+  }];
+
+  var layout = {
+    height: 400,
+    width: 500
+  };
+
+  Plotly.newPlot('chart', data, layout);
+}
+</script>
