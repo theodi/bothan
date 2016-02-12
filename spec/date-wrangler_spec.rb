@@ -54,10 +54,22 @@ describe DateWrangler do
   end
 
   context 'wildcards' do
-    let(:wildcard) { described_class.new '1970-01-01T00:00:00', '*' }
+    let(:date_and_wildcard) { described_class.new '1970-01-01T00:00:00', '*' }
 
     it 'is fine with a *' do
-      expect(wildcard.errors).to be nil
+      expect(date_and_wildcard.errors).to be nil
+    end
+
+    let(:wildcard_and_date) { described_class.new '*', '1970-01-01T00:00:00' }
+
+    it 'is fine with a *' do
+      expect(wildcard_and_date.errors).to be nil
+    end
+
+    let(:wildcards) { described_class.new '*', '*' }
+
+    it 'is fine with two *s' do
+      expect(wildcards.errors).to be nil
     end
   end
 
@@ -65,14 +77,14 @@ describe DateWrangler do
     context 'bad durations' do
       let(:duration_bad) { described_class.new 'P24H', '1962-10-28T00:00:00' }
 
-      it 'knows what a invalid duration is' do
+      it 'knows what an invalid duration is' do
         expect(duration_bad.errors).to be_an Array
         expect(duration_bad.errors.first).to eq "'P24H' is not a valid ISO8601 duration."
       end
 
       let(:bad_duration) { described_class.new '1962-10-16T00:00:00', 'P36H' }
 
-      it 'knows what a invalid duration is' do
+      it 'knows what an invalid duration is' do
         expect(bad_duration.errors).to be_an Array
         expect(bad_duration.errors.first).to eq "'P36H' is not a valid ISO8601 duration."
       end
