@@ -59,17 +59,22 @@ class DateWrangler
     }.each_pair do |method, attribute|
       begin
         self.send(method)
+      rescue ArgumentError => ae
+        @fail = "'#{attribute}' is not a valid ISO8601 date/time"
       rescue ISO8601::Errors::UnknownPattern
-        error = "'#{attribute}' is not a valid ISO8601 duration"
+        @fail = "'#{attribute}' is not a valid ISO8601 duration"
+      end
+
+      if @fail
         begin
-          @e.push error
+          @failures.push @fail
         rescue NameError
-          @e = [error]
+          @failures = [@fail]
         end
       end
     end
 
-    @e
+    @failures
   end
 end
 

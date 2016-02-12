@@ -53,19 +53,29 @@ describe DateWrangler do
     end
   end
 
-  context 'bad durations' do
-    let(:duration_bad) { described_class.new 'P24H', '1974-06-15T08:00:00' }
+  context 'non-happy paths' do
+    context 'bad durations' do
+      let(:duration_bad) { described_class.new 'P24H', '1974-06-15T08:00:00' }
 
-    it 'knows what a invalid duration is' do
-      expect(duration_bad.errors).to be_an Array
-      expect(duration_bad.errors.first).to eq "'P24H' is not a valid ISO8601 duration"
+      it 'knows what a invalid duration is' do
+        expect(duration_bad.errors).to be_an Array
+        expect(duration_bad.errors.first).to eq "'P24H' is not a valid ISO8601 duration"
+      end
+
+      let(:bad_duration) { described_class.new '1974-06-15T08:00:00', 'P36H' }
+
+      it 'knows what a invalid duration is' do
+        expect(bad_duration.errors).to be_an Array
+        expect(bad_duration.errors.first).to eq "'P36H' is not a valid ISO8601 duration"
+      end
     end
 
-    let(:bad_duration) { described_class.new '1974-06-15T08:00:00', 'P36H' }
+    context 'bad datetimes' do
+      let(:bad_datetime) { described_class.new 'grassy-knoll', '1963-11-22T12:30:00-06:00' }
 
-    it 'knows what a invalid duration is' do
-      expect(bad_duration.errors).to be_an Array
-      expect(bad_duration.errors.first).to eq "'P36H' is not a valid ISO8601 duration"
+      it 'recognises a duff date' do
+        expect(bad_datetime.errors).to be_an Array
+      end
     end
   end
 end
