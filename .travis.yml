@@ -26,7 +26,7 @@ env:
     - METRICS_API_LICENSE_URL='https://creativecommons.org/licenses/by-sa/4.0/'
     - METRICS_API_PUBLISHER_NAME='Open Data Institute'
     - METRICS_API_PUBLISHER_URL='http://theodi.org'
-    - METRICS_API_CERTIFICATE_URL='https://certificates.theodi.org/en/datasets/213482/certificate/badge.js'
+    - METRICS_API_CERTIFICATE_URL='https://certificates.theodi.org/en/datasets/213482/certificate'
 deploy:
   - provider: heroku
     api_key:
