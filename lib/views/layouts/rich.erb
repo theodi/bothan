@@ -33,13 +33,24 @@
           </div>
           <div class='row'>
             <hr />
-            <button data-toggle='collapse' data-target='#json' class='btn btn-info'>Preview the JSON</button>
-            <a href='<%= "#{request.path}.json" %>' class='btn btn-info'>Get the JSON</a>
+            <button data-toggle='collapse' data-target='#json' class='btn btn-info preview-json'>Show the JSON <i class="fa fa-arrow-circle-down"></i></button>
+            <a href='<%= "#{request.path}.json" %>' class='btn btn-info'>Get the JSON <i class="fa fa-arrow-circle-right"></i></a>
             <div id='json' class='collapse' class='col-md-12'></div>
             <script>
             $.getJSON(document.URL, function(json) {
-              $('#json').text(JSON.stringify(json, null, 2))
+              $('#json').html('<pre>' + JSON.stringify(json, null, 2) + '</pre>')
             })
+
+            // http://jsfiddle.net/V4u5X/2/
+            $('.preview-json').click(function(){
+          		var $this = $(this);
+          		$this.toggleClass('preview-json');
+          		if($this.hasClass('preview-json')){
+          			$this.html('Show the JSON <i class="fa fa-arrow-circle-down"></i>');
+          		} else {
+          			$this.html('Hide the JSON <i class="fa fa-arrow-circle-up"></i>');
+          		}
+          	});
             </script>
           </div>
           <div class='row'>
