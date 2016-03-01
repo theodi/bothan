@@ -29,19 +29,6 @@ describe('metrics.js', function() {
     )
   })
 
-  it('extracts the y-axis', function() {
-    expect(extractY(
-      { time: '2014-11-30T00:11:09.000+00:00', value: 9653 }
-    )).toEqual(9653)
-  })
-
-  it('extracts the y-axis with an xpath expression', function() {
-    expect(extractY(
-      { time: '2014-11-30T00:11:09.000+00:00', value: { total: 9653 } },
-      '//total'
-    )).toEqual(9653)
-  })
-
   it('extracts multiple values for a pie chart', function() {
     var hash = {
       total: {
@@ -226,6 +213,25 @@ describe('metrics.js', function() {
       it('with sensible rounding', function() {
         expect(scaleNumber(35656421)).toEqual('35.7M')
       })
+    })
+  })
+
+  describe('attempts to extract values intelligently', function() {
+    it('from a string', function() {
+      metric = 150
+      expect(extractY(metric)).toEqual(150)
+    })
+
+    it('from an object', function() {
+      metric = {
+        total: 150,
+        by_thing: {
+          thing_1: 1,
+          thing_2: 2,
+          thing_3: 3,
+        }
+      }
+      expect(extractY(metric)).toEqual(150)
     })
   })
 

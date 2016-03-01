@@ -151,8 +151,6 @@ cumulative-income:
 cumulative-network-size:
 cumulative-people-trained:
 cumulative-reach:
-  value-path:
-    '//value/total'
 cumulative-value-unlocked:
 current-year-active-reach:
 current-year-bookings:
@@ -190,8 +188,6 @@ diversity-gender:
     type: 'pie'
     datetime: 'single'
 gemnasium-dependencies:
-  value-path:
-    '//value/current'
 github-forks:
 github-open-issue-count:
 github-open-pull-requests:
@@ -201,8 +197,6 @@ github-total-pull-requests:
 github-watchers:
 irc-theodi-users:
 membership-count:
-  value-path:
-    '//value/total'
 membership-coverage:
 membership-renewals:
 old-opportunity-count:

@@ -3,12 +3,12 @@
 <script src='/javascripts/metrics.js'></script>
 <script src='/javascripts/defiant.js'></script>
 <script>
-$.getJSON(document.URL + '?with_path=true', function(json) {
+$.getJSON(document.URL, function(json) {
   graph(json)
 })
 
 function graph(json) {
-  var points = getPoints(json['values'], json['path'])
+  var points = getPoints(json['values'])
   var data = {
     x: points['x'],
     y: points['y'],
