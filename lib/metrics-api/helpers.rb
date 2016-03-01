@@ -70,6 +70,22 @@ module Helpers
     end
   end
 
+  def config
+    {
+      title: ENV['METRICS_API_TITLE'],
+      description: ENV['METRICS_API_DESCRIPTION'],
+      license: {
+        name: ENV['METRICS_API_LICENSE_NAME'],
+        url: ENV['METRICS_API_LICENSE_URL']
+      },
+      publisher: {
+        name: ENV['METRICS_API_PUBLISHER_NAME'],
+        url: ENV['METRICS_API_PUBLISHER_URL']
+      },
+      certificate_url: ENV['METRICS_API_CERTIFICATE_URL']
+    }
+  end
+
 end
 
 class String

@@ -4,9 +4,9 @@
             foaf: http://xmlns.com/foaf/0.1/'>
   <div typeof='dcat:Dataset' resource='<%= request.url %>'>
 
-    <h1 property='dct:title'>ODI Metrics</h1>
+    <h1 property='dct:title'><%= @config[:title] %></h1>
     <div property='dct:description'>
-      <p>This API contains a list of all metrics collected by the Open Data Institute since 2013</p>
+      <p><%= @config[:description] %></p>
     </div>
 
     <p>
@@ -19,8 +19,8 @@
 
     <h2>License</h2>
 
-      <div property='dct:license' resource='https://creativecommons.org/licenses/by-sa/4.0/'>
-        <p>This data is licensed under the <a href='https://creativecommons.org/licenses/by-sa/4.0/'><span property='dct:title'>Creative Commons Attribution-ShareAlike</span></a> License</p>
+      <div property='dct:license' resource='<%= @config[:license][:url] %>'>
+        <p>This data is licensed under the <a href='<%= @config[:license][:url] %>'><span property='dct:title'><%= @config[:license][:name] %></span></a> License</p>
 
       </div>
 
@@ -45,9 +45,9 @@
       <dd property='dct:modified' content='<%= @updated.iso8601 %>' datatype='xsd:dateTime'><%= @updated.strftime('%B %e %Y at %H:%I') %></dd>
 
       <dt>Published by</dt>
-      <dd property='dct:publisher' resource='http://theodi.org'>
-        <a href='http://theodi.org' about='http://theodi.org' property='foaf:homepage'>
-          <span property='foaf:name'>Open Data Institute</span>
+      <dd property='dct:publisher' resource='<%= @config[:publisher][:url] %>'>
+        <a href='<%= @config[:publisher][:url] %>' about='<%= @config[:publisher][:url] %>' property='foaf:homepage'>
+          <span property='foaf:name'><%= @config[:publisher][:name] %></span>
         </a>
       </dd>
 

@@ -1,4 +1,3 @@
-
 ENV['RACK_ENV'] = 'test'
 
 require 'metrics-api'
@@ -7,6 +6,9 @@ require 'rack/test'
 require 'webmock/rspec'
 require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
+
+require 'dotenv'
+Dotenv.load
 
 class TestHelper
   include Helpers
