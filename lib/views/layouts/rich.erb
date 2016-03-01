@@ -33,11 +33,24 @@
           </div>
           <div class='row'>
             <hr />
-            <% if @autorefresh %>
-              <div class='col-md-12 text-center'>
-                Autorefreshing every <%= @autorefresh %> seconds
-              </div>
-            <% end %>
+            <button data-toggle='collapse' data-target='#json' class='btn btn-info'>Preview the JSON</button>
+            <a href='<%= "#{request.path}.json" %>' class='btn btn-info'>Get the JSON</a>
+            <div id='json' class='collapse' class='col-md-12'></div>
+            <script>
+            $.getJSON(document.URL, function(json) {
+              $('#json').text(JSON.stringify(json, null, 2))
+            })
+            </script>
+          </div>
+          <div class='row'>
+            <hr />
+            <div class='col-md-12'>
+              <% if @autorefresh %>
+                <div class='col-md-12 text-center'>
+                  Autorefreshing every <%= @autorefresh %> seconds
+                </div>
+              <% end %>
+            </div>
           </div>
         <div class='col-md-2'></div>
       </div>
