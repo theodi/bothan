@@ -76,7 +76,8 @@ module Helpers
       description: ENV['METRICS_API_DESCRIPTION'],
       license: {
         name: ENV['METRICS_API_LICENSE_NAME'],
-        url: ENV['METRICS_API_LICENSE_URL']
+        url: ENV['METRICS_API_LICENSE_URL'],
+        image: license_image(ENV['METRICS_API_LICENSE_URL'])
       },
       publisher: {
         name: ENV['METRICS_API_PUBLISHER_NAME'],
@@ -84,6 +85,15 @@ module Helpers
       },
       certificate_url: ENV['METRICS_API_CERTIFICATE_URL']
     }
+  end
+
+  def license_image(url)
+    match = url.match /https?:\/\/creativecommons.org\/licenses\/([a-z\-]+)\/([0-9\.]+)/
+    if match
+      "https://licensebuttons.net/l/#{match[1]}/#{match[2]}/88x31.png"
+    else
+      nil
+    end
   end
 
 end
