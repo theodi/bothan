@@ -8,6 +8,8 @@
 
 A simple wrapper around MongoDB to allow storage of time series metrics.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## Content negotiation
 
 The API will respond to the following _Accept_ values with appropriate content:

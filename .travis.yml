@@ -20,6 +20,13 @@ env:
     - secure: pl5TWg1MBYYwn0U6bvpcIzs0XoXjrEkn8YmkwKHu4XMXJ0LDHjzQp5/6NVROa5BKntHXLzi+rFRO1csZVuDcEOqE/cKKwEJzZ/k68XURod3gWDYS+m6n9JosAH8h43BHE4H+8oe7I/HCsSfakE0s+dN131VuZvAUlYlU3gGxn9Y=
     - secure: ccMcTlK/AXhp4t1rxZdZ/UomAt5uaJ6AERitrQRbNijeS7HxMCjAe/XM99NJX98/Vp55chWq0M1SJwjb9RnGSJ0zuhTzIzYZ/eHaPzMiKA3ntvKBbJCuqcSeGTkOBieBa6xICqlvAepPLrw5/c9mWa1ILvr9oeHQeHnBkh5LWdM=
     - secure: pcWqFi7kfMGvC9OcVeMtAlFqSYak9pvLuihxCm3gxJ8sEvnt6FEO7NsJYq/bdcqol6aAON89P1t+oPDoGEr5VZgHiDksb57HtunOA51veMTncMm/EnY1sHWgIVr/DV9kNBtWAu12NDxR8nFm6wENXCPKR1vXZLIrVhNnpQjo4Tw=
+    - METRICS_API_TITLE='ODI Metrics'
+    - METRICS_API_DESCRIPTION='This API contains a list of all metrics collected by the Open Data Institute since 2013'
+    - METRICS_API_LICENSE_NAME='Creative Commons Attribution-ShareAlike'
+    - METRICS_API_LICENSE_URL='https://creativecommons.org/licenses/by-sa/4.0/'
+    - METRICS_API_PUBLISHER_NAME='Open Data Institute'
+    - METRICS_API_PUBLISHER_URL='http://theodi.org'
+    - METRICS_API_CERTIFICATE_URL='https://certificates.theodi.org/en/datasets/213482/certificate'
 deploy:
   - provider: heroku
     api_key:

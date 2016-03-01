@@ -67,6 +67,7 @@ class MetricsApi < Sinatra::Base
     respond_to do |wants|
 
       wants.html do
+        @config = config
         @title = 'Metrics API'
         erb :index, layout: 'layouts/default'.to_sym
       end
@@ -84,6 +85,8 @@ class MetricsApi < Sinatra::Base
         }
       end
     }
+
+    @config = config
 
     respond_to do |wants|
       wants.json { @metrics.to_json }

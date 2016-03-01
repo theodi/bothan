@@ -1,22 +1,57 @@
 {
-  "name": "metrics-api",
+  "name": "Metrics API",
+  "description": "A simple wrapper around MongoDB to allow storage of time series metrics.",
+  "keywords": [
+    "data",
+    "metrics",
+    "visualisations"
+  ],
+  "website": "http://metrics.theodi.org/",
+  "repository": "https://github.com/theodi/metrics-api",
+  "logo": "https://avatars0.githubusercontent.com/u/2492770?v=3&s=200",
+  "success_url": "/metrics",
   "scripts": {
   },
   "env": {
-    "LANG": {
+    "METRICS_API_TITLE": {
+      "description": "The title of your Metrics API instance - i.e. 'My Awesome Metrics'",
       "required": true
     },
-    "METRICS_API_BASE_URL": {
+    "METRICS_API_DESCRIPTION": {
+      "description": "The description for your Metrics API instance",
       "required": true
     },
-    "METRICS_API_PASSWORD": {
+    "METRICS_API_LICENSE_NAME": {
+      "description": "The name of license you are releasing your data under - see http://licenses.opendefinition.org/#all-licenses for a list",
+      "required": true
+    },
+    "METRICS_API_LICENSE_URL": {
+      "description": "The url of license you are releasing your data under - see http://licenses.opendefinition.org/#all-licenses for a list",
+      "required": true
+    },
+    "METRICS_API_PUBLISHER_NAME": {
+      "description": "The name of the organisation who is publishing this data",
+      "required": true
+    },
+    "METRICS_API_PUBLISHER_URL": {
+      "description": "The website of the organisation who is publishing this data",
+      "required": true
+    },
+    "METRICS_API_CERTIFICATE_URL": {
+      "description": "The URL of the Open Data Certificate for your data",
       "required": true
     },
     "METRICS_API_USERNAME": {
+      "description": "The username you will need to provide when adding metrics",
+      "required": true
+    },
+    "METRICS_API_PASSWORD": {
+      "description": "The password you will need to provide when adding metrics",
       "required": true
     },
     "RACK_ENV": {
-      "required": true
+      "required": true,
+      "value": "production"
     }
   },
   "addons": [
