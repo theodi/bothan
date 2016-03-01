@@ -3,6 +3,9 @@
 require 'coveralls'
 Coveralls.wear!
 
+require 'dotenv'
+Dotenv.load
+
 ENV['RACK_ENV'] = 'test'
 ENV['METRICS_API_USERNAME'] = 'foo'
 ENV['METRICS_API_PASSWORD'] = 'bar'
