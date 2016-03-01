@@ -13,15 +13,22 @@
             </div>
           </div>
           <div class='row'>
-            <div class='col-md-8'>
-              View this as a
+            <div class='col-md-12'>
               <% @alternatives.delete @type %>
-              <% @alternatives.each do |alternative| %>
-                <a href='<%= request.path %>?type=<%= alternative %>' class='btn btn-success'><%= alternative %></a>
-              <% end %>
-            </div>
-            <div class='col-md-4'>
-              <a href='<%= "#{request.path}.json" %>' class='btn btn-info pull-right'>Get the JSON</a>
+              <form class='form-inline' action='<%= request.path %>' method='get'>
+                <div class='form-group'>
+                  <label for='type'>View this as a</label>
+                  <select class='form-control' id='type' name='type'>
+                    <% @alternatives.each do |alternative| %>
+                      <option value='<%= alternative %>'><%= alternative %></option>
+                    <% end %>
+                  </select>
+                  <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
+                    <input type='hidden' name='<%= name %>' value='<%= value %>' />
+                  <% end %>
+                  <button type='submit' class='btn btn-primary'>Submit</button>
+                </div>
+              </form>
             </div>
           </div>
           <div class='row'>
