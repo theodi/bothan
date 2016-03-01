@@ -61,10 +61,22 @@ describe Helpers do
     image = helpers.license_image('http://www.opendefinition.org/licenses/against-drm')
     expect(image).to eq(nil)
   end
-end
 
-describe String do
-  it 'titleises a string' do
-    expect('some string'.titleise).to eq 'Some String'
+  it 'gets a start-date' do
+    params = {
+      from: 'P2D',
+      to: '2013-12-25T12:00:00+00:00'
+    }
+    expect(helpers.get_start_date params).to eq 'Mon, 23 Dec 2013 12:00:00 +0000'
   end
+
+  it 'gets an end-date' do
+    params = {
+      from: '2013-12-22T12:00:00+00:00',
+      to: 'PT24H'
+    }
+
+    expect(helpers.get_end_date params).to eq 'Mon, 23 Dec 2013 12:00:00 +0000'
+  end
+
 end

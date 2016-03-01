@@ -11,6 +11,7 @@ require 'kramdown'
 require 'exception_notification'
 
 require_relative 'metrics-api/helpers'
+require_relative 'metrics-api/date-wrangler'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 
@@ -128,7 +129,7 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:time' do
-    time = DateTime.parse(params[:time]) rescue
+    time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
     @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
@@ -160,34 +161,12 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:from/:to' do
-    start_date = DateTime.parse(params[:from]) rescue nil
-    end_date = DateTime.parse(params[:to]) rescue nil
-
-    if params[:from] =~ /^P/
-      start_date = end_date - ISO8601::Duration.new(params[:from]).to_seconds.seconds rescue
-        error_400("'#{params[:from]}' is not a valid ISO8601 duration.")
-    end
-
-    if params[:to] =~ /^P/
-      end_date = start_date + ISO8601::Duration.new(params[:to]).to_seconds.seconds rescue
-        error_400("'#{params[:to]}' is not a valid ISO8601 duration.")
-    end
-
-    invalid = []
-
-    invalid << "'#{params[:from]}' is not a valid ISO8601 date/time." if start_date.nil? && params[:from] != "*"
-    invalid << "'#{params[:to]}' is not a valid ISO8601 date/time." if end_date.nil? && params[:to] != "*"
-
-    error_400(invalid.join(" ")) unless invalid.blank?
-
-    if start_date != nil && end_date != nil
-      error_400("'from' date must be before 'to' date.") if start_date > end_date
-    end
+    dates = DateWrangler.new params[:from], params[:to]
+    error_400 dates.errors.join ' ' if dates.errors
 
     metrics = Metric.where(:name => params[:metric])
-    metrics = metrics.where(:time.gte => start_date) if start_date
-    metrics = metrics.where(:time.lte => end_date) if end_date
-
+    metrics = metrics.where(:time.gte => dates.from) if dates.from
+    metrics = metrics.where(:time.lte => dates.to) if dates.to
     metrics = metrics.order_by(:time.asc)
 
     data = {

@@ -1,7 +1,8 @@
-before do
-  DatabaseCleaner.start
+Before do
+#  DatabaseCleaner.start
+  DatabaseCleaner.clean
 end
 
-after do
+After do
   DatabaseCleaner.clean
 end
