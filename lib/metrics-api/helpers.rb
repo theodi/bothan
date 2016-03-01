@@ -139,6 +139,16 @@ module Helpers
     end
   end
 
+  def extract_query_string qs, exclude: nil
+    params = qs.split('&')
+    query = {}
+    params.each do |param|
+      pair = param.split('=')
+      query[pair[0]] = pair[1] unless pair[0] == exclude
+    end
+    query
+  end
+
 end
 
 class String

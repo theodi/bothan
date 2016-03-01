@@ -98,6 +98,25 @@ describe Helpers do
     )
   end
 
+  describe '#extract_query_string' do
+    it 'chops-up a query string' do
+      expect(helpers.extract_query_string 'type=target&boxcolour=fa8100').to eq (
+        {
+          'type' => 'target',
+          'boxcolour' => 'fa8100'
+        }
+      )
+    end
+
+    it 'can exclude a param' do
+      expect(helpers.extract_query_string 'type=target&boxcolour=fa8100', exclude: 'type').to eq (
+        {
+          'boxcolour' => 'fa8100'
+        }
+      )
+    end
+  end
+
   it 'gets a image url for a creative commons license' do
     image = helpers.license_image('https://creativecommons.org/licenses/cc-by/4.0/')
     expect(image).to eq('https://licensebuttons.net/l/cc-by/4.0/88x31.png')
