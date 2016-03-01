@@ -177,8 +177,12 @@ class MetricsApi < Sinatra::Base
     error_400 dates.errors.join ' ' if dates.errors
 
     metrics = Metric.where(:name => params[:metric])
+    @earliest_date = metrics.first.time
+    @latest_date = metrics.last.time
+    
     metrics = metrics.where(:time.gte => dates.from) if dates.from
     metrics = metrics.where(:time.lte => dates.to) if dates.to
+
     metrics = metrics.order_by(:time.asc)
 
     data = {

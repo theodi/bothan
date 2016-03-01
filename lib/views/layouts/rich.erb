@@ -31,27 +31,42 @@
               </form>
             </div>
           </div>
+
+          <div class='row'>
+            <hr />
+            <div class='col-md-12'>
+              <form class='form-inline' action='<%= request.path %>' method='post'>
+
+                <div class='form-group'>
+                  <label for='from'>From</label>
+                  <div class='input-group date' id='from-date'>
+                  <input type='text' class="form-control" id='from' name='from' value='<%= @from %>'/>
+                    <span class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class='form-group'>
+                  <label for='to'>To</label>
+                  <div class='input-group date' id='to-date'>
+                    <input type='text' class="form-control" id='to' name='to' value='<%= @to %>'/>
+                    <span class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+                <button type='submit' class='btn btn-primary'>Submit</button>
+
+              </form>
+
+            </div>
+          </div>
+
           <div class='row'>
             <hr />
             <button data-toggle='collapse' data-target='#json' class='btn btn-info preview-json'>Show the JSON <i class="fa fa-arrow-circle-down"></i></button>
             <a href='<%= "#{request.path}.json" %>' class='btn btn-info'>Get the JSON <i class="fa fa-arrow-circle-right"></i></a>
             <div id='json' class='collapse' class='col-md-12'></div>
-            <script>
-            $.getJSON(document.URL, function(json) {
-              $('#json').html('<pre>' + JSON.stringify(json, null, 2) + '</pre>')
-            })
-
-            // http://jsfiddle.net/V4u5X/2/
-            $('.preview-json').click(function(){
-          		var $this = $(this);
-          		$this.toggleClass('preview-json');
-          		if($this.hasClass('preview-json')){
-          			$this.html('Show the JSON <i class="fa fa-arrow-circle-down"></i>');
-          		} else {
-          			$this.html('Hide the JSON <i class="fa fa-arrow-circle-up"></i>');
-          		}
-          	});
-            </script>
           </div>
           <div class='row'>
             <hr />
@@ -68,3 +83,44 @@
     </div>
   </body>
 </html>
+
+<script>
+callDatePicker()
+$.getJSON(document.URL, function(json) {
+  $('#json').html('<pre>' + JSON.stringify(json, null, 2) + '</pre>')
+})
+
+// http://jsfiddle.net/V4u5X/2/
+$('.preview-json').click(function(){
+  var $this = $(this);
+  $this.toggleClass('preview-json');
+  if($this.hasClass('preview-json')){
+    $this.html('Show the JSON <i class="fa fa-arrow-circle-down"></i>');
+  } else {
+    $this.html('Hide the JSON <i class="fa fa-arrow-circle-up"></i>');
+  }
+});
+
+function callDatePicker() {
+  var format = 'YYYY-MM-DD HH:mm:ss'
+
+  $('#from-date').datetimepicker({
+    format: format,
+    minDate: '<%= @earliest_date %>',
+    maxDate: '<%= @latest_date %>'
+  });
+
+  $('#to-date').datetimepicker({
+    format: format,
+    minDate: '<%= @earliest_date %>',
+    maxDate: '<%= @latest_date %>'
+  });
+
+  $('#from-date').on('dp.change', function (e) {
+      $('#to-date').data('DateTimePicker').minDate(e.date)
+  })
+  $('#to-date').on('dp.change', function (e) {
+      $('#from-date').data('DateTimePicker').maxDate(e.date)
+  })
+}
+</script>
