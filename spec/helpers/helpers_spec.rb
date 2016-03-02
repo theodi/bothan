@@ -117,6 +117,26 @@ describe Helpers do
     end
   end
 
+  describe '#sanitise_params' do
+    it 'keeps only the keys we care about' do
+      expect(helpers.sanitise_params({
+        "type"=>"chart",
+        "boxcolour"=>"fa8100",
+        "oldest"=>"2015-11-09 14:26:37",
+        "newest"=>"2016-02-01 12:27:39",
+        "splat"=>[],
+        "captures"=>["github-forks", "2016-01-31T14:26:37+00:00", "2016-03-01T14:26:37+00:00"],
+        "metric"=>"github-forks",
+        "from"=>"2016-01-31T14:26:37+00:00",
+        "to"=>"2016-03-01T14:26:37+00:00"
+      })).to eq 'type=chart&boxcolour=fa8100'
+
+  #    expect(helpers.sanitise_query_string 'type=chart&oldest=2015-11-09 14:26:37&boxcolour=fa8100&metric=derp').to eq (
+  #      'type=chart&boxcolour=fa8100'
+  #    )
+    end
+  end
+
   it 'gets a image url for a creative commons license' do
     image = helpers.license_image('https://creativecommons.org/licenses/cc-by/4.0/')
     expect(image).to eq('https://licensebuttons.net/l/cc-by/4.0/88x31.png')

@@ -88,6 +88,36 @@ module Helpers
     end
   end
 
+  def extract_query_string qs, exclude: nil
+    params = qs.split('&')
+    query = {}
+    params.each do |param|
+      pair = param.split('=')
+      query[pair[0]] = pair[1] unless pair[0] == exclude
+    end
+    query
+  end
+
+  def sanitise_params qs
+    params_to_keep = [
+      'layout',
+      'type',
+      'boxcolour',
+      'textcolour',
+      'barcolour',
+      'autorefresh'
+    ]
+
+    good_params = []
+
+    qs.each_pair do |k, v|
+      good_params.push "#{k}=#{v}" if params_to_keep.include? k
+    end
+
+    good_params.join '&'
+
+  end
+
   def config
     {
       title: ENV['METRICS_API_TITLE'],

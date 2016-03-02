@@ -173,7 +173,14 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:from/:to' do
-    dates = DateWrangler.new params[:from], params[:to]
+    @from = params[:from]
+    @to = params[:to]
+    if params['oldest']
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+    end
+
+    dates = DateWrangler.new @from, @to
+
     error_400 dates.errors.join ' ' if dates.errors
 
     metrics = Metric.where(:name => params[:metric])

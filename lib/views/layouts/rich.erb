@@ -26,30 +26,22 @@
                   <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
                     <input type='hidden' name='<%= name %>' value='<%= value %>' />
                   <% end %>
-                  <button type='submit' class='btn btn-primary'>Submit</button>
                 </div>
-              </form>
-            </div>
-          </div>
 
-          <div class='row'>
-            <hr />
-            <div class='col-md-12'>
-              <form class='form-inline' action='<%= request.path %>' method='post'>
 
                 <div class='form-group'>
-                  <label for='from'>From</label>
+                  <label for='oldest'>From</label>
                   <div class='input-group date' id='from-date'>
-                  <input type='text' class="form-control" id='from' name='from' value='<%= @earliest_date %>'/>
+                    <input type='text' class="form-control" id='oldest' name='oldest'/>
                     <span class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </span>
                   </div>
                 </div>
                 <div class='form-group'>
-                  <label for='to'>To</label>
+                  <label for='newest'>To</label>
                   <div class='input-group date' id='to-date'>
-                    <input type='text' class="form-control" id='to' name='to' value='<%= @latest_date %>'/>
+                    <input type='text' class="form-control" id='newest' name='newest'/>
                     <span class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </span>
@@ -85,7 +77,6 @@
 </html>
 
 <script>
-callDatePicker()
 $.getJSON(document.URL, function(json) {
   $('#json').html('<pre>' + JSON.stringify(json, null, 2) + '</pre>')
 })
@@ -106,12 +97,14 @@ function callDatePicker() {
 
   $('#from-date').datetimepicker({
     format: format,
+    date: '<%= @from %>',
     minDate: '<%= @earliest_date %>',
     maxDate: '<%= @latest_date %>'
   });
 
   $('#to-date').datetimepicker({
     format: format,
+    date: '<%= @to %>',
     minDate: '<%= @earliest_date %>',
     maxDate: '<%= @latest_date %>'
   });
@@ -123,4 +116,8 @@ function callDatePicker() {
       $('#from-date').data('DateTimePicker').maxDate(e.date)
   })
 }
+
+$(function() {
+  callDatePicker()
+})
 </script>
