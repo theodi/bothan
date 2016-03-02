@@ -131,3 +131,41 @@ Feature: Metrics API
       | Referer | http://theodi.org |
     When I send a GET request to "metrics/membership-coverage.json"
     Then the response status should be "200"
+
+  Scenario: Creating metric defaults
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/membership-count/defaults" with the following:
+      """
+      {
+        "type": "pie"
+      }
+      """
+    Then the response status should be "201"
+    And the data should be stored in the "membership-count" default
+    And the type of the stored default should be "pie"
+
+  Scenario: Updating metric defaults
+    Given I authenticate as the user "foo" with the password "bar"
+    And a default already exists for the metric type "membership-count"
+    And that default has the type "pie"
+    When I send a POST request to "metrics/membership-count/defaults" with the following:
+      """
+      {
+        "type": "chart"
+      }
+      """
+    Then the response status should be "201"
+    And the data should be stored in the "membership-count" default
+    And there should be 1 default with the type "membership-count"
+    And the type of the stored default should be "chart"
+
+  Scenario: Creating metric defaults with an invalid type
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/membership-count/defaults" with the following:
+      """
+      {
+        "type": "rubbish-type"
+      }
+      """
+    Then the response status should be "400"
+    And there should be 0 defaults with the type "membership-count"

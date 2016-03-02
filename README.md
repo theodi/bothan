@@ -144,3 +144,19 @@ Default: 222
 Default: none
 
 Example: http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
+
+### Setting defaults
+
+By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type via the API:
+
+```
+POST https://metrics.theodi.org/metrics/{metric-name}/defaults
+```
+
+using a JSON content type, and with the following JSON in the body:
+
+```
+{
+  "type": "{one of `chart`, `tasklist`, `target` or `pie`}"
+}
+```
