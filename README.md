@@ -88,27 +88,59 @@ The rendering can be manipulated by the following query-string options:
 
 #### layout
 
-* One of: `rich`, with a nav-bar and other controls, or `bare`, a minimal layout designed for inclusion elsewhere as an iframe
-* Default: `rich`
+One of:
+
+  * `rich`, with a nav-bar and other controls, or
+  * `bare`, a minimal layout designed for inclusion elsewhere as an iframe
+
+Default: `rich`
 
 #### type
 
-* One of: `chart`, which renders a [Plotly](https://plot.ly/javascript/) chart of the data, as best it can (it attempts to extract reasonable y-axis-values from the metric, but some metrics simply do not make sense in this form. Caveat Graphor); or `number`, which displays the latest value from the metric (if it can find such a thing)
-* Default: `chart`
+One of:
+
+  * `chart`, which renders a [Plotly](https://plot.ly/javascript/) line chart of the data, as best it can (it attempts to extract reasonable y-axis-values from the metric, but some metrics simply do not make sense in this form. Caveat Graphor)
+  * `number`, which displays the latest value from the metric (if it can find such a thing)
+  * `pie`, which renders a [Plotly](https://plot.ly/javascript/) pie chart of the data, as best it can
+  * `target`, which renders a meter style chart with an actual value, an annual target value and a year to date target value. For this to work, the data should be in the following format:
+
+  ```
+  {
+    "actual": value,
+    "annual_target": value,
+    "ytd_target": value,
+  }
+  ```
+  * `tasklist`, which renders a list of tasks and their progress. This is highly specialised to ODI, and may not be relevant to anyone else's needs, but if you want to use this visualisation, the data should be in this format:
+  ```
+  [
+    {
+      "title": "Task name",
+      "due": "Due date in ISO8601 format",
+      "progress": A float value between 0 and 1,
+    },
+    ...
+  ]
+  ```
+
+Default: `chart`
 
 #### boxcolour
 
-* Background colour for the chart or number, in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
-* Default: ddd
+Background colour for the chart or number, in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
+
+Default: ddd
 
 #### textcolour
 
-* Text colour (and line colour for the chart), in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
-* Default: 222
+Text colour (and line colour for the chart), in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
+
+Default: 222
 
 #### autorefresh
 
-* `meta-refresh` interval for the page
-* Default: none
+`meta-refresh` interval for the page
+
+Default: none
 
 Example: http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
