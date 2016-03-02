@@ -34,6 +34,52 @@ describe Helpers do
     expect(helpers.query_string data).to eq 'type=number&boxcolour=ffffff&textcolour=000000'
   end
 
+  context 'gets the settings' do
+    it 'with params' do
+      params = {
+        'layout' => 'bare',
+        'type' => 'number',
+        'boxcolour' => 'fa8100',
+        'textcolour' => 'fff',
+        'autorefresh' => true
+      }
+
+      helpers.get_settings(params, {})
+
+      expect(helpers.instance_variable_get("@layout")).to eq('bare')
+      expect(helpers.instance_variable_get("@type")).to eq('number')
+      expect(helpers.instance_variable_get("@boxcolour")).to eq('#fa8100')
+      expect(helpers.instance_variable_get("@textcolour")).to eq('#fff')
+      expect(helpers.instance_variable_get("@autorefresh")).to eq(true)
+    end
+
+    it 'with no params' do
+      helpers.get_settings({}, {})
+
+      expect(helpers.instance_variable_get("@layout")).to eq('rich')
+      expect(helpers.instance_variable_get("@type")).to eq('chart')
+      expect(helpers.instance_variable_get("@boxcolour")).to eq('#ddd')
+      expect(helpers.instance_variable_get("@textcolour")).to eq('#222')
+      expect(helpers.instance_variable_get("@autorefresh")).to eq(nil)
+    end
+
+    it 'with a mixture' do
+      params = {
+        'boxcolour' => 'fa8100',
+        'textcolour' => 'fff',
+      }
+
+      helpers.get_settings(params, {})
+
+      expect(helpers.instance_variable_get("@layout")).to eq('rich')
+      expect(helpers.instance_variable_get("@type")).to eq('chart')
+      expect(helpers.instance_variable_get("@boxcolour")).to eq('#fa8100')
+      expect(helpers.instance_variable_get("@textcolour")).to eq('#fff')
+      expect(helpers.instance_variable_get("@autorefresh")).to eq(nil)
+    end
+
+  end
+
   it 'extracts a title from a URL' do
     expect(
       helpers.extract_title(

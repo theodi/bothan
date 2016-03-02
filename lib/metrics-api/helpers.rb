@@ -35,6 +35,16 @@ module Helpers
     }.join(' ')
   end
 
+  def get_settings(params, data)
+    @layout = params.fetch('layout', 'rich')
+    @type = params.fetch('type', visualisation_type(params[:metric], data))
+    @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
+    @textcolour = "##{params.fetch('textcolour', '222')}"
+    @autorefresh = params.fetch('autorefresh', nil)
+
+    @plotly_modebar = (@layout == 'rich')
+  end
+
   def get_start_date params
     DateTime.parse(params[:to]) - params[:from].to_seconds
   end

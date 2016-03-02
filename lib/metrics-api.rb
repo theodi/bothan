@@ -164,14 +164,7 @@ class MetricsApi < Sinatra::Base
           'pie'
         ]
 
-        @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', visualisation_type(params[:metric], JSON.parse(@metric, {:symbolize_names => true})))
-        @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
-        @textcolour = "##{params.fetch('textcolour', '222')}"
-        @autorefresh = params.fetch('autorefresh', nil)
-
-        @plotly_modebar = (@layout == 'rich')
-
+        get_settings(params, JSON.parse(@metric, {:symbolize_names => true}))
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
@@ -210,15 +203,7 @@ class MetricsApi < Sinatra::Base
           'target'
         ]
 
-        @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', visualisation_type(params[:metric], data[:values].first))
-        @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
-        @textcolour = "##{params.fetch('textcolour', '222')}"
-        @barcolour = "##{params.fetch('barcolour', 'fff')}"
-        @autorefresh = params.fetch('autorefresh', nil)
-
-        @plotly_modebar = (@layout == 'rich')
-
+        get_settings(params, JSON.parse(@metric, data[:values].first))
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
