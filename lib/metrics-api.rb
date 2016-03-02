@@ -4,6 +4,7 @@ require 'tilt/erubis'
 require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
+require_relative 'models/defaults'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -114,6 +115,23 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  post '/metrics/:metric/defaults' do
+    protected!
+    begin
+      data = JSON.parse request.body.read
+      @default = MetricDefault.find_or_create_by(name: params[:metric])
+      @default.type = data['type']
+
+      if @default.save
+        return 201
+      else
+        return 400
+      end
+    rescue
+      return 500
+    end
+  end
+
   get '/metrics/:metric/?' do
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
@@ -132,9 +150,10 @@ class MetricsApi < Sinatra::Base
     time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
-    @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
+    @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last.to_json
+
     respond_to do |wants|
-      wants.json { @metric.to_json }
+      wants.json { @metric }
 
       wants.html do
         @alternatives = [
@@ -145,14 +164,7 @@ class MetricsApi < Sinatra::Base
           'pie'
         ]
 
-        @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', 'chart')
-        @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
-        @textcolour = "##{params.fetch('textcolour', '222')}"
-        @autorefresh = params.fetch('autorefresh', nil)
-
-        @plotly_modebar = (@layout == 'rich')
-
+        get_settings(params, JSON.parse(@metric, {:symbolize_names => true}))
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
@@ -174,8 +186,6 @@ class MetricsApi < Sinatra::Base
       :values => []
     }
 
-    data[:path] = metric_config(params[:metric])['value-path'] if params[:with_path]
-
     metrics.each do |metric|
       data[:values] << {
         :time => metric.time,
@@ -193,15 +203,7 @@ class MetricsApi < Sinatra::Base
           'target'
         ]
 
-        @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', 'chart')
-        @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
-        @textcolour = "##{params.fetch('textcolour', '222')}"
-        @barcolour = "##{params.fetch('barcolour', 'fff')}"
-        @autorefresh = params.fetch('autorefresh', nil)
-
-        @plotly_modebar = (@layout == 'rich')
-
+        get_settings(params, JSON.parse(@metric, data[:values].first))
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 

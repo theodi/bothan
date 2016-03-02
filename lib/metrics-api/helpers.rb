@@ -35,6 +35,16 @@ module Helpers
     }.join(' ')
   end
 
+  def get_settings(params, data)
+    @layout = params.fetch('layout', 'rich')
+    @type = params.fetch('type', visualisation_type(params[:metric], data))
+    @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
+    @textcolour = "##{params.fetch('textcolour', '222')}"
+    @autorefresh = params.fetch('autorefresh', nil)
+
+    @plotly_modebar = (@layout == 'rich')
+  end
+
   def get_start_date params
     DateTime.parse(params[:to]) - params[:from].to_seconds
   end
@@ -101,6 +111,31 @@ module Helpers
       "https://licensebuttons.net/l/#{match[1]}/#{match[2]}/88x31.png"
     else
       nil
+    end
+  end
+
+  def visualisation_type(metric_name, data)
+    default = MetricDefault.where(name: metric_name).first
+    if default.nil?
+      guess_type(data)
+    else
+      default.type
+    end
+  end
+
+  def guess_type(data)
+    if data.nil?
+      'chart'
+    elsif data[:value].class == String
+      'chart'
+    elsif data[:value].class == Array && !data[:value].first[:progress].nil?
+      'tasklist'
+    elsif data[:value].class == Hash && !data[:value][:annual_target].nil?
+      'target'
+    elsif data[:value].class == Hash && Hash[*data[:value].first].class == Hash
+      'pie'
+    else
+      'chart'
     end
   end
 

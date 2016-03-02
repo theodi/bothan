@@ -132,26 +132,40 @@ Feature: Metrics API
     When I send a GET request to "metrics/membership-coverage.json"
     Then the response status should be "200"
 
-  Scenario: Add path to json response
-    Given there is a metric in the database with the name "membership-coverage"
-    And it has a time of "2013-12-25T15:00:00+00:00"
-    And it has a value of:
+  Scenario: Creating metric defaults
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/membership-count/defaults" with the following:
       """
-      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      {
+        "type": "pie"
+      }
       """
-    And that metric has a value-path of "//total"
-    When I send a GET request to "metrics/membership-coverage/2013-12-23T12:00:00+00:00/2013-12-25T12:00:00+00:00?with_path=true"
-    Then the response status should be "200"
-    And the JSON response should have "$.path" with the text "//total"
+    Then the response status should be "201"
+    And the data should be stored in the "membership-count" default
+    And the type of the stored default should be "pie"
 
-  Scenario: Don't add path to json response
-    Given there is a metric in the database with the name "membership-coverage"
-    And it has a time of "2013-12-25T15:00:00+00:00"
-    And it has a value of:
+  Scenario: Updating metric defaults
+    Given I authenticate as the user "foo" with the password "bar"
+    And a default already exists for the metric type "membership-count"
+    And that default has the type "pie"
+    When I send a POST request to "metrics/membership-count/defaults" with the following:
       """
-      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      {
+        "type": "chart"
+      }
       """
-    And that metric has a value-path of "//total"
-    When I send a GET request to "metrics/membership-coverage/2013-12-23T12:00:00+00:00/2013-12-25T12:00:00+00:00"
-    Then the response status should be "200"
-    And the JSON response should not have "$.path" with the text "//total"
+    Then the response status should be "201"
+    And the data should be stored in the "membership-count" default
+    And there should be 1 default with the type "membership-count"
+    And the type of the stored default should be "chart"
+
+  Scenario: Creating metric defaults with an invalid type
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/membership-count/defaults" with the following:
+      """
+      {
+        "type": "rubbish-type"
+      }
+      """
+    Then the response status should be "400"
+    And there should be 0 defaults with the type "membership-count"
