@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear_merged!
+
 ENV['RACK_ENV'] = 'test'
 
 require 'metrics-api'
