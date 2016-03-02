@@ -192,7 +192,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', 'chart')
+        @type = visualisation_type(data[:values])
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
         @barcolour = "##{params.fetch('barcolour', 'fff')}"
