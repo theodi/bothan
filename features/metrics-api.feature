@@ -131,27 +131,3 @@ Feature: Metrics API
       | Referer | http://theodi.org |
     When I send a GET request to "metrics/membership-coverage.json"
     Then the response status should be "200"
-
-  Scenario: Add path to json response
-    Given there is a metric in the database with the name "membership-coverage"
-    And it has a time of "2013-12-25T15:00:00+00:00"
-    And it has a value of:
-      """
-      {"health":0.34,"telecoms":0.34,"energy":0.34}
-      """
-    And that metric has a value-path of "//total"
-    When I send a GET request to "metrics/membership-coverage/2013-12-23T12:00:00+00:00/2013-12-25T12:00:00+00:00?with_path=true"
-    Then the response status should be "200"
-    And the JSON response should have "$.path" with the text "//total"
-
-  Scenario: Don't add path to json response
-    Given there is a metric in the database with the name "membership-coverage"
-    And it has a time of "2013-12-25T15:00:00+00:00"
-    And it has a value of:
-      """
-      {"health":0.34,"telecoms":0.34,"energy":0.34}
-      """
-    And that metric has a value-path of "//total"
-    When I send a GET request to "metrics/membership-coverage/2013-12-23T12:00:00+00:00/2013-12-25T12:00:00+00:00"
-    Then the response status should be "200"
-    And the JSON response should not have "$.path" with the text "//total"
