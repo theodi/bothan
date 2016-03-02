@@ -132,9 +132,10 @@ class MetricsApi < Sinatra::Base
     time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
-    @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
+    @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last.to_json
+
     respond_to do |wants|
-      wants.json { @metric.to_json }
+      wants.json { @metric }
 
       wants.html do
         @alternatives = [
@@ -146,7 +147,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', 'chart')
+        @type = params.fetch('type', visualisation_type(JSON.parse @metric, {:symbolize_names => true}))
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
         @autorefresh = params.fetch('autorefresh', nil)
@@ -192,7 +193,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         @layout = params.fetch('layout', 'rich')
-        @type = visualisation_type(data[:values])
+        @type = params.fetch('type', visualisation_type(data[:values].first))
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
         @barcolour = "##{params.fetch('barcolour', 'fff')}"

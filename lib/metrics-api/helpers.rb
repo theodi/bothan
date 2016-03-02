@@ -105,15 +105,15 @@ module Helpers
   end
 
   def visualisation_type(data)
-    if data.first.nil?
-      'chart'  
-    elsif data.first[:value].class == String
+    if data.nil?
       'chart'
-    elsif data.first[:value].class == Array && !data.first[:value].first[:progress].nil?
+    elsif data[:value].class == String
+      'chart'
+    elsif data[:value].class == Array && !data[:value].first[:progress].nil?
       'tasklist'
-    elsif data.first[:value].class == Hash && !data.first[:value][:annual_target].nil?
+    elsif data[:value].class == Hash && !data[:value][:annual_target].nil?
       'target'
-    elsif data.first[:value].class == Hash && Hash[*data.first[:value].first].class == Hash
+    elsif data[:value].class == Hash && Hash[*data[:value].first].class == Hash
       'pie'
     else
       'chart'
