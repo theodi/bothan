@@ -203,7 +203,7 @@ class MetricsApi < Sinatra::Base
           'target'
         ]
 
-        get_settings(params, JSON.parse(@metric, data[:values].first))
+        get_settings(params, data[:values].first)
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
