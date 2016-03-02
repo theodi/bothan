@@ -173,6 +173,11 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:from/:to' do
+    if params['default-dates']
+      url = generate_url(params[:metric], keep_params(params))
+      redirect to url
+    end
+
     @from = params[:from]
     @to = params[:to]
     if params['oldest']
@@ -186,7 +191,7 @@ class MetricsApi < Sinatra::Base
     metrics = Metric.where(:name => params[:metric])
     @earliest_date = metrics.first.time
     @latest_date = metrics.last.time
-    
+
     metrics = metrics.where(:time.gte => dates.from) if dates.from
     metrics = metrics.where(:time.lte => dates.to) if dates.to
 
@@ -215,6 +220,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         get_settings(params, data[:values].first)
+
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 

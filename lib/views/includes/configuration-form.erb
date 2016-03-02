@@ -1,0 +1,100 @@
+<div class='row'>
+  <div class='col-md-12'>
+    <form class='form-inline' role='form' action='<%= request.path %>' method='get'>
+
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='form-group'>
+            <label for='type'>View this as a</label>
+            <% @alternatives.each do |alternative| %>
+              <label class='radio-inline'><input type='radio' name='type' value='<%= alternative %>'<% if  @type == alternative %> checked<% end %>><%= alternative %></label>
+            <% end %>
+            <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
+              <input type='hidden' name='<%= name %>' value='<%= value %>' />
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='form-group'>
+            <label for='oldest'>From</label>
+            <div class='input-group date' id='from-date'>
+              <input type='text' class="form-control" id='oldest' name='oldest'/>
+              <span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label for='newest'>To</label>
+            <div class='input-group date' id='to-date'>
+              <input type='text' class="form-control" id='newest' name='newest'/>
+              <span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <div class='form-group'>
+            <label for='default-dates'>Default dates (last 30 days)</label>
+            <div class="checkbox">
+              <label><input type="checkbox" name="default-dates"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='form-group'>
+            <label for='boxcolour'>Box Colour</label>
+              <div class="input-group" id="boxcolour">
+                <input type="text" name='boxcolour' value="<%= @boxcolour %>" class="form-control" />
+                <span class="input-group-addon"><i></i></span>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <button type='submit' class='btn btn-primary pull-right'>Submit</button>
+
+    </form>
+
+  </div>
+</div>
+
+<script>
+function callDatePicker() {
+  var format = 'YYYY-MM-DD HH:mm:ss'
+
+  $('#from-date').datetimepicker({
+    format: format,
+    date: '<%= @from %>',
+    minDate: '<%= @earliest_date %>',
+  //  maxDate: '<%= @latest_date %>'
+  });
+
+  $('#to-date').datetimepicker({
+    format: format,
+    date: '<%= @to %>',
+    minDate: '<%= @earliest_date %>',
+  //  maxDate: '<%= @latest_date %>'
+  });
+
+  $('#from-date').on('dp.change', function (e) {
+      $('#to-date').data('DateTimePicker').minDate(e.date)
+  })
+  $('#to-date').on('dp.change', function (e) {
+      $('#from-date').data('DateTimePicker').maxDate(e.date)
+  })
+}
+
+$(function(){
+  $('#boxcolour').colorpicker()
+})
+
+$(function() {
+  callDatePicker()
+})
+</script>

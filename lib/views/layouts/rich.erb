@@ -12,48 +12,7 @@
               <%= yield %>
             </div>
           </div>
-          <div class='row'>
-            <div class='col-md-12'>
-              <% @alternatives.delete @type %>
-              <form class='form-inline' action='<%= request.path %>' method='get'>
-                <div class='form-group'>
-                  <label for='type'>View this as a</label>
-                  <select class='form-control' id='type' name='type'>
-                    <% @alternatives.each do |alternative| %>
-                      <option value='<%= alternative %>'><%= alternative %></option>
-                    <% end %>
-                  </select>
-                  <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
-                    <input type='hidden' name='<%= name %>' value='<%= value %>' />
-                  <% end %>
-                </div>
-
-
-                <div class='form-group'>
-                  <label for='oldest'>From</label>
-                  <div class='input-group date' id='from-date'>
-                    <input type='text' class="form-control" id='oldest' name='oldest'/>
-                    <span class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </span>
-                  </div>
-                </div>
-                <div class='form-group'>
-                  <label for='newest'>To</label>
-                  <div class='input-group date' id='to-date'>
-                    <input type='text' class="form-control" id='newest' name='newest'/>
-                    <span class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </span>
-                  </div>
-                </div>
-                <button type='submit' class='btn btn-primary'>Submit</button>
-
-              </form>
-
-            </div>
-          </div>
-
+          <%= erb :'includes/configuration-form' %>
           <div class='row'>
             <hr />
             <button data-toggle='collapse' data-target='#json' class='btn btn-info preview-json'>Show the JSON <i class="fa fa-arrow-circle-down"></i></button>
@@ -92,32 +51,5 @@ $('.preview-json').click(function(){
   }
 });
 
-function callDatePicker() {
-  var format = 'YYYY-MM-DD HH:mm:ss'
 
-  $('#from-date').datetimepicker({
-    format: format,
-    date: '<%= @from %>',
-    minDate: '<%= @earliest_date %>',
-    maxDate: '<%= @latest_date %>'
-  });
-
-  $('#to-date').datetimepicker({
-    format: format,
-    date: '<%= @to %>',
-    minDate: '<%= @earliest_date %>',
-    maxDate: '<%= @latest_date %>'
-  });
-
-  $('#from-date').on('dp.change', function (e) {
-      $('#to-date').data('DateTimePicker').minDate(e.date)
-  })
-  $('#to-date').on('dp.change', function (e) {
-      $('#from-date').data('DateTimePicker').maxDate(e.date)
-  })
-}
-
-$(function() {
-  callDatePicker()
-})
 </script>

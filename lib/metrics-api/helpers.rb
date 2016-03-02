@@ -98,24 +98,33 @@ module Helpers
     query
   end
 
-  def sanitise_params qs
+  def keep_params qs
     params_to_keep = [
       'layout',
       'type',
       'boxcolour',
       'textcolour',
       'barcolour',
-      'autorefresh'
+      'autorefresh',
+      'with_path'
     ]
 
-    good_params = []
+    good_params = {}
 
     qs.each_pair do |k, v|
-      good_params.push "#{k}=#{v}" if params_to_keep.include? k
+      good_params[k] = v if params_to_keep.include? k
     end
 
-    good_params.join '&'
+    good_params
+  end
 
+  def sanitise_params qs
+    a = []
+    keep_params(qs).each_pair do |k, v|
+      a.push "#{k}=#{v}"
+    end
+
+    a.join '&'
   end
 
   def config
