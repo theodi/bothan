@@ -104,7 +104,16 @@ module Helpers
     end
   end
 
-  def visualisation_type(data)
+  def visualisation_type(metric_name, data)
+    default = MetricDefault.where(name: metric_name).first
+    if default.nil?
+      guess_type(data)
+    else
+      default.type
+    end
+  end
+
+  def guess_type(data)
     if data.nil?
       'chart'
     elsif data[:value].class == String

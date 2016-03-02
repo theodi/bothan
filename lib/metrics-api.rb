@@ -165,7 +165,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', visualisation_type(JSON.parse @metric, {:symbolize_names => true}))
+        @type = params.fetch('type', visualisation_type(params[:metric], JSON.parse(@metric, {:symbolize_names => true})))
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
         @autorefresh = params.fetch('autorefresh', nil)
@@ -211,7 +211,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         @layout = params.fetch('layout', 'rich')
-        @type = params.fetch('type', visualisation_type(data[:values].first))
+        @type = params.fetch('type', visualisation_type(params[:metric], data[:values].first))
         @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
         @textcolour = "##{params.fetch('textcolour', '222')}"
         @barcolour = "##{params.fetch('barcolour', 'fff')}"

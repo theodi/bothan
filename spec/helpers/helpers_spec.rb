@@ -79,6 +79,25 @@ describe Helpers do
     expect(helpers.get_end_date params).to eq 'Mon, 23 Dec 2013 12:00:00 +0000'
   end
 
+  context 'gets visualisation type' do
+    let(:data) {
+      {
+        time: "2016-02-01T09:27:45.000+00:00",
+        value: 123
+      }
+    }
+    let(:metric_name) { 'my-cool-metric' }
+
+    it 'when a default exists' do
+      MetricDefault.create(name: 'my-cool-metric', type: 'pie')
+      expect(helpers.visualisation_type(metric_name, data)).to eq('pie')
+    end
+
+    it 'when a default does not exist' do
+      expect(helpers.visualisation_type(metric_name, data)).to eq('chart')
+    end
+  end
+
   context 'intelligently guesses the visualisation type' do
     it 'for a chart' do
       data = {
@@ -86,7 +105,7 @@ describe Helpers do
         value: 123
       }
 
-      expect(helpers.visualisation_type data).to eq('chart')
+      expect(helpers.guess_type data).to eq('chart')
     end
 
     it 'for a tasklist' do
@@ -103,7 +122,7 @@ describe Helpers do
         ]
       }
 
-      expect(helpers.visualisation_type data).to eq('tasklist')
+      expect(helpers.guess_type data).to eq('tasklist')
     end
 
     it 'for a target' do
@@ -143,13 +162,13 @@ describe Helpers do
         }
       }
 
-      expect(helpers.visualisation_type data).to eq('pie')
+      expect(helpers.guess_type data).to eq('pie')
     end
 
     it 'when there is no data' do
       data = nil
 
-      expect(helpers.visualisation_type data).to eq('chart')
+      expect(helpers.guess_type data).to eq('chart')
     end
 
     it 'when there is null data' do
@@ -158,7 +177,7 @@ describe Helpers do
         value: nil
       }
 
-      expect(helpers.visualisation_type data).to eq('chart')
+      expect(helpers.guess_type data).to eq('chart')
     end
 
   end
