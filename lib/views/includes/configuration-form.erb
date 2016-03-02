@@ -56,6 +56,15 @@
               <input type="hidden" name="boxcolour" value="<%= @boxcolour[1..-1] %>" />
           </div>
 
+          <div class='form-group'>
+            <label for='boxcolour'>Text Colour</label>
+              <div class="input-group" id="textcolour">
+                <input type="text" name="textcolourpicker" value="<%= @textcolour %>" class="form-control" />
+                <span class="input-group-addon"><i></i></span>
+              </div>
+              <input type="hidden" name="textcolour" value="<%= @textcolour[1..-1] %>" />
+          </div>
+
         </div>
       </div>
 
@@ -93,12 +102,12 @@ function callDatePicker() {
 }
 
 $(function(){
-  var picker = $('#boxcolour').colorpicker()
+  var picker = $('#boxcolour, #textcolour').colorpicker()
 
   picker.on('changeColor', function(ev){
-    $('input[name=boxcolour]').val(ev.color.toHex().replace('#', ''));
+    $(this).next('input').val(ev.color.toHex().replace('#', ''));
   });
-  
+
   callDatePicker()
 })
 </script>
