@@ -1,6 +1,5 @@
 describe MetricsApi do
   before :all do
-    DatabaseCleaner.start
     create_data
 
     get '/metrics'
@@ -8,10 +7,6 @@ describe MetricsApi do
     stub_request(:any, /.*/).to_return(status: 404)
     stub_request(:get, 'http://metrics-api.theodi.org').to_return(status: 200, body: body, headers: {})
     @dataset = DataKitten::Dataset.new 'http://metrics-api.theodi.org'
-  end
-
-  after :all do
-    DatabaseCleaner.clean
   end
 
   it 'has a title' do

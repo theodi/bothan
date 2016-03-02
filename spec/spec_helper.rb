@@ -5,7 +5,6 @@ require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
 require 'database_cleaner'
-DatabaseCleaner.strategy = :truncation
 
 require 'dotenv'
 Dotenv.load
@@ -30,6 +29,17 @@ RSpec.configure do |config|
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   config.order = :random
