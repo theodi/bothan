@@ -4,12 +4,12 @@
 <script src='/javascripts/defiant.js'></script>
 <script>
 $.getJSON(document.URL, function(json) {
-  var graphDiv = graph(json)
+  graph(json)
   var picker = $('#boxcolour, #textcolour').colorpicker()
 
-  picker.on('changeColor', function(ev, graphDiv){
+  picker.on('changeColor', function(ev){
     $(this).next('input').val(ev.color.toHex().replace('#', ''));
-    
+
     if (ev.target.id == 'textcolour') {
       var textcolour = ev.color.toHex()
       var boxcolour = $('input[name="boxcolourpicker"]').val()
@@ -26,6 +26,8 @@ $.getJSON(document.URL, function(json) {
     chart.layout.yaxis.tickfont.color = textcolour
 
     Plotly.redraw(chart)
+
+
   });
 
   callDatePicker()
@@ -73,7 +75,7 @@ function graph(json) {
     }
   }
 
-  return Plotly.newPlot(
+  Plotly.newPlot(
     'chart',
     [ data ],
     layout,
