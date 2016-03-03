@@ -267,4 +267,35 @@ describe Helpers do
 
   end
 
+  context 'with a request' do
+
+    before(:each) do
+      # Monkey patch `request` method here - in the context of the app, it would be available
+      class TestHelper
+        def request
+        end
+      end
+
+      allow(helpers).to receive(:request) {
+        double = instance_double(Rack::Request)
+        allow(double).to receive(:scheme) { 'http' }
+        allow(double).to receive(:host_with_port) { 'example.org' }
+        allow(double).to receive(:path) { '/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00' }
+        allow(double).to receive(:params) { {foo: 'bar', baz: 'foo'} }
+        double
+      }
+    end
+
+    let(:url) { 'http://example.org/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00?baz=foo&foo=bar&layout=bare' }
+
+    it 'generates an embed url' do
+      expect(helpers.embed_url).to eq(url)
+    end
+
+    it 'generates an embed iframe' do
+      expect(helpers.embed_iframe).to eq("<iframe src='#{url}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
+    end
+
+  end
+
 end
