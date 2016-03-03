@@ -1,26 +1,54 @@
-<div class='row'>
+<br />
+
+<div class="row">
   <div class='col-md-12'>
-    <form class='form-inline' role='form' action='<%= request.path %>' method='get'>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#types" id="type-tab" role="tab" data-toggle="tab" aria-controls="types" aria-expanded="true">
+          Visulisation types
+        </a>
+      </li>
+      <li role="presentation" >
+        <a href="#dates" role="tab" id="profile-tab" data-toggle="tab" aria-controls="dates">
+          Date range
+        </a>
+      </li>
+      <li role="presentation" >
+        <a href="#customise" role="tab" id="profile-tab" data-toggle="tab" aria-controls="customise">
+          Customise
+        </a>
+      </li>
+      <li>
+        <a href="#embed" role="tab" id="profile-tab" data-toggle="tab" aria-controls="embed">
+          Embed
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
 
-      <hr />
+<form class='form-inline' role='form' action='<%= request.path %>' method='get'>
 
-      <div class='row'>
-        <div class='form-group col-md-12'>
-          <label for='type' class='col-md-2'>View this as a</label>
-          <div class="col-md-10">
-            <% @alternatives.each do |alternative| %>
-              <label class='radio-inline'>
-                <input type='radio' name='type' value='<%= alternative %>'<% if  @type == alternative %> checked<% end %>> <%= alternative %>
-              </label>
-            <% end %>
-          </div>
-          <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
-            <input type='hidden' name='<%= name %>' value='<%= value %>' />
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="types">
+
+      <div class='form-group col-md-12'>
+        <label for='type' class='col-md-2'>View this as a</label>
+        <div class="col-md-10">
+          <% @alternatives.each do |alternative| %>
+            <label class='radio-inline'>
+              <input type='radio' name='type' value='<%= alternative %>'<% if  @type == alternative %> checked<% end %>> <%= alternative %>
+            </label>
           <% end %>
         </div>
+        <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
+          <input type='hidden' name='<%= name %>' value='<%= value %>' />
+        <% end %>
       </div>
 
-      <hr />
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="dates">
 
       <div class='row'>
         <div class='col-md-12'>
@@ -61,40 +89,43 @@
         </div>
       </div>
 
-      <hr />
+    </div>
+    <div role="tabpanel" class="tab-pane" id="customise">
 
-      <div class='row'>
-        <div class='col-md-12'>
-          <div class='form-group col-md-6'>
-            <label for='boxcolour' class='col-md-3 text-right'>Box Colour</label>
-              <div class="input-group col-md-9" id="boxcolour">
-                <input type="text" name="boxcolourpicker" value="<%= @boxcolour %>" class="form-control" />
-                <span class="input-group-addon"><i></i></span>
-              </div>
-              <input type="hidden" name="boxcolour" value="<%= @boxcolour[1..-1] %>" />
-          </div>
-
-          <div class='form-group col-md-6'>
-            <label for='boxcolour' class='col-md-3 text-right'>Text Colour</label>
-              <div class="input-group col-md-9" id="textcolour">
-                <input type="text" name="textcolourpicker" value="<%= @textcolour %>" class="form-control" />
-                <span class="input-group-addon"><i></i></span>
-              </div>
-              <input type="hidden" name="textcolour" value="<%= @textcolour[1..-1] %>" />
-          </div>
-
+      <div class='col-md-12'>
+        <div class='form-group col-md-6'>
+          <label for='boxcolour' class='col-md-3 text-right'>Box Colour</label>
+            <div class="input-group col-md-9" id="boxcolour">
+              <input type="text" name="boxcolourpicker" value="<%= @boxcolour %>" class="form-control" />
+              <span class="input-group-addon"><i></i></span>
+            </div>
+            <input type="hidden" name="boxcolour" value="<%= @boxcolour[1..-1] %>" />
         </div>
+
+        <div class='form-group col-md-6'>
+          <label for='boxcolour' class='col-md-3 text-right'>Text Colour</label>
+            <div class="input-group col-md-9" id="textcolour">
+              <input type="text" name="textcolourpicker" value="<%= @textcolour %>" class="form-control" />
+              <span class="input-group-addon"><i></i></span>
+            </div>
+            <input type="hidden" name="textcolour" value="<%= @textcolour[1..-1] %>" />
+        </div>
+
       </div>
 
-      <hr />
+    </div>
 
+    <div role="tabpanel" class="tab-pane" id="embed">
 
-      <button type='submit' class='btn btn-primary pull-right'>Submit</button>
-
-    </form>
+    </div>
 
   </div>
-</div>
+
+  <div class="row">
+    <button type='submit' class='btn btn-primary pull-right'>Submit</button>
+  </div>
+
+</form>
 
 <script>
 function callDatePicker() {
