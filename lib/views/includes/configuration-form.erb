@@ -121,14 +121,4 @@ function callDatePicker() {
       $('#from-date').data('DateTimePicker').maxDate(e.date)
   })
 }
-
-$(function(){
-  var picker = $('#boxcolour, #textcolour').colorpicker()
-
-  picker.on('changeColor', function(ev){
-    $(this).next('input').val(ev.color.toHex().replace('#', ''));
-  });
-
-  callDatePicker()
-})
 </script>

@@ -4,7 +4,31 @@
 <script src='/javascripts/defiant.js'></script>
 <script>
 $.getJSON(document.URL, function(json) {
-  graph(json)
+  var graphDiv = graph(json)
+  var picker = $('#boxcolour, #textcolour').colorpicker()
+
+  picker.on('changeColor', function(ev, graphDiv){
+    $(this).next('input').val(ev.color.toHex().replace('#', ''));
+    
+    if (ev.target.id == 'textcolour') {
+      var textcolour = ev.color.toHex()
+      var boxcolour = $('input[name="boxcolourpicker"]').val()
+    } else {
+      var textcolour = $('input[name="textcolourpicker"]').val()
+      var boxcolour = ev.color.toHex()
+    }
+
+    chart.data[0].line.color = textcolour
+    chart.layout.paper_bgcolor = boxcolour
+    chart.layout.plot_bgcolor = boxcolour
+    chart.layout.titlefont.color = textcolour
+    chart.layout.xaxis.tickfont.color = textcolour
+    chart.layout.yaxis.tickfont.color = textcolour
+
+    Plotly.redraw(chart)
+  });
+
+  callDatePicker()
 })
 
 function graph(json) {
@@ -29,23 +53,19 @@ function graph(json) {
     paper_bgcolor: '<%= @boxcolour %>',
     plot_bgcolor: '<%= @boxcolour %>',
     xaxis: {
-      gridcolor: '#333',
+      gridcolor: '#D3D3D3',
       type: 'datetime',
       tickangle: 315,
       tickformat: "%Y-%m-%d",
       tickfont: {
-        font: {
-          color: '<%= @textcolour %>'
-        }
+        color: '<%= @textcolour %>'
       }
     },
     yaxis: {
-      gridcolor: '#333',
+      gridcolor: '#D3D3D3',
       tickangle: 315,
       tickfont: {
-        font: {
-          color: '<%= @textcolour %>'
-        }
+        color: '<%= @textcolour %>'
       }
     },
     margin: {
@@ -53,7 +73,7 @@ function graph(json) {
     }
   }
 
-  Plotly.newPlot(
+  return Plotly.newPlot(
     'chart',
     [ data ],
     layout,
