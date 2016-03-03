@@ -26,11 +26,11 @@ $.getJSON(document.URL, function(json) {
     chart.layout.yaxis.tickfont.color = textcolour
 
     Plotly.redraw(chart)
-
-
+    updateEmbedCode(boxcolour, textcolour)
   });
 
   callDatePicker()
+  setEmbedCode()
 })
 
 function graph(json) {
