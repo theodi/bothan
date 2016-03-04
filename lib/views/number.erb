@@ -7,7 +7,7 @@ $.getJSON(document.URL, function (json) {
 
   var title = extractTitle(document.URL)
   var date = moment(last['time']).format('YYYY-DD-MM HH:mm')
-  var number = extractNumber(last)
+  var number = extractY(last)
 
   var content = '<h1>' + title + '</h1>'
   content += '<span id="metric-value">' + number + '</span>'
@@ -21,8 +21,9 @@ $.getJSON(document.URL, function (json) {
     separator : ',',
     decimal : '.'
   }
-  var number = new CountUp("metric-value", 0, number, 0, 1, options);
-  number.start();
+
+  var countup = new CountUp("metric-value", 0, number, 0, 1, options);
+  countup.start();
 
 })
 </script>
