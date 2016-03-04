@@ -208,5 +208,32 @@ $(function() {
   callDatePicker(format, '<%= @date %>')
 <% end %>
 
+  var picker = $('#boxcolour, #textcolour').colorpicker()
+
+  picker.on('changeColor', function(ev){
+    $(this).next('input').val(ev.color.toHex().replace('#', ''));
+
+    if (ev.target.id == 'textcolour') {
+      var textcolour = ev.color.toHex()
+      var boxcolour = $('input[name="boxcolourpicker"]').val()
+    } else {
+      var textcolour = $('input[name="textcolourpicker"]').val()
+      var boxcolour = ev.color.toHex()
+    }
+
+    if (chart.data[0].line) {
+      chart.data[0].line.color = textcolour
+      chart.layout.xaxis.tickfont.color = textcolour
+      chart.layout.yaxis.tickfont.color = textcolour
+    }
+
+    chart.layout.paper_bgcolor = boxcolour
+    chart.layout.plot_bgcolor = boxcolour
+    chart.layout.titlefont.color = textcolour
+
+
+    Plotly.redraw(chart)
+    updateEmbedCode(boxcolour, textcolour)
+  });
 })
 </script>
