@@ -29,23 +29,19 @@ function graph(json) {
     paper_bgcolor: '<%= @boxcolour %>',
     plot_bgcolor: '<%= @boxcolour %>',
     xaxis: {
-      gridcolor: '#333',
+      gridcolor: '#D3D3D3',
       type: 'datetime',
       tickangle: 315,
       tickformat: "%Y-%m-%d",
       tickfont: {
-        font: {
-          color: '<%= @textcolour %>'
-        }
+        color: '<%= @textcolour %>'
       }
     },
     yaxis: {
-      gridcolor: '#333',
+      gridcolor: '#D3D3D3',
       tickangle: 315,
       tickfont: {
-        font: {
-          color: '<%= @textcolour %>'
-        }
+        color: '<%= @textcolour %>'
       }
     },
     margin: {

@@ -1,0 +1,244 @@
+<br />
+
+<div class="row">
+  <div class='col-md-12'>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#types" id="type-tab" role="tab" data-toggle="tab" aria-controls="types" aria-expanded="true">
+          Visulisation types
+        </a>
+      </li>
+      <li role="presentation" >
+        <a href="#dates" role="tab" id="profile-tab" data-toggle="tab" aria-controls="dates">
+          Date range
+        </a>
+      </li>
+      <li role="presentation" >
+        <a href="#customise" role="tab" id="profile-tab" data-toggle="tab" aria-controls="customise">
+          Customise
+        </a>
+      </li>
+      <li>
+        <a href="#embed" role="tab" id="profile-tab" data-toggle="tab" aria-controls="embed">
+          Embed
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<form class='form-inline' role='form' action='<%= request.path %>' method='get'>
+
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="types">
+
+      <div class='form-group col-md-12'>
+        <label for='type' class='col-md-2'>View this as a</label>
+        <div class="col-md-10">
+          <% @alternatives.each do |alternative| %>
+            <label class='radio-inline'>
+              <input type='radio' name='type' value='<%= alternative %>'<% if  @type == alternative %> checked<% end %>> <%= alternative %>
+            </label>
+          <% end %>
+        </div>
+        <% extract_query_string(request.env['QUERY_STRING'], exclude: 'type').each do |name, value| %>
+          <input type='hidden' name='<%= name %>' value='<%= value %>' />
+        <% end %>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class='form-group pull-right'>
+          <button type='submit' class='btn btn-primary'>Submit</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="dates">
+
+      <% if @to %>
+
+        <div class='row'>
+          <div class='col-md-12'>
+            <div class='form-group col-md-6'>
+              <label for='oldest' class='col-md-3 text-right'>From</label>
+              <div class='input-group date col-md-9' id='from-date'>
+                <input type='text' class="form-control" id='oldest' name='oldest'/>
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class='form-group col-md-6'>
+              <label for='newest' class='col-md-3 text-right'>To</label>
+              <div class='input-group date col-md-9' id='to-date'>
+                <input type='text' class="form-control" id='newest' name='newest'/>
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class='col-md-12'>
+            <div class='form-group col-md-4 col-md-offset-8'>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="default-dates">
+                  Default dates (last 30 days)
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br />
+
+      <% else %>
+
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='form-group col-md-6'>
+            <label for='new-date' class='col-md-3 text-right'>Date</label>
+            <div class='input-group date col-md-9' id='new-date'>
+              <input type='text' class="form-control" id='new-date' name='new-date'/>
+              <span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% end %>
+
+      <br />
+
+      <div class="row">
+        <div class='form-group pull-right'>
+          <button type='submit' class='btn btn-primary'>Submit</button>
+        </div>
+      </div>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="customise">
+
+      <div class='col-md-12'>
+        <div class='form-group col-md-6'>
+          <label for='boxcolour' class='col-md-3 text-right'>Box Colour</label>
+            <div class="input-group col-md-9" id="boxcolour">
+              <input type="text" name="boxcolourpicker" value="<%= @boxcolour %>" class="form-control" />
+              <span class="input-group-addon"><i></i></span>
+            </div>
+            <input type="hidden" name="boxcolour" value="<%= @boxcolour[1..-1] %>" />
+        </div>
+
+        <div class='form-group col-md-6'>
+          <label for='boxcolour' class='col-md-3 text-right'>Text Colour</label>
+            <div class="input-group col-md-9" id="textcolour">
+              <input type="text" name="textcolourpicker" value="<%= @textcolour %>" class="form-control" />
+              <span class="input-group-addon"><i></i></span>
+            </div>
+            <input type="hidden" name="textcolour" value="<%= @textcolour[1..-1] %>" />
+        </div>
+
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class='form-group pull-right'>
+          <button type='submit' class='btn btn-primary'>Submit</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="embed">
+      <div class='form-group col-md-12'>
+        <textarea rows="2" class="form-control" id="embed" data-url="<%= embed_url %>"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+<script>
+function pickerOptions(format, date, minDate) {
+  options = {
+    format: format,
+    date: date,
+    minDate: minDate
+  };
+
+  for(var k in options)
+    if(options[k] == '') delete options[k];
+
+  return options
+}
+
+function callDatePicker(format, date) {
+  $('#new-date').datetimepicker(pickerOptions(format, date, ''));
+}
+
+function callFromToDatePicker(format, date_from, date_to, earliest_date) {
+  $('#from-date').datetimepicker(pickerOptions(format, date_from, earliest_date));
+  $('#to-date').datetimepicker(pickerOptions(format, date_to, earliest_date));
+
+  $('#from-date').on('dp.change', function (e) {
+    $('#to-date').data('DateTimePicker').minDate(e.date)
+  })
+  $('#to-date').on('dp.change', function (e) {
+    $('#from-date').data('DateTimePicker').maxDate(e.date)
+  })
+}
+
+$(function() {
+  var format = 'YYYY-MM-DD HH:mm:ss'
+  setEmbedCode()
+<% if @to %>
+  callFromToDatePicker(format, '<%= @from %>', '<%= @to %>', '<%= @earliest_date %>')
+<% else %>
+  callDatePicker(format, '<%= @date %>')
+<% end %>
+
+  var picker = $('#boxcolour, #textcolour').colorpicker()
+
+  picker.on('changeColor', function(ev){
+    $(this).next('input').val(ev.color.toHex().replace('#', ''));
+
+    if (ev.target.id == 'textcolour') {
+      var textcolour = ev.color.toHex()
+      var boxcolour = $('input[name="boxcolourpicker"]').val()
+    } else {
+      var textcolour = $('input[name="textcolourpicker"]').val()
+      var boxcolour = ev.color.toHex()
+    }
+
+    if (typeof(chart) != 'undefined') {
+      if (chart.data[0].line) {
+        chart.data[0].line.color = textcolour
+        chart.layout.xaxis.tickfont.color = textcolour
+        chart.layout.yaxis.tickfont.color = textcolour
+      }
+
+      chart.layout.paper_bgcolor = boxcolour
+      chart.layout.plot_bgcolor = boxcolour
+      chart.layout.titlefont.color = textcolour
+
+      Plotly.redraw(chart)
+    } else if ($('#wrapper').length > 0) {
+      $('#wrapper').css('background-color', boxcolour)
+      $('#wrapper').css('color', textcolour)
+    }
+
+    updateEmbedCode(boxcolour, textcolour)
+  });
+})
+</script>

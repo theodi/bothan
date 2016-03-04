@@ -12,28 +12,44 @@
               <%= yield %>
             </div>
           </div>
+          <%= erb :'includes/configuration-form' %>
           <div class='row'>
-            <div class='col-md-8'>
-              View this as a
-              <% @alternatives.delete @type %>
-              <% @alternatives.each do |alternative| %>
-                <a href='<%= request.path %>?type=<%= alternative %>' class='btn btn-success'><%= alternative %></a>
-              <% end %>
-            </div>
-            <div class='col-md-4'>
-              <a href='<%= "#{request.path}.json" %>' class='btn btn-info pull-right'>Get the JSON</a>
-            </div>
+            <hr />
+            <button data-toggle='collapse' data-target='#json' class='btn btn-info preview-json'>Show the JSON <i class="fa fa-arrow-circle-down"></i></button>
+            <a href='<%= "#{request.path}.json" %>' class='btn btn-info'>Get the JSON <i class="fa fa-arrow-circle-right"></i></a>
+            <div id='json' class='collapse' class='col-md-12'></div>
           </div>
           <div class='row'>
             <hr />
-            <% if @autorefresh %>
-              <div class='col-md-12 text-center'>
-                Autorefreshing every <%= @autorefresh %> seconds
-              </div>
-            <% end %>
+            <div class='col-md-12'>
+              <% if @autorefresh %>
+                <div class='col-md-12 text-center'>
+                  Autorefreshing every <%= @autorefresh %> seconds
+                </div>
+              <% end %>
+            </div>
           </div>
         <div class='col-md-2'></div>
       </div>
     </div>
   </body>
 </html>
+
+<script>
+$.getJSON(document.URL, function(json) {
+  $('#json').html('<pre>' + JSON.stringify(json, null, 2) + '</pre>')
+})
+
+// http://jsfiddle.net/V4u5X/2/
+$('.preview-json').click(function(){
+  var $this = $(this);
+  $this.toggleClass('preview-json');
+  if($this.hasClass('preview-json')){
+    $this.html('Show the JSON <i class="fa fa-arrow-circle-down"></i>');
+  } else {
+    $this.html('Hide the JSON <i class="fa fa-arrow-circle-up"></i>');
+  }
+});
+
+
+</script>

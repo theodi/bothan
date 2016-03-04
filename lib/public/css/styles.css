@@ -117,3 +117,12 @@ body.dashboard {
 h1#title {
   padding: 20px 20px 10px 20px;
 }
+
+.tab-content {
+  margin: 25px 0;
+}
+
+#embed textarea {
+  width: 100%;
+  margin-bottom: 25px;
+}

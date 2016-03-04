@@ -98,6 +98,45 @@ describe Helpers do
     )
   end
 
+  describe '#extract_query_string' do
+    it 'chops-up a query string' do
+      expect(helpers.extract_query_string 'type=target&boxcolour=fa8100').to eq (
+        {
+          'type' => 'target',
+          'boxcolour' => 'fa8100'
+        }
+      )
+    end
+
+    it 'can exclude a param' do
+      expect(helpers.extract_query_string 'type=target&boxcolour=fa8100', exclude: 'type').to eq (
+        {
+          'boxcolour' => 'fa8100'
+        }
+      )
+    end
+  end
+
+  describe '#sanitise_params' do
+    it 'keeps only the keys we care about' do
+      expect(helpers.sanitise_params({
+        "type"=>"chart",
+        "boxcolour"=>"fa8100",
+        "oldest"=>"2015-11-09 14:26:37",
+        "newest"=>"2016-02-01 12:27:39",
+        "splat"=>[],
+        "captures"=>["github-forks", "2016-01-31T14:26:37+00:00", "2016-03-01T14:26:37+00:00"],
+        "metric"=>"github-forks",
+        "from"=>"2016-01-31T14:26:37+00:00",
+        "to"=>"2016-03-01T14:26:37+00:00"
+      })).to eq 'type=chart&boxcolour=fa8100'
+
+  #    expect(helpers.sanitise_query_string 'type=chart&oldest=2015-11-09 14:26:37&boxcolour=fa8100&metric=derp').to eq (
+  #      'type=chart&boxcolour=fa8100'
+  #    )
+    end
+  end
+
   it 'gets a image url for a creative commons license' do
     image = helpers.license_image('https://creativecommons.org/licenses/cc-by/4.0/')
     expect(image).to eq('https://licensebuttons.net/l/cc-by/4.0/88x31.png')
@@ -224,6 +263,37 @@ describe Helpers do
       }
 
       expect(helpers.guess_type data).to eq('chart')
+    end
+
+  end
+
+  context 'with a request' do
+
+    before(:each) do
+      # Monkey patch `request` method here - in the context of the app, it would be available
+      class TestHelper
+        def request
+        end
+      end
+
+      allow(helpers).to receive(:request) {
+        double = instance_double(Rack::Request)
+        allow(double).to receive(:scheme) { 'http' }
+        allow(double).to receive(:host_with_port) { 'example.org' }
+        allow(double).to receive(:path) { '/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00' }
+        allow(double).to receive(:params) { {foo: 'bar', baz: 'foo'} }
+        double
+      }
+    end
+
+    let(:url) { 'http://example.org/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00?baz=foo&foo=bar&layout=bare' }
+
+    it 'generates an embed url' do
+      expect(helpers.embed_url).to eq(url)
+    end
+
+    it 'generates an embed iframe' do
+      expect(helpers.embed_iframe).to eq("<iframe src='#{url}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
     end
 
   end

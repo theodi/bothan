@@ -88,6 +88,45 @@ module Helpers
     end
   end
 
+  def extract_query_string qs, exclude: nil
+    params = qs.split('&')
+    query = {}
+    params.each do |param|
+      pair = param.split('=')
+      query[pair[0]] = pair[1] unless pair[0] == exclude
+    end
+    query
+  end
+
+  def keep_params qs
+    params_to_keep = [
+      'layout',
+      'type',
+      'boxcolour',
+      'textcolour',
+      'barcolour',
+      'autorefresh',
+      'with_path'
+    ]
+
+    good_params = {}
+
+    qs.each_pair do |k, v|
+      good_params[k] = v if params_to_keep.include? k
+    end
+
+    good_params
+  end
+
+  def sanitise_params qs
+    a = []
+    keep_params(qs).each_pair do |k, v|
+      a.push "#{k}=#{v}"
+    end
+
+    a.join '&'
+  end
+
   def config
     {
       title: ENV['METRICS_API_TITLE'],
@@ -139,6 +178,24 @@ module Helpers
     end
   end
 
+  def extract_query_string qs, exclude: nil
+    params = qs.split('&')
+    query = {}
+    params.each do |param|
+      pair = param.split('=')
+      query[pair[0]] = pair[1] unless pair[0] == exclude
+    end
+    query
+  end
+
+  def embed_iframe
+    "<iframe src='#{embed_url}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>"
+  end
+
+  def embed_url
+    request.scheme + '://' + request.host_with_port + request.path +  '?' + request.params.merge({layout: "bare"}).to_query
+  end
+  
 end
 
 class String

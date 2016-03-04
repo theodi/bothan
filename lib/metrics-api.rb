@@ -147,10 +147,15 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:time' do
+    if params['new-date']
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['new-date']).to_s}?#{sanitise_params params}"
+    end
+
     time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
     @metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last.to_json
+    @date = time.to_s
 
     respond_to do |wants|
       wants.json { @metric }
@@ -173,12 +178,28 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:from/:to' do
-    dates = DateWrangler.new params[:from], params[:to]
+    if params['default-dates']
+      url = generate_url(params[:metric], keep_params(params))
+      redirect to url
+    end
+
+    @from = params[:from]
+    @to = params[:to]
+    if params['oldest']
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+    end
+
+    dates = DateWrangler.new @from, @to
+
     error_400 dates.errors.join ' ' if dates.errors
 
     metrics = Metric.where(:name => params[:metric])
+    @earliest_date = metrics.first.time
+    @latest_date = metrics.last.time
+
     metrics = metrics.where(:time.gte => dates.from) if dates.from
     metrics = metrics.where(:time.lte => dates.to) if dates.to
+
     metrics = metrics.order_by(:time.asc)
 
     data = {
@@ -204,6 +225,7 @@ class MetricsApi < Sinatra::Base
         ]
 
         get_settings(params, data[:values].first)
+
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
