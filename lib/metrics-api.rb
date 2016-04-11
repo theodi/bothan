@@ -185,7 +185,8 @@ class MetricsApi < Sinatra::Base
 
     @from = params[:from]
     @to = params[:to]
-    if params['oldest']
+
+    if params['oldest'].present?
       redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
     end
 
