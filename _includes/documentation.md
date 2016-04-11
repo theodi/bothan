@@ -16,7 +16,66 @@ using a JSON content type, and with the following JSON in the body:
 }
 ```
 
-`value` is any valid JSON structure or number.
+`value` can be in any one of the following formats:
+
+#### Simple value
+
+The simplest format that a `value` can take is a single number. For example:
+
+```
+{
+  "name": "{metric-name}",
+  "time": "{iso8601-date-time}",
+  "value": 123
+}
+```
+
+#### Value with a target
+
+A value can also be a JSON object with an `actual`, `annual_target` and an optional `ytd_target`. For example:
+
+```
+{
+  "name": "{metric-name}",
+  "time": "{iso8601-date-time}",
+  "value": {
+    "actual": 1091000,
+    "annual_target": 2862000,
+    "ytd_target": 1368000
+  }
+}
+```
+
+Or:
+
+```
+{
+  "name": "{metric-name}",
+  "time": "{iso8601-date-time}",
+  "value": {
+    "actual": 1091000,
+    "annual_target": 2862000
+  }
+}
+```
+
+#### Multiple values
+
+If you want to track multiple values for one metric (for example, diversity data), we can do that too:
+
+```
+{
+  "name": "{metric-name}",
+  "time": "{iso8601-date-time}",
+  "value": {
+    "total": {
+      "value1": 123,
+      "value2": 23213,
+      "value4": 1235
+    }
+  }
+}
+```
 
 ### Fetching data
 
