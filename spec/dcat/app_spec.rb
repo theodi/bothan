@@ -22,7 +22,7 @@ describe MetricsApi do
   end
 
   it 'has the correct last-modified date' do
-    expect(@dataset.modified).to eq DateTime.parse '2016-01-01T00:00:00.000+00:00'
+    expect(@dataset.modified).to eq DateTime.parse '2015-01-01T00:00:00.000+00:00'
   end
 
   it 'has a good description' do
