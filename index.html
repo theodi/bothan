@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Metrics-api by theodi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Metrics-api</h1>
+      <h2 class="project-tagline">Simple wrapper around MongoDB to allow storage and retrieval of metrics</h2>
+      <a href="https://github.com/theodi/metrics-api" class="btn">View on GitHub</a>
+      <a href="https://github.com/theodi/metrics-api/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/theodi/metrics-api/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p>A simple wrapper around MongoDB to allow storage of time series metrics.</p>
+
+<p><a href="https://heroku.com/deploy"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy"></a></p>
+
+<h2>
+<a id="content-negotiation" class="anchor" href="#content-negotiation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Content negotiation</h2>
+
+<p>The API will respond to the following <em>Accept</em> values with appropriate content:</p>
+
+<p><code>application/json</code></p>
+
+<p>Content will be returned as a JSON object</p>
+
+<p><code>text/html</code></p>
+
+<p>Content will be returned as HTML (see below for more)</p>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h2>
+
+<h3>
+<a id="fetching-data" class="anchor" href="#fetching-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fetching data</h3>
+
+<pre><code>GET https://metrics.theodi.org/metrics[.json]
+</code></pre>
+
+<p>Fetches list of available metrics</p>
+
+<pre><code>GET https://metrics.theodi.org/metrics/{metric_name}[.json]
+</code></pre>
+
+<p>Fetches latest value for specified metric</p>
+
+<pre><code>GET https://metrics.theodi.org/metrics/{metric_name}/{time}
+</code></pre>
+
+<p>Fetch the most recent value of the metric at the specified time. <code>time</code> is an ISO8601 date/time.</p>
+
+<pre><code>GET https://metrics.theodi.org/metrics/{metric_name}/{from}/{to}
+</code></pre>
+
+<p>Fetch all values of the metric between the specified times. <code>from</code> and <code>to</code> can be either:</p>
+
+<ul>
+<li>An ISO8601 date/time</li>
+<li>An ISO8601 duration</li>
+<li>
+<code>*</code>, meaning unspecified</li>
+</ul>
+
+<h3>
+<a id="adding-data" class="anchor" href="#adding-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding data</h3>
+
+<pre><code>POST https://metrics.theodi.org/metrics/{metric-name}
+</code></pre>
+
+<p>using a JSON content type, and with the following JSON in the body:</p>
+
+<pre><code>{
+  "name": "{metric-name}",
+  "time": "{iso8601-date-time}",
+  "value": ...
+}
+</code></pre>
+
+<p><code>value</code> is any valid JSON structure or number.</p>
+
+<h2>
+<a id="html" class="anchor" href="#html" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTML</h2>
+
+<p>While this is primarily a JSON API, some of our endpoints will also serve HTML. Primarily:</p>
+
+<pre><code>GET https://metrics.theodi.org/metrics/{metric_name}/{from}/{to}
+</code></pre>
+
+<p>(or <code>GET https://metrics.theodi.org/metrics/{metric_name}</code> which will redirect to a default time-range of the last 30 days)</p>
+
+<h3>
+<a id="query-string-options" class="anchor" href="#query-string-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>query-string options</h3>
+
+<p>The rendering can be manipulated by the following query-string options:</p>
+
+<h4>
+<a id="layout" class="anchor" href="#layout" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>layout</h4>
+
+<p>One of:</p>
+
+<ul>
+<li>
+<code>rich</code>, with a nav-bar and other controls, or</li>
+<li>
+<code>bare</code>, a minimal layout designed for inclusion elsewhere as an iframe</li>
+</ul>
+
+<p>Default: <code>rich</code></p>
+
+<h4>
+<a id="type" class="anchor" href="#type" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>type</h4>
+
+<p>One of:</p>
+
+<ul>
+<li>
+<code>chart</code>, which renders a <a href="https://plot.ly/javascript/">Plotly</a> line chart of the data, as best it can (it attempts to extract reasonable y-axis-values from the metric, but some metrics simply do not make sense in this form. Caveat Graphor)</li>
+<li>
+<code>number</code>, which displays the latest value from the metric (if it can find such a thing)</li>
+<li>
+<code>pie</code>, which renders a <a href="https://plot.ly/javascript/">Plotly</a> pie chart of the data, as best it can</li>
+<li>
+<p><code>target</code>, which renders a meter style chart with an actual value, an annual target value and a year to date target value. For this to work, the data should be in the following format:</p>
+
+<pre><code>{
+  "actual": value,
+  "annual_target": value,
+  "ytd_target": value,
+}
+</code></pre>
+</li>
+<li>
+<code>tasklist</code>, which renders a list of tasks and their progress. This is highly specialised to ODI, and may not be relevant to anyone else's needs, but if you want to use this visualisation, the data should be in this format:
+<code>
+[
+  {
+    "title": "Task name",
+    "due": "Due date in ISO8601 format",
+    "progress": A float value between 0 and 1,
+  },
+  ...
+]
+</code>
+</li>
+</ul>
+
+<p>Default: <code>chart</code></p>
+
+<h4>
+<a id="boxcolour" class="anchor" href="#boxcolour" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>boxcolour</h4>
+
+<p>Background colour for the chart or number, in hex. Note that you should <em>not</em> pass the leading <em>#</em>. Also note the English spelling</p>
+
+<p>Default: ddd</p>
+
+<h4>
+<a id="textcolour" class="anchor" href="#textcolour" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>textcolour</h4>
+
+<p>Text colour (and line colour for the chart), in hex. Note that you should <em>not</em> pass the leading <em>#</em>. Also note the English spelling</p>
+
+<p>Default: 222</p>
+
+<h4>
+<a id="autorefresh" class="anchor" href="#autorefresh" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>autorefresh</h4>
+
+<p><code>meta-refresh</code> interval for the page</p>
+
+<p>Default: none</p>
+
+<p>Example: <a href="http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&amp;textcolour=00ffff&amp;layout=bare">http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&amp;textcolour=00ffff&amp;layout=bare</a></p>
+
+<h3>
+<a id="setting-defaults" class="anchor" href="#setting-defaults" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting defaults</h3>
+
+<p>By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type via the API:</p>
+
+<pre><code>POST https://metrics.theodi.org/metrics/{metric-name}/defaults
+</code></pre>
+
+<p>using a JSON content type, and with the following JSON in the body:</p>
+
+<pre><code>{
+  "type": "{one of `chart`, `tasklist`, `target` or `pie`}"
+}
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/theodi/metrics-api">Metrics-api</a> is maintained by <a href="https://github.com/theodi">theodi</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
