@@ -1,5 +1,5 @@
 production:
-  sessions:
+  clients:
     default:
       uri: <%= ENV['MONGOLAB_URI'] %>
       consistency: :strong
@@ -9,13 +9,13 @@ production:
       safe: true
       refresh_interval: 10
 development:
-  sessions:
+  clients:
     default:
       database: metrics_api_development
       hosts:
         - localhost
 test:
-  sessions:
+  clients:
     default:
       database: metrics_api_test
       hosts:
