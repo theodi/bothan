@@ -5,7 +5,7 @@
 All POST requests require a username and password (sent via basic auth)
 
 ```
-POST https://metrics-api.example/metrics/{metric-name}
+POST https://username:password@metrics-api.example/metrics/{metric-name}
 ```
 
 using a JSON content type, and with the following JSON in the body:
