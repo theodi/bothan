@@ -11,11 +11,3 @@
   </div>
   <div class='col-md-1'></div>
 </div>
-
-<script src='/javascripts/target.js'></script>
-<script>
-$.getJSON(document.URL, function (json) {
-  $('#caption').html('<h1>' + extractTitle(document.URL) + '</h1>')
-  drawTarget(lastOrOnlyValue(json), '<%= @barcolour %>')
-})
-</script>
