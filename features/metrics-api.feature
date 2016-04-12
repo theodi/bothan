@@ -167,3 +167,22 @@ Feature: Metrics API
       """
     Then the response status should be "400"
     And there should be 0 defaults with the type "membership-count"
+
+
+  Scenario: POSTing data in a legacy format
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/membership-count" with the following:
+      """
+      {
+        "name": "membership-count",
+        "time": "2013-12-25T15:00:00+00:00",
+        "value": 10
+      }
+      """
+    Then the response status should be "201"
+    And the data should be stored in the "membership-count" metric
+    And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
+    And the value of the metric should be:
+      """
+      10
+      """
