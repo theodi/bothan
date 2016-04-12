@@ -12,7 +12,6 @@ using a JSON content type, and with the following JSON in the body:
 
 ```
 {
-  "name": "{metric-name}",
   "time": "{iso8601-date-time}",
   "value": ...
 }
@@ -22,7 +21,6 @@ cURL example:
 
 ```
 curl -X POST -H "Content-Type: application/json" -d '{
-  "name": "simple-value",
   "time": "2016-04-12T10:00:00",
   "value": 500
 }' "https://username:password@metrics-api.example/metrics/simple-value"
@@ -36,7 +34,6 @@ The simplest format that a `value` can take is a single number. For example:
 
 ```
 {
-  "name": "{metric-name}",
   "time": "{iso8601-date-time}",
   "value": 123
 }
@@ -48,7 +45,6 @@ A value can also be a JSON object with an `actual`, `annual_target` and an optio
 
 ```
 {
-  "name": "{metric-name}",
   "time": "{iso8601-date-time}",
   "value": {
     "actual": 1091000,
@@ -62,7 +58,6 @@ Or:
 
 ```
 {
-  "name": "{metric-name}",
   "time": "{iso8601-date-time}",
   "value": {
     "actual": 1091000,
@@ -77,7 +72,6 @@ If you want to track multiple values for one metric (for example, diversity data
 
 ```
 {
-  "name": "{metric-name}",
   "time": "{iso8601-date-time}",
   "value": {
     "total": {
