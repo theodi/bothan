@@ -2,8 +2,10 @@
 
 ### Adding data
 
+All POST requests require a username and password (sent via basic auth)
+
 ```
-POST https://metrics.theodi.org/metrics/{metric-name}
+POST https://metrics-api.example/metrics/{metric-name}
 ```
 
 using a JSON content type, and with the following JSON in the body:
@@ -15,6 +17,7 @@ using a JSON content type, and with the following JSON in the body:
   "value": ...
 }
 ```
+
 
 `value` can be in any one of the following formats:
 
@@ -80,25 +83,25 @@ If you want to track multiple values for one metric (for example, diversity data
 ### Fetching data
 
 ```
-GET https://metrics.theodi.org/metrics[.json]
+GET https://metrics-api.example/metrics[.json]
 ```
 
 Fetches list of available metrics
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}[.json]
+GET https://metrics-api.example/metrics/{metric_name}[.json]
 ```
 
 Fetches latest value for specified metric
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}/{time}
+GET https://metrics-api.example/metrics/{metric_name}/{time}
 ```
 
 Fetch the most recent value of the metric at the specified time. `time` is an ISO8601 date/time.
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}/{from}/{to}
+GET https://metrics-api.example/metrics/{metric_name}/{from}/{to}
 ```
 
 Fetch all values of the metric between the specified times. `from` and `to` can be either:
@@ -112,10 +115,10 @@ Fetch all values of the metric between the specified times. `from` and `to` can 
 While this is primarily a JSON API, some of our endpoints will also serve HTML. Primarily:
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}/{from}/{to}
+GET https://metrics-api.example/metrics/{metric_name}/{from}/{to}
 ```
 
-(or `GET https://metrics.theodi.org/metrics/{metric_name}` which will redirect to a default time-range of the last 30 days)
+(or `GET https://metrics-api.example/metrics/{metric_name}` which will redirect to a default time-range of the last 30 days)
 
 #### query-string options
 
@@ -178,14 +181,14 @@ Default: 222
 
 Default: none
 
-Example: http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
+Example: http://metrics-api.example/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
 
 ### Setting defaults
 
 By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type via the API:
 
 ```
-POST https://metrics.theodi.org/metrics/{metric-name}/defaults
+POST https://metrics-api.example/metrics/{metric-name}/defaults
 ```
 
 using a JSON content type, and with the following JSON in the body:
