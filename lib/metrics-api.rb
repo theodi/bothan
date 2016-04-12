@@ -106,7 +106,16 @@ class MetricsApi < Sinatra::Base
 
   post '/metrics/:metric' do
     protected!
-    @metric = Metric.new(JSON.parse request.body.read)
+
+    body = JSON.parse request.body.read
+
+    metric =
+
+    @metric = Metric.new({
+      "name" => params[:metric],
+      "time" => body["time"],
+      "value" => body["value"]
+    })
 
     if @metric.save
       return 201

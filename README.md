@@ -64,7 +64,6 @@ using a JSON content type, and with the following JSON in the body:
 
 ```
 {
-  "name": "{metric-name}",
   "time": "{iso8601-date-time}",
   "value": ...
 }
