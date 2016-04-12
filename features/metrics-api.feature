@@ -18,7 +18,6 @@ Feature: Metrics API
     When I send a POST request to "metrics/membership-coverage" with the following:
       """
       {
-        "name": "membership-coverage",
         "time": "2013-12-25T15:00:00+00:00",
         "value": {
                   "health": 0.33,
@@ -40,7 +39,6 @@ Feature: Metrics API
     When I send a POST request to "metrics/membership-count" with the following:
       """
       {
-        "name": "membership-count",
         "time": "2013-12-25T15:00:00+00:00",
         "value": 10
       }
