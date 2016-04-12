@@ -18,6 +18,15 @@ using a JSON content type, and with the following JSON in the body:
 }
 ```
 
+cURL example:
+
+```
+curl -X POST -H "Content-Type: application/json" -d '{
+  "name": "simple-value",
+  "time": "2016-04-12T10:00:00",
+  "value": 500
+}' "https://username:password@metrics-api.example/metrics/simple-value"
+```
 
 `value` can be in any one of the following formats:
 
