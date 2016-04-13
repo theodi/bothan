@@ -172,15 +172,10 @@ class MetricsApi < Sinatra::Base
       wants.json { @metric }
 
       wants.html do
-        @alternatives = [
-          'chart',
-          'number',
-          'target',
-          'tasklist',
-          'pie'
-        ]
+        metric = JSON.parse(@metric, {:symbolize_names => true})
+        @alternatives = get_alternatives(metric[:value])
 
-        get_settings(params, JSON.parse(@metric, {:symbolize_names => true}))
+        get_settings(params, metric)
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
@@ -230,13 +225,10 @@ class MetricsApi < Sinatra::Base
       wants.json { data.to_json }
 
       wants.html do
-        @alternatives = [
-          'chart',
-          'number',
-          'target'
-        ]
+        value = data[:values].first
+        @alternatives = get_alternatives(value[:value])
 
-        get_settings(params, data[:values].first)
+        get_settings(params, value)
 
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end

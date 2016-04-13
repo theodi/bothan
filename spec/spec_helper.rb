@@ -8,6 +8,7 @@ require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
 require 'database_cleaner'
+require 'nokogiri'
 
 require 'dotenv'
 Dotenv.load
