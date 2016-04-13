@@ -346,4 +346,62 @@ describe Helpers do
 
   end
 
+  context 'gets the correct possible visualisation types' do
+
+    it 'data is a simple value' do
+      data = 123
+      expect(helpers.get_alternatives data).to eq([
+        'chart',
+        'number'
+      ])
+    end
+
+    it 'data is a target' do
+      data = {
+        "actual" => 1091000,
+        "annual_target" => 2862000,
+        "ytd_target" => 1368000
+      }
+
+      expect(helpers.get_alternatives data).to eq([
+        'chart',
+        'number',
+        'target'
+      ])
+    end
+
+    it 'data has multiple values' do
+      data = {
+        "total": {
+          "value1" => 123,
+          "value2" => 23213,
+          "value4" => 1235
+        }
+      }
+
+      expect(helpers.get_alternatives data).to eq([
+        'chart',
+        'number',
+        'pie'
+      ])
+    end
+
+    it 'data is a task list' do
+      data = [
+        {
+          "id" => "512211cc788c2d8d110074a9",
+          "title" => "Embed 2 processes with ODI standards",
+          "due" => "2013-03-31T11:00:00Z",
+          "progress" => 1,
+          "no_checklist"  => false
+        }
+      ]
+
+      expect(helpers.get_alternatives data).to eq([
+        'tasklist'
+      ])
+    end
+
+  end
+
 end

@@ -102,6 +102,18 @@ module Helpers
     query
   end
 
+  def get_alternatives(value)
+    alt = ['chart', 'number']
+    if value.class == Array
+      alt = ['tasklist']
+    elsif single?(value, "")
+      v = ActiveSupport::HashWithIndifferentAccess.new(value)
+      alt << 'target' if v['annual_target']
+      alt << 'pie' if v['total']
+    end
+    alt
+  end
+
   def keep_params qs
     params_to_keep = [
       'layout',
