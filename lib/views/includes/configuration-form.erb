@@ -58,8 +58,6 @@
 
     <div role="tabpanel" class="tab-pane" id="dates">
 
-      <% if @to %>
-
         <div class='row'>
           <div class='col-md-12'>
             <div class='form-group col-md-6'>
@@ -83,6 +81,8 @@
           </div>
         </div>
 
+        <% if @to %>
+
         <div class="row">
           <div class='col-md-12'>
             <div class='form-group col-md-4 col-md-offset-8'>
@@ -97,27 +97,9 @@
           </div>
         </div>
 
+        <% end %>
+
         <br />
-
-      <% else %>
-
-      <div class='row'>
-        <div class='col-md-12'>
-          <div class='form-group col-md-6'>
-            <label for='new-date' class='col-md-3 text-right'>Date</label>
-            <div class='input-group date col-md-9' id='new-date'>
-              <input type='text' class="form-control" id='new-date' name='new-date'/>
-              <span class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <% end %>
-
-      <br />
 
       <div class="row">
         <div class='form-group pull-right'>
@@ -202,11 +184,7 @@ function callFromToDatePicker(format, date_from, date_to, earliest_date) {
 $(function() {
   var format = 'YYYY-MM-DD HH:mm:ss'
   setEmbedCode()
-<% if @to %>
   callFromToDatePicker(format, '<%= @from %>', '<%= @to %>', '<%= @earliest_date %>')
-<% else %>
-  callDatePicker(format, '<%= @date %>')
-<% end %>
 
   var picker = $('#boxcolour, #textcolour').colorpicker()
 
