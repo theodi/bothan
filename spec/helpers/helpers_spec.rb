@@ -298,4 +298,52 @@ describe Helpers do
 
   end
 
+  context 'checks whether to display a single date or a range' do
+
+    it 'data is a simple value' do
+      data = 123
+      expect(helpers.single? data, nil).to eq(false)
+    end
+
+    it 'data is a target' do
+      data = {
+        "actual" => 1091000,
+        "annual_target" => 2862000,
+        "ytd_target" => 1368000
+      }
+
+      expect(helpers.single? data, nil).to eq(true)
+    end
+
+    it 'data has multiple values' do
+      data = {
+        "total": {
+          "value1" => 123,
+          "value2" => 23213,
+          "value4" => 1235
+        }
+      }
+
+      expect(helpers.single? data, nil).to eq(true)
+    end
+
+    it 'data is a task list' do
+      data = [
+        {
+          "id" => "512211cc788c2d8d110074a9",
+          "title" => "Embed 2 processes with ODI standards",
+          "due" => "2013-03-31T11:00:00Z",
+          "progress" => 1,
+          "no_checklist"  => false
+        }
+      ]
+    end
+
+    it 'data has an override' do
+      data = 123
+      expect(helpers.single? data, 'single').to eq(true)
+    end
+
+  end
+
 end

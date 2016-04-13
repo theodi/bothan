@@ -66,8 +66,8 @@ module Helpers
   end
 
   def generate_url(metric, params)
-    defaults = metric_defaults(metric)
-    url = datetime_path(defaults.delete('datetime'), metric)
+    defaults = metric_defaults(metric.name)
+    url = datetime_path(metric, defaults.delete('datetime'))
     params.merge!(defaults)
     build_url(url, params.to_query)
   end
@@ -77,14 +77,18 @@ module Helpers
     [url, params].compact.join('?')
   end
 
-  def datetime_path(datetime, metric)
+  def single?(metric, datetime)
+    [Hash, Array, BSON::Document].include?(metric.class) || datetime == "single"
+  end
+
+  def datetime_path(metric, datetime)
     now = Time.now.iso8601
-    if datetime == 'single'
-      "/metrics/#{metric}/#{now}"
+    if single?(metric.value, datetime)
+      "/metrics/#{metric.name}/#{now}"
     else
       days = 30
       before = (Time.now - (60 * 60 * 24 * days)).iso8601
-      "/metrics/#{metric}/#{before}/#{now}"
+      "/metrics/#{metric.name}/#{before}/#{now}"
     end
   end
 
@@ -195,7 +199,7 @@ module Helpers
   def embed_url
     request.scheme + '://' + request.host_with_port + request.path +  '?' + request.params.merge({layout: "bare"}).to_query
   end
-  
+
 end
 
 class String
