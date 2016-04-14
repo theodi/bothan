@@ -156,14 +156,18 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:time' do
-    if params['new-date']
-      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['new-date']).to_s}?#{sanitise_params params}"
-    end
+    date_redirect(params)
 
     time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
     metric = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc).last
+
+    if params['default-dates'].present?
+      url = generate_url(metric, keep_params(params))
+      redirect to url
+    end
+
     @metric = (metric.nil? ? {} : metric).to_json
 
     @date = time.to_s
@@ -172,15 +176,10 @@ class MetricsApi < Sinatra::Base
       wants.json { @metric }
 
       wants.html do
-        @alternatives = [
-          'chart',
-          'number',
-          'target',
-          'tasklist',
-          'pie'
-        ]
+        metric = JSON.parse(@metric, {:symbolize_names => true})
+        @alternatives = get_alternatives(metric[:value])
 
-        get_settings(params, JSON.parse(@metric, {:symbolize_names => true}))
+        get_settings(params, metric)
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
@@ -189,23 +188,22 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/:from/:to' do
-    if params['default-dates']
-      url = generate_url(params[:metric], keep_params(params))
-      redirect to url
-    end
+    date_redirect(params)
 
     @from = params[:from]
     @to = params[:to]
-
-    if params['oldest'].present?
-      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
-    end
 
     dates = DateWrangler.new @from, @to
 
     error_400 dates.errors.join ' ' if dates.errors
 
     metrics = Metric.where(:name => params[:metric])
+
+    if params['default-dates'].present?
+      url = generate_url(metrics.first, keep_params(params))
+      redirect to url
+    end
+
     @earliest_date = metrics.first.time
     @latest_date = metrics.last.time
 
@@ -230,13 +228,10 @@ class MetricsApi < Sinatra::Base
       wants.json { data.to_json }
 
       wants.html do
-        @alternatives = [
-          'chart',
-          'number',
-          'target'
-        ]
+        value = data[:values].first
+        @alternatives = get_alternatives(value[:value])
 
-        get_settings(params, data[:values].first)
+        get_settings(params, value)
 
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end

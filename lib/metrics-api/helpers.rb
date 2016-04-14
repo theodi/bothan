@@ -92,6 +92,16 @@ module Helpers
     end
   end
 
+  def date_redirect params
+    if params['oldest'].present? && params['newest'].present?
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+    end
+
+    if params['oldest'].present?
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
+    end
+  end
+
   def extract_query_string qs, exclude: nil
     params = qs.split('&')
     query = {}
@@ -100,6 +110,18 @@ module Helpers
       query[pair[0]] = pair[1] unless pair[0] == exclude
     end
     query
+  end
+
+  def get_alternatives(value)
+    alt = ['chart', 'number']
+    if value.class == Array
+      alt = ['tasklist']
+    elsif single?(value, "")
+      v = ActiveSupport::HashWithIndifferentAccess.new(value)
+      alt << 'target' if v['annual_target']
+      alt << 'pie' if v['total']
+    end
+    alt
   end
 
   def keep_params qs
