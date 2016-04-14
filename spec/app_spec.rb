@@ -95,4 +95,52 @@ describe MetricsApi do
 
   end
 
+  context 'redirects to dates correctly' do
+
+    before(:each) do
+      Metric.create(
+        name: "simple-metric",
+        time: DateTime.parse("2016-01-02T00:00:00Z"),
+        value: rand(100)
+      )
+    end
+
+    context 'from a date range' do
+      let(:base_url) { '/metrics/simple-metric/2014-01-01T16:00:00+01:00/2014-01-12T16:00:00+00:00' }
+
+      it 'with to and from dates' do
+        get "#{base_url}?oldest=2016-01-01T16:00:00Z&newest=2016-01-12T16:00:00Z"
+        follow_redirect!
+
+        expect(last_request.url).to eq 'http://example.org/metrics/simple-metric/2016-01-01T16:00:00+00:00/2016-01-12T16:00:00+00:00'
+      end
+
+      it 'with from date' do
+        get "#{base_url}?oldest=2016-01-01T16:00:00Z"
+        follow_redirect!
+
+        expect(last_request.url).to eq 'http://example.org/metrics/simple-metric/2016-01-01T16:00:00+00:00'
+      end
+    end
+
+    context 'from a single date' do
+      let(:base_url) { '/metrics/simple-metric/2014-01-01T16:00:00+01:00' }
+
+      it 'with to and from dates' do
+        get "#{base_url}?oldest=2016-01-01T16:00:00Z&newest=2016-01-12T16:00:00Z"
+        follow_redirect!
+
+        expect(last_request.url).to eq 'http://example.org/metrics/simple-metric/2016-01-01T16:00:00+00:00/2016-01-12T16:00:00+00:00'
+      end
+
+      it 'with from date' do
+        get "#{base_url}?oldest=2016-01-01T16:00:00Z"
+        follow_redirect!
+
+        expect(last_request.url).to eq 'http://example.org/metrics/simple-metric/2016-01-01T16:00:00+00:00'
+      end
+    end
+
+  end
+
 end

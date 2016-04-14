@@ -92,6 +92,16 @@ module Helpers
     end
   end
 
+  def date_redirect params
+    if params['oldest'].present? && params['newest'].present?
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+    end
+
+    if params['oldest'].present?
+      redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
+    end
+  end
+
   def extract_query_string qs, exclude: nil
     params = qs.split('&')
     query = {}
