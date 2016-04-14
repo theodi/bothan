@@ -1,5 +1,5 @@
 {
-  "name": "Metrics API",
+  "name": "Bothan",
   "description": "A simple wrapper around MongoDB to allow storage of time series metrics.",
   "keywords": [
     "data",
@@ -14,11 +14,11 @@
   },
   "env": {
     "METRICS_API_TITLE": {
-      "description": "The title of your Metrics API instance - i.e. 'My Awesome Metrics'",
+      "description": "The title of your Bothan instance - i.e. 'My Awesome Metrics'",
       "required": true
     },
     "METRICS_API_DESCRIPTION": {
-      "description": "The description for your Metrics API instance",
+      "description": "The description for your Bothan instance",
       "required": true
     },
     "METRICS_API_LICENSE_NAME": {
