@@ -7,7 +7,7 @@
     "visualisations"
   ],
   "website": "http://metrics.theodi.org/",
-  "repository": "https://github.com/theodi/metrics-api",
+  "repository": "https://github.com/theodi/bothan",
   "logo": "https://avatars0.githubusercontent.com/u/2492770?v=3&s=200",
   "success_url": "/metrics",
   "scripts": {

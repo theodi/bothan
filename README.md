@@ -1,10 +1,12 @@
-[![Build Status](http://img.shields.io/travis/theodi/metrics-api.svg?style=flat-square)](https://travis-ci.org/theodi/metrics-api)
-[![Dependency Status](http://img.shields.io/gemnasium/theodi/metrics-api.svg?style=flat-square)](https://gemnasium.com/theodi/metrics-api)
-[![Coverage Status](http://img.shields.io/coveralls/theodi/metrics-api.svg?style=flat-square)](https://coveralls.io/r/theodi/metrics-api)
-[![Code Climate](http://img.shields.io/codeclimate/github/theodi/metrics-api.svg?style=flat-square)](https://codeclimate.com/github/theodi/metrics-api)
+[![Build Status](http://img.shields.io/travis/theodi/bothan.svg?style=flat-square)](https://travis-ci.org/theodi/bothan)
+[![Dependency Status](http://img.shields.io/gemnasium/theodi/bothan.svg?style=flat-square)](https://gemnasium.com/theodi/bothan)
+[![Coverage Status](http://img.shields.io/coveralls/theodi/bothan.svg?style=flat-square)](https://coveralls.io/r/theodi/bothan)
+[![Code Climate](http://img.shields.io/codeclimate/github/theodi/bothan.svg?style=flat-square)](https://codeclimate.com/github/theodi/bothan)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://theodi.mit-license.org)
 
-# ODI Metrics API
+# Bothan
+
+## Brings you information
 
 A simple wrapper around MongoDB to allow storage of time series metrics.
 
