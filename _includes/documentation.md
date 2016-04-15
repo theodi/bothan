@@ -184,7 +184,7 @@ Default: 222
 
 Default: none
 
-Example: http://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
+Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
 
 ### Setting defaults
 
