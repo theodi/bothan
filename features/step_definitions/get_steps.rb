@@ -13,7 +13,7 @@ Given(/^it has a value of:$/) do |value|
 end
 
 And(/^I should get redirected to "(.*?)"$/) do |location|
-  expect(location).to eq last_response.location
+  expect(last_response.location).to eq location
 end
 
 Given(/^the time is "(.*?)"$/) do |timestamp|
