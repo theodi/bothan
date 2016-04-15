@@ -29,25 +29,25 @@ Content will be returned as HTML (see below for more)
 ### Fetching data
 
 ```
-GET https://metrics.theodi.org/metrics[.json]
+GET https://demo.bothan.io/metrics[.json]
 ```
 
 Fetches list of available metrics
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}[.json]
+GET https://demo.bothan.io/metrics/{metric_name}[.json]
 ```
 
 Fetches latest value for specified metric
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}/{time}
+GET https://demo.bothan.io/metrics/{metric_name}/{time}
 ```
 
 Fetch the most recent value of the metric at the specified time. `time` is an ISO8601 date/time.
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}/{from}/{to}
+GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
 ```
 
 Fetch all values of the metric between the specified times. `from` and `to` can be either:
@@ -59,7 +59,7 @@ Fetch all values of the metric between the specified times. `from` and `to` can 
 ### Adding data
 
 ```
-POST https://metrics.theodi.org/metrics/{metric-name}
+POST https://demo.bothan.io/metrics/{metric-name}
 ```
 
 using a JSON content type, and with the following JSON in the body:
@@ -78,10 +78,10 @@ using a JSON content type, and with the following JSON in the body:
 While this is primarily a JSON API, some of our endpoints will also serve HTML. Primarily:
 
 ```
-GET https://metrics.theodi.org/metrics/{metric_name}/{from}/{to}
+GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
 ```
 
-(or `GET https://metrics.theodi.org/metrics/{metric_name}` which will redirect to a default time-range of the last 30 days)
+(or `GET https://demo.bothan.io/metrics/{metric_name}` which will redirect to a default time-range of the last 30 days)
 
 ### query-string options
 
@@ -144,14 +144,14 @@ Default: 222
 
 Default: none
 
-Example: http://metrics.theodi.org/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
+Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
 
 ### Setting defaults
 
 By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type via the API:
 
 ```
-POST https://metrics.theodi.org/metrics/{metric-name}/defaults
+POST https://demo.bothan.io/metrics/{metric-name}/defaults
 ```
 
 using a JSON content type, and with the following JSON in the body:
