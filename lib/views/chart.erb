@@ -9,17 +9,47 @@ $.getJSON(document.URL, function(json) {
 
 function graph(json) {
   var points = getPoints(json['values'])
-  var data = {
-    x: points['x'],
-    y: points['y'],
-    type: 'scatter',
-    line: {
-      shape: 'spline',
-      width: 2,
-      smoothing: 1.3,
-      color: '<%= @textcolour %>'
-    },
+  var data = []
+
+  if (typeof(points['y'][0]) == 'object') {
+    yKeys = Object.keys(points['y'][0])
+    yCount = yKeys.length
+
+    for (y = 0; y < yCount; y++) {
+      var vals = []
+
+      for (i = 0; i < points['y'].length; i++) {
+        vals.push(points['y'][i][yKeys[y]])
+      }
+
+      data.push({
+        x: points['x'],
+        y: vals,
+        name: yKeys[y],
+        type: 'scatter',
+        line: {
+          shape: 'spline',
+          width: 2,
+          smoothing: 1.3,
+        },
+      })
+    }
+
+  } else {
+    data.push({
+      x: points['x'],
+      y: points['y'],
+      type: 'scatter',
+      line: {
+        shape: 'spline',
+        width: 2,
+        smoothing: 1.3,
+        color: '<%= @textcolour %>'
+      },
+    })
   }
+
+  debugger;
 
   var layout = {
     title: extractTitle(document.URL),
@@ -51,7 +81,7 @@ function graph(json) {
 
   Plotly.newPlot(
     'chart',
-    [ data ],
+    data,
     layout,
     { displayModeBar: <%= @plotly_modebar %> }
   );
