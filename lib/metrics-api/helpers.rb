@@ -94,6 +94,7 @@ module Helpers
 
   def date_redirect params
     if params['oldest'].present? && params['newest'].present?
+      params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
       redirect to "/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
     end
 
