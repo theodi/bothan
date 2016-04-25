@@ -1,11 +1,39 @@
-<div id='number'></div>
+<div id="number-container"></div>
+
+<style>
+  @font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+  }
+</style>
+
+<template id="number-template">
+  <style>
+    @import '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css';
+    @import '/css/<%= @css || 'styles' %>.css';
+
+    div {
+      font-family: 'Open Sans';
+    }
+  </style>
+
+  <div id='number'></div>
+</template>
 
 <script src="/javascripts/countup.js"></script>
 <script src="/javascripts/number.js"></script>
 
 <script>
+var container = document.querySelector('#number-container');
+var root = container.createShadowRoot();
 $.getJSON(document.URL, function (json) {
+  t = document.querySelector('#number-template');
+  console.log(t.innerHTML)
+  root.innerHTML = t.innerHTML
   title = extractTitle(document.URL)
-  number(json, title)
+  number(json, title, $(container.shadowRoot))
 })
 </script>
