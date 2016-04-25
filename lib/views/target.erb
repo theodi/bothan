@@ -1,4 +1,4 @@
-<div id='target-container' class='row'>
+<div id='target-container'>
 </div>
 
 <style>
@@ -14,24 +14,24 @@
 <template id='metric-with-target'>
   <style>
     @import '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css';
-    @import '/css/<%= @css || 'styles' %>.css';
+    @import '/css/target.css';
 
     div {
       font-family: 'Open Sans';
     }
   </style>
 
-  <div class='col-md-1'></div>
-    <div class='col-md-10'>
-      <div class='row'>
-        <div id='caption' class='col-md-12'></div>
-      </div>
-      <div class='row'>
-        <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
-        <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
-      </div>
-    </div>
+  <div id="target-wrapper" class="row">
     <div class='col-md-1'></div>
+      <div class='col-md-10'>
+        <div id='caption'></div>
+        <div class='row'>
+          <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
+          <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
+        </div>
+      </div>
+      <div class='col-md-1'></div>
+    </div>
 </template>
 
 <script src='/javascripts/target.js'></script>
