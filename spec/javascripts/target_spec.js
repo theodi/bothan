@@ -10,7 +10,7 @@ describe('target.js', function() {
       "ytd_target": 215
     }
 
-    drawTarget(value, '')
+    drawTarget(value, '', $('#target-wrapper'))
 
     expect($('#target .actual-bar')).toHaveClass('col-md-2')
     expect($('#target .annual_target-bar')).toHaveClass('col-md-12')
@@ -31,7 +31,7 @@ describe('target.js', function() {
       "annual_target": 486,
     }
 
-    drawTarget(value, '')
+    drawTarget(value, '', $('#target-wrapper'))
 
     expect($('#target-little .ytd_target-bar').length).toEqual(0)
   })
@@ -43,7 +43,7 @@ describe('target.js', function() {
       "ytd_target": 215
     }
 
-    drawTarget(value, '#63635d')
+    drawTarget(value, '#63635d', $('#target-wrapper'))
 
     expect($('#target .actual-bar')).toHaveCss({'background-color': 'rgb(99, 99, 93)'})
     expect($('#target .annual_target-bar')).toHaveCss({'background-color': 'rgb(99, 99, 93)'})
