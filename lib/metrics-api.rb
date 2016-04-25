@@ -5,6 +5,7 @@ require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
 require_relative 'models/defaults'
+require_relative 'models/metadata'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -141,6 +142,23 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  post '/metrics/:metric/metadata' do
+    protected!
+    begin
+      data = JSON.parse request.body.read
+      @meta = MetricMetadata.find_or_create_by(name: params[:metric])
+      @meta.title.merge!(data["title"] || {})
+      @meta.description.merge!(data["description"] || {})
+      if @meta.save
+        return 201
+      else
+        return 400
+      end
+    rescue
+      return 500
+    end
+  end
+  
   get '/metrics/:metric/?' do
     @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
     respond_to do |wants|
