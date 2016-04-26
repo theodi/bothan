@@ -24,10 +24,8 @@
   text-align: center;
   height: 40vh;
   border-right: 2px solid #000;
-  margin: 10vh auto;
-  width: 90%;
+  margin: 10vh 5%;
   display: block;
-  left: 5%;
 }
 
 .with-target {
