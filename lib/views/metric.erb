@@ -1,7 +1,13 @@
-<div id='wrapper' style='background-color: <%= @boxcolour %>; color: <%= @textcolour %>'>
-  <% if @alternatives.include? @type %>
-    <%= erb @type.to_sym %>
-  <% else %>
-    <%= erb :chart %>
-  <% end %>
-</div>
+<%if @layout == 'bare' %>
+  <div id='wrapper' style='background-color: <%= @boxcolour %>; color: <%= @textcolour %>'>
+    <% if @alternatives.include? @type %>
+      <%= erb @type.to_sym %>
+    <% else %>
+      <%= erb :chart %>
+    <% end %>
+  </div>
+<% else %>
+  <div style="height: 470px;">
+    <%= embed_iframe %>
+  </div>
+<% end %>
