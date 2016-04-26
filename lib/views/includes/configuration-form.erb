@@ -199,23 +199,6 @@ $(function() {
       var boxcolour = ev.color.toHex()
     }
 
-    if (typeof(chart) != 'undefined') {
-      if (chart.data[0].line) {
-        chart.data[0].line.color = textcolour
-        chart.layout.xaxis.tickfont.color = textcolour
-        chart.layout.yaxis.tickfont.color = textcolour
-      }
-
-      chart.layout.paper_bgcolor = boxcolour
-      chart.layout.plot_bgcolor = boxcolour
-      chart.layout.titlefont.color = textcolour
-
-      Plotly.redraw(chart)
-    } else if ($('#wrapper').length > 0) {
-      $('#wrapper').css('background-color', boxcolour)
-      $('#wrapper').css('color', textcolour)
-    }
-
     updateEmbedCode(boxcolour, textcolour)
   });
 })

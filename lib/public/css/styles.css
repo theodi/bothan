@@ -55,6 +55,10 @@ h1#title {
   margin: 25px 0;
 }
 
+#iframe_embed {
+  height: 470px;
+}
+
 #embed textarea {
   width: 100%;
   margin-bottom: 25px;
