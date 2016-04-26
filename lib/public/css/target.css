@@ -1,26 +1,31 @@
-#target-wrapper {
+#widget {
   text-align: center;
   position: relative;
   height: 100%;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  display: table;
 }
 
-h1 {
+#target-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#target-wrapper  h1 {
   font-size: 10vh;
-  margin-top: 4vh;
+  opacity: 0.7;
+  width: 100%;
+  text-align: center;
 }
 
 #target, #target-little {
   text-align: center;
-  position: relative;
-  margin: 1em 0;
   height: 40vh;
   border-right: 2px solid #000;
-  bottom: 0;
-  margin: 15vh 0;
-}
-
-#target-little {
-  margin: 40px;
+  margin: 10vh 5%;
+  display: block;
 }
 
 .with-target {

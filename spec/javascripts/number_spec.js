@@ -32,7 +32,7 @@ describe('number.js', function() {
     it('applies a number and title', function() {
       number(json, 'My Awesome Title', $('#number-wrapper'))
       expect($('#number h1').html()).toEqual('My Awesome Title')
-      expect($('#number #metric-value').html()).toEqual('224')
+      expect($('#number h2').html()).toEqual('224')
       expect($('#number small').html()).toEqual('Last updated: 2016-02-03 14:27')
     })
   })
@@ -52,7 +52,7 @@ describe('number.js', function() {
     it('applies a number and title', function() {
       number(json, 'My Awesome Title', $('#number-wrapper'))
       expect($('#number h1').html()).toEqual('My Awesome Title')
-      expect($('#number #metric-value').html()).toEqual('2')
+      expect($('#number h2').html()).toEqual('2')
       expect($('#number small').html()).toEqual('Last updated: 2015-01-05 11:21')
     })
   })
