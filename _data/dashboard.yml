@@ -26,8 +26,8 @@
     text: ffffff
     box: fa8100
 
-- metric: simple-metric
+- metric: metric-with-multiple-values
   colours:
     text: ffffff
     box: fa8100
-  type: number
+  type: pie
