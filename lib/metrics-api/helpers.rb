@@ -42,7 +42,7 @@ module Helpers
     @textcolour = "##{params.fetch('textcolour', '222')}"
     @autorefresh = params.fetch('autorefresh', nil)
 
-    @plotly_modebar = (@layout == 'rich')
+    @plotly_modebar = params.fetch('plotly_modebar', 'false')
   end
 
   def get_start_date params
