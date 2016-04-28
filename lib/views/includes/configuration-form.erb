@@ -58,7 +58,7 @@
 
     <div role="tabpanel" class="tab-pane" id="dates">
 
-        <div class='row'>
+        <div class='row <%= @type == 'chart' ? '' : 'hidden' %>' id='tofrom'>
           <div class='col-md-12'>
             <div class='form-group col-md-6'>
               <label for='oldest' class='col-md-3 text-right'>From</label>
@@ -73,6 +73,20 @@
               <label for='newest' class='col-md-3 text-right'>To</label>
               <div class='input-group date col-md-9' id='to-date'>
                 <input type='text' class="form-control" id='newest' name='newest'/>
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='row <%= @type == 'chart' ? 'hidden' : '' %>' id='singledate'>
+          <div class='col-md-12'>
+            <div class='form-group col-md-6'>
+              <label for='date' class='col-md-3 text-right'>Date</label>
+              <div class='input-group date col-md-9' id='date'>
+                <input type='text' class="form-control" id='new-date' name='date'/>
                 <span class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </span>
@@ -176,6 +190,7 @@ function callFromToDatePicker(format, date_from, date_to, earliest_date) {
   $('#from-date').on('dp.change', function (e) {
     $('#to-date').data('DateTimePicker').minDate(e.date)
   })
+
   $('#to-date').on('dp.change', function (e) {
     $('#from-date').data('DateTimePicker').maxDate(e.date)
   })
@@ -189,6 +204,7 @@ $(function() {
   var format = 'YYYY-MM-DD HH:mm:ss'
   setEmbedCode()
   callFromToDatePicker(format, '<%= @from %>', '<%= @to %>', '<%= @earliest_date %>')
+  callDatePicker(format, '<%= @to %>', '<%= @earliest_date %>')
 
   var picker = $('#boxcolour, #textcolour').colorpicker()
 
@@ -210,13 +226,17 @@ $(function() {
   });
 
   $('input[name="type"]').change(function(){
+    if ($(this).val() == 'chart') {
+      $('#singledate').addClass('hidden')
+      $('#tofrom').removeClass('hidden')
+    } else {
+      $('#singledate').removeClass('hidden')
+      $('#tofrom').addClass('hidden')
+    }
     updateEmbedCode({
       type: $(this).val()
     })
   })
 
-  $('input[name="oldest"], input[name="newest"]').on('dp.change', function() {
-    updateEmbedCode({}, $('input[name="oldest"]').val(), $('input[name="newest"]').val())
-  })
 })
 </script>
