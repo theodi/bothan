@@ -335,5 +335,17 @@ describe('metrics.js', function() {
       expect($('#embed textarea').val()).toEqual("<iframe src='http://example.org/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00?layout=bare&type=chart&boxcolour=111&textcolour=ccc' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
       expect($('#iframe_embed iframe').attr('src')).toEqual('http://example.org/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00?layout=bare&type=chart&boxcolour=111&textcolour=ccc')
     })
+
+    it('updates data', function() {
+      url = "http://example.org/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00?layout=bare&type=chart&boxcolour=000&textcolour=fff"
+      setFixtures("<div id='iframe_embed'><iframe src='"+ url +"'></iframe></div><div id='embed'><textarea data-url='"+ url +"'></textarea></div>")
+
+      updateEmbedCode({}, '2015-02-02T09:27:29+00:00', '2015-03-03T09:27:29+00:00')
+
+      new_url = 'http://example.org/metrics/my-awesome-metric/2015-02-02T09:27:29+00:00/2015-03-03T09:27:29+00:00?layout=bare&type=chart&boxcolour=000&textcolour=fff'
+
+      expect($('#embed textarea').val()).toEqual("<iframe src='"+ new_url +"' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
+      expect($('#iframe_embed iframe').attr('src')).toEqual(new_url)
+    })
   })
 })
