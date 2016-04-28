@@ -179,8 +179,12 @@ function pickerOptions(format, date, minDate) {
   return options
 }
 
-function callDatePicker(format, date) {
-  $('#new-date').datetimepicker(pickerOptions(format, date, ''));
+function callDatePicker(format, date, earliest_date) {
+  $('#date').datetimepicker(pickerOptions(format, date, '', earliest_date));
+
+  $('#date').on('dp.change', function() {
+    updateEmbedCode({}, $('input[name="date"]').val())
+  })
 }
 
 function callFromToDatePicker(format, date_from, date_to, earliest_date) {
