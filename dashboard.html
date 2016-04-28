@@ -3,34 +3,16 @@ layout: dashboard
 ---
 
 <div class="grid grid-pad">
+  {% for panel in site.data.dashboard %}
     <div class="col-1-3">
-       <div class="content">
-         <iframe src='http://metrics.theodi.org/metrics/certificated-datasets?layout=bare' width='100%' height='300px' frameBorder='0' scrolling='no'></iframe>
-       </div>
+      <div class="content">
+        <iframe src='http://demo.bothan.io/metrics/{{ panel.metric }}?layout=bare&boxcolour={{ panel.colours.box }}&textcolour={{ panel.colours.text }}&type={{ panel.type }}'
+                width='100%'
+                height='300px'
+                frameBorder='0'
+                scrolling='no'>
+        </iframe>
+      </div>
     </div>
-    <div class="col-1-3">
-       <div class="content">
-         <iframe src='http://metrics.theodi.org/metrics/certificated-datasets?layout=bare&textcolour=ffffff&type=number' width='100%' height='300px' frameBorder='0' scrolling='no'></iframe>
-       </div>
-    </div>
-    <div class="col-1-3">
-       <div class="content">
-         <iframe src='http://demo.bothan.io/metrics/simple-metric?layout=bare&boxcolour=2254F4&textcolour=ffffff&type=number' width='100%' height='300px' frameBorder='0' scrolling='no'></iframe>
-       </div>
-    </div>
-    <div class="col-1-3">
-       <div class="content">
-         <iframe src='http://demo.bothan.io/metrics/simple-metric?layout=bare&boxcolour=2254F4&textcolour=ffffff&type=number' width='100%' height='300px' frameBorder='0' scrolling='no'></iframe>
-       </div>
-    </div>
-    <div class="col-1-3">
-       <div class="content">
-         <iframe src='http://demo.bothan.io/metrics/simple-metric?layout=bare&boxcolour=2254F4&textcolour=ffffff&type=number' width='100%' height='300px' frameBorder='0' scrolling='no'></iframe>
-       </div>
-    </div>
-    <div class="col-1-3">
-       <div class="content">
-         <iframe src='http://demo.bothan.io/metrics/simple-metric?layout=bare&boxcolour=2254F4&textcolour=ffffff&type=number' width='100%' height='300px' frameBorder='0' scrolling='no'></iframe>
-       </div>
-    </div>
+  {% endfor %}
 </div>

@@ -1,0 +1,33 @@
+- metric: simple-metric
+  colours:
+    text: ffffff
+    box: fa8100
+
+- metric: simple-metric
+  colours:
+    text: ffffff
+    box: fa8100
+  type: number
+
+- metric: metric-with-target
+  colours:
+    text: ffffff
+    box: fa8100
+  type: target
+
+- metric: metric-with-ytd-target
+  colours:
+    text: ffffff
+    box: fa8100
+  type: target
+
+- metric: simple-metric
+  colours:
+    text: ffffff
+    box: fa8100
+
+- metric: simple-metric
+  colours:
+    text: ffffff
+    box: fa8100
+  type: number
