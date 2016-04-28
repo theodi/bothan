@@ -17,8 +17,8 @@ namespace :demo do
         name: "metric-with-target",
         time: DateTime.now - i,
         value: {
-          actual: rand(100),
-          annual_target: rand(1000)
+          actual: rand(0..100),
+          annual_target: rand(100..1000)
         }
       )
 
@@ -31,9 +31,9 @@ namespace :demo do
         name: "metric-with-ytd-target",
         time: DateTime.now - i,
         value: {
-          actual: rand(100),
-          annual_target: rand(1000),
-          ytd_target: rand(500)
+          actual: rand(0..100),
+          annual_target: rand(100..500),
+          ytd_target: rand(500..1000)
         }
       )
 
