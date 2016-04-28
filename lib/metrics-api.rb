@@ -148,7 +148,7 @@ class MetricsApi < Sinatra::Base
 
       wants.html do
         url = generate_url(@metric, keep_params(request.params))
-        
+
         redirect to url
       end
 
@@ -198,7 +198,7 @@ class MetricsApi < Sinatra::Base
 
     error_400 dates.errors.join ' ' if dates.errors
 
-    metrics = Metric.where(:name => params[:metric])
+    metrics = Metric.where(:name => params[:metric]).asc(:time)
 
     if params['default-dates'].present?
       url = generate_url(metrics.first, keep_params(params))
