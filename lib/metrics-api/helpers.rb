@@ -205,12 +205,17 @@ module Helpers
     end
   end
 
-  def embed_iframe
-    "<iframe src='#{embed_url}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>"
+  def embed_iframe(params = {})
+    "<iframe src='#{embed_url(params)}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>"
   end
 
-  def embed_url
-    request.scheme + '://' + request.host_with_port + request.path +  '?' + request.params.merge({layout: "bare"}).to_query
+  def embed_url(params = {})
+    params = request.params.merge(params.merge(
+      {
+        layout: "bare"
+      }
+    )).to_query
+    request.scheme + '://' + request.host_with_port + request.path +  '?' + params
   end
 
 end
