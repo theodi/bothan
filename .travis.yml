@@ -33,7 +33,7 @@ deploy:
       secure: QltOg+AwR8MovsjARqI9VVlOR/9hVKfYXklCO+Zki+GOBryNVyecqT9ZisYoPLwhgAk+9wUk8ckYtrdUTO7tISML0RqFk5WPspQZdPcFYQ266RlEyUJ2I4mBJAHk9SF/Yr1TnxG9ZdtAd+7p8tAeSEE3s2eritXnJUYF1/jwgnY=
     app: odi-metrics-api
     on:
-      repo: theodi/metrics-api
+      repo: theodi/bothan
   - provider: heroku
     api_key:
       secure: O+PX1JfDHC7h0RE5y9l21y0digLpn8d45NDQym+GuU23Ua3naRe9gg2ZlsU+gTfoeUPtNv4xicL3MtFw4SH0yjJbgXVa+fvRBU7xtbpFv7fszmQFpSLT5gYGb3AT989MEMZ/2IRcfb72c0mXarEsh6wemhG3nH+lReAkJaYKyaI=
