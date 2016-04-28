@@ -11,6 +11,8 @@ $.getJSON(document.URL + '?with_path=true', function(json) {
 })
 
 function pie(json) {
+  $('#chart').height($(window).height())
+
   var data = [{
     values: extractValues(json.value, '//total'),
     labels: extractKeys(json.value, '//total'),
