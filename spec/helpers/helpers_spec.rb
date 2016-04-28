@@ -296,6 +296,14 @@ describe Helpers do
       expect(helpers.embed_iframe).to eq("<iframe src='#{url}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
     end
 
+    it 'allows additional params' do
+      expect(helpers.embed_url(parma: 'ham')).to eq(url + "&parma=ham")
+    end
+
+    it 'adds additional params to an embed iframe' do
+      expect(helpers.embed_iframe(parma: 'ham')).to eq("<iframe src='#{url + "&parma=ham"}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
+    end
+
   end
 
   context 'checks whether to display a single date or a range' do
