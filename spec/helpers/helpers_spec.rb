@@ -52,7 +52,7 @@ describe Helpers do
       expect(helpers.instance_variable_get("@boxcolour")).to eq('#fa8100')
       expect(helpers.instance_variable_get("@textcolour")).to eq('#fff')
       expect(helpers.instance_variable_get("@autorefresh")).to eq(true)
-      expect(helpers.instance_variable_get("@title")).to eq('foo-bar')
+      expect(helpers.instance_variable_get("@title")).to eq({"en"=>"Foo Bar"})
       expect(helpers.instance_variable_get("@description")).to eq(nil)
     end
 
@@ -120,6 +120,10 @@ describe Helpers do
     ).to eq(
       '2013 Q1 Completed Tasks'
     )
+  end
+
+  it 'extracts a title from a slug' do
+    expect(helpers.title_from_slug('certificated-datasets')).to eq('Certificated Datasets')
   end
 
   describe '#extract_query_string' do

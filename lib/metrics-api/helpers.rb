@@ -29,7 +29,12 @@ module Helpers
   def extract_title url
     regex = /http.*metrics\/([^\/]*)[\/|\.].*/
     result = url.match(regex)
-    words = result[1].split('-')
+    title_from_slug(result[1])
+  end
+
+  def title_from_slug(slug)
+    return nil if slug.nil?
+    words = slug.split('-')
     words.map { |word|
       word[0].upcase + word[1..-1].downcase
     }.join(' ')
@@ -43,7 +48,7 @@ module Helpers
     @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
     @textcolour = "##{params.fetch('textcolour', '222')}"
     @autorefresh = params.fetch('autorefresh', nil)
-    @title = metadata.try(:title) || params['metric']
+    @title = metadata.try(:title) || { "en" => title_from_slug(params['metric']) }
     @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
   end
