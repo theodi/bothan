@@ -4,7 +4,7 @@ desc "Purely for setting up metrics on the demo site"
 namespace :demo do
   task :setup do
     Metric.all.delete
-    MetricDefault.all.delete
+    MetricMetadata.all.delete
 
     5.times do |i|
       Metric.create(
@@ -22,7 +22,7 @@ namespace :demo do
         }
       )
 
-      MetricDefault.create(
+      MetricMetadata.create(
         name: "metric-with-target",
         type: "target"
       )
@@ -37,7 +37,7 @@ namespace :demo do
         }
       )
 
-      MetricDefault.create(
+      MetricMetadata.create(
         name: "metric-with-ytd-target",
         type: "target"
       )
@@ -55,7 +55,7 @@ namespace :demo do
         }
       )
 
-      MetricDefault.create(
+      MetricMetadata.create(
         name: "metric-with-multiple-values",
         type: "pie"
       )

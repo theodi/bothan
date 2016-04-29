@@ -180,12 +180,16 @@ module Helpers
     end
   end
 
+  def metadata(metric_name)
+    MetricMetadata.where(name: metric_name).first
+  end
+
   def visualisation_type(metric_name, data)
-    default = MetricDefault.where(name: metric_name).first
-    if default.nil?
+    metadata = metadata(metric_name)
+    if metadata.nil? || metadata.type.nil?
       guess_type(data)
     else
-      default.type
+      metadata.type
     end
   end
 

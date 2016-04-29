@@ -174,11 +174,16 @@ describe Helpers do
     let(:metric_name) { 'my-cool-metric' }
 
     it 'when a default exists' do
-      MetricDefault.create(name: 'my-cool-metric', type: 'pie')
+      MetricMetadata.create(name: 'my-cool-metric', type: 'pie')
       expect(helpers.visualisation_type(metric_name, data)).to eq('pie')
     end
 
     it 'when a default does not exist' do
+      expect(helpers.visualisation_type(metric_name, data)).to eq('chart')
+    end
+
+    it 'when a default does not exist, but metadata does' do
+      MetricMetadata.create(name: 'my-cool-metric', name: { en: "Foo Bar"})
       expect(helpers.visualisation_type(metric_name, data)).to eq('chart')
     end
   end
