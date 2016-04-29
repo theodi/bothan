@@ -10,8 +10,10 @@
           <%= yield %>
         </div>
         <div class='col-md-3'>
-          <script src='<%= @config[:certificate_url] %>/badge.js'></script>
-          <hr />
+          <% if @config[:certificate_url] %>
+            <script src='<%= @config[:certificate_url] %>/badge.js'></script>
+            <hr />
+          <% end %>
           <% if @config[:license][:image] %>
             <a href='<%= @config[:license][:url] %>' title='<%= @config[:license][:title] %>'>
               <img alt='Creative Commons License' style='border-width:0' src='<%= @config[:license][:image] %>' />
