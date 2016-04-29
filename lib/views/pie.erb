@@ -23,7 +23,7 @@ function pie(json) {
   }];
 
   var layout = {
-    title: extractTitle(document.URL),
+    title: '<%= @title["en"] %>',
     titlefont: {
       color: '<%= @textcolour %>'
     },
