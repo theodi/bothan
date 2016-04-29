@@ -10,7 +10,7 @@
       </li>
       <li role="presentation" >
         <a href="#dates" role="tab" id="profile-tab" data-toggle="tab" aria-controls="dates">
-          Date range
+          Dates
         </a>
       </li>
       <li role="presentation" >
@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<form class='form-inline' role='form' action='<%= request.path %>' method='get'>
+<div class='form-inline'>
 
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="types">
@@ -46,19 +46,11 @@
         <% end %>
       </div>
 
-      <br />
-
-      <div class="row">
-        <div class='form-group pull-right'>
-          <button type='submit' class='btn btn-primary'>Submit</button>
-        </div>
-      </div>
-
     </div>
 
     <div role="tabpanel" class="tab-pane" id="dates">
 
-        <div class='row'>
+        <div class='row <%= @type == 'chart' ? '' : 'hidden' %>' id='tofrom'>
           <div class='col-md-12'>
             <div class='form-group col-md-6'>
               <label for='oldest' class='col-md-3 text-right'>From</label>
@@ -81,33 +73,22 @@
           </div>
         </div>
 
-        <% if @to %>
-
-        <div class="row">
+        <div class='row <%= @type == 'chart' ? 'hidden' : '' %>' id='singledate'>
           <div class='col-md-12'>
-            <div class='form-group col-md-4 col-md-offset-8'>
-
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="default-dates">
-                  Default dates (last 30 days)
-                </label>
+            <div class='form-group col-md-6'>
+              <label for='date' class='col-md-3 text-right'>Date</label>
+              <div class='input-group date col-md-9' id='date'>
+                <input type='text' class="form-control" id='new-date' name='date'/>
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <% end %>
-
-        <br />
-
-      <div class="row">
-        <div class='form-group pull-right'>
-          <button type='submit' class='btn btn-primary'>Submit</button>
-        </div>
-      </div>
-
     </div>
+
     <div role="tabpanel" class="tab-pane" id="customise">
 
       <div class='col-md-12'>
@@ -131,14 +112,6 @@
 
       </div>
 
-      <br />
-
-      <div class="row">
-        <div class='form-group pull-right'>
-          <button type='submit' class='btn btn-primary'>Submit</button>
-        </div>
-      </div>
-
     </div>
 
     <div role="tabpanel" class="tab-pane" id="embed">
@@ -149,7 +122,7 @@
 
   </div>
 
-</form>
+</div>
 
 <script>
 function pickerOptions(format, date, minDate) {
@@ -165,26 +138,36 @@ function pickerOptions(format, date, minDate) {
   return options
 }
 
-function callDatePicker(format, date) {
-  $('#new-date').datetimepicker(pickerOptions(format, date, ''));
+function callDatePicker(format, date, earliest_date) {
+  $('#date').datetimepicker(pickerOptions(format, date, '', earliest_date));
+
+  $('#date').on('dp.change', function() {
+    updatePage({}, $('input[name="date"]').val())
+  })
 }
 
 function callFromToDatePicker(format, date_from, date_to, earliest_date) {
-  $('#from-date').datetimepicker(pickerOptions(format, date_from, earliest_date));
+  $('#from-date').datetimepicker(pickerOptions(format, earliest_date, earliest_date));
   $('#to-date').datetimepicker(pickerOptions(format, date_to, earliest_date));
 
   $('#from-date').on('dp.change', function (e) {
     $('#to-date').data('DateTimePicker').minDate(e.date)
   })
+
   $('#to-date').on('dp.change', function (e) {
     $('#from-date').data('DateTimePicker').maxDate(e.date)
+  })
+
+  $('#from-date, #to-date').on('dp.change', function() {
+    updatePage({}, $('input[name="oldest"]').val(), $('input[name="newest"]').val())
   })
 }
 
 $(function() {
   var format = 'YYYY-MM-DD HH:mm:ss'
   setEmbedCode()
-  callFromToDatePicker(format, '<%= @from %>', '<%= @to %>', '<%= @earliest_date %>')
+  callFromToDatePicker(format, '<%= @from || @earliest_date  %>', '<%= @to || @date %>', '<%= @earliest_date %>')
+  callDatePicker(format, '<%= @to || @date %>', '<%= @earliest_date %>')
 
   var picker = $('#boxcolour, #textcolour').colorpicker()
 
@@ -199,7 +182,28 @@ $(function() {
       var boxcolour = ev.color.toHex()
     }
 
-    updateEmbedCode(boxcolour, textcolour)
+    updatePage({
+      boxcolour: boxcolour.replace('#', ''),
+      textcolour: textcolour.replace('#', '')
+    })
   });
+
+  $('input[name="type"]').change(function(){
+    if ($(this).val() == 'chart') {
+      $('#singledate').addClass('hidden')
+      $('#tofrom').removeClass('hidden')
+      var from = $('input[name="oldest"]').val()
+      var to = $('input[name="newest"]').val()
+    } else {
+      $('#singledate').removeClass('hidden')
+      $('#tofrom').addClass('hidden')
+      var from, to
+    }
+
+    updatePage({
+      type: $(this).val()
+    }, from, to)
+  })
+
 })
 </script>
