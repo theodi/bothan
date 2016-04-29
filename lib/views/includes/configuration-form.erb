@@ -207,8 +207,8 @@ function callFromToDatePicker(format, date_from, date_to, earliest_date) {
 $(function() {
   var format = 'YYYY-MM-DD HH:mm:ss'
   setEmbedCode()
-  callFromToDatePicker(format, '<%= @from %>', '<%= @to %>', '<%= @earliest_date %>')
-  callDatePicker(format, '<%= @to %>', '<%= @earliest_date %>')
+  callFromToDatePicker(format, '<%= @from || @earliest_date  %>', '<%= @to || @date %>', '<%= @earliest_date %>')
+  callDatePicker(format, '<%= @to || @date %>', '<%= @earliest_date %>')
 
   var picker = $('#boxcolour, #textcolour').colorpicker()
 
