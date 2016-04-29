@@ -41,7 +41,8 @@ describe Helpers do
         'type' => 'number',
         'boxcolour' => 'fa8100',
         'textcolour' => 'fff',
-        'autorefresh' => true
+        'autorefresh' => true,
+        'metric' => 'foo-bar'
       }
 
       helpers.get_settings(params, {})
@@ -51,6 +52,8 @@ describe Helpers do
       expect(helpers.instance_variable_get("@boxcolour")).to eq('#fa8100')
       expect(helpers.instance_variable_get("@textcolour")).to eq('#fff')
       expect(helpers.instance_variable_get("@autorefresh")).to eq(true)
+      expect(helpers.instance_variable_get("@title")).to eq({"en"=>"Foo Bar"})
+      expect(helpers.instance_variable_get("@description")).to eq(nil)
     end
 
     it 'with no params' do
@@ -78,6 +81,27 @@ describe Helpers do
       expect(helpers.instance_variable_get("@autorefresh")).to eq(nil)
     end
 
+    it 'gets metadata' do
+      MetricMetadata.create(
+        name: 'my-cool-metric',
+        type: 'pie',
+        title: {
+          en: 'My title'
+        },
+        description: {
+          en: 'Description'
+        }
+      )
+
+      helpers.get_settings({
+        'metric' => 'my-cool-metric'
+      }, {})
+
+      expect(helpers.instance_variable_get("@type")).to eq('pie')
+      expect(helpers.instance_variable_get("@title")).to eq({'en' => 'My title'})
+      expect(helpers.instance_variable_get("@description")).to eq({'en' => 'Description'})
+    end
+
   end
 
   it 'extracts a title from a URL' do
@@ -96,6 +120,10 @@ describe Helpers do
     ).to eq(
       '2013 Q1 Completed Tasks'
     )
+  end
+
+  it 'extracts a title from a slug' do
+    expect(helpers.title_from_slug('certificated-datasets')).to eq('Certificated Datasets')
   end
 
   describe '#extract_query_string' do
@@ -174,12 +202,17 @@ describe Helpers do
     let(:metric_name) { 'my-cool-metric' }
 
     it 'when a default exists' do
-      MetricDefault.create(name: 'my-cool-metric', type: 'pie')
-      expect(helpers.visualisation_type(metric_name, data)).to eq('pie')
+      metadata = MetricMetadata.create(name: 'my-cool-metric', type: 'pie')
+      expect(helpers.visualisation_type('pie', data)).to eq('pie')
     end
 
     it 'when a default does not exist' do
-      expect(helpers.visualisation_type(metric_name, data)).to eq('chart')
+      expect(helpers.visualisation_type(nil, data)).to eq('chart')
+    end
+
+    it 'when a default does not exist, but metadata does' do
+      MetricMetadata.create(name: 'my-cool-metric', name: { en: "Foo Bar"})
+      expect(helpers.visualisation_type(nil, data)).to eq('chart')
     end
   end
 

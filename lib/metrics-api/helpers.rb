@@ -29,19 +29,27 @@ module Helpers
   def extract_title url
     regex = /http.*metrics\/([^\/]*)[\/|\.].*/
     result = url.match(regex)
-    words = result[1].split('-')
+    title_from_slug(result[1])
+  end
+
+  def title_from_slug(slug)
+    return nil if slug.nil?
+    words = slug.split('-')
     words.map { |word|
       word[0].upcase + word[1..-1].downcase
     }.join(' ')
   end
 
   def get_settings(params, data)
+    metadata = metadata(params['metric'])
+
     @layout = params.fetch('layout', 'rich')
-    @type = params.fetch('type', visualisation_type(params[:metric], data))
+    @type = params.fetch('type', visualisation_type(metadata.try(:type), data))
     @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
     @textcolour = "##{params.fetch('textcolour', '222')}"
     @autorefresh = params.fetch('autorefresh', nil)
-
+    @title = metadata.try(:title) || { "en" => title_from_slug(params['metric']) }
+    @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
   end
 
@@ -180,12 +188,15 @@ module Helpers
     end
   end
 
-  def visualisation_type(metric_name, data)
-    default = MetricDefault.where(name: metric_name).first
-    if default.nil?
+  def metadata(metric_name)
+    MetricMetadata.where(name: metric_name).first
+  end
+
+  def visualisation_type(type, data)
+    if type.nil?
       guess_type(data)
     else
-      default.type
+      type
     end
   end
 

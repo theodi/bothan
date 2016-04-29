@@ -4,7 +4,7 @@ require 'tilt/erubis'
 require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
-require_relative 'models/defaults'
+require_relative 'models/metadata'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -124,14 +124,15 @@ class MetricsApi < Sinatra::Base
     end
   end
 
-  post '/metrics/:metric/defaults' do
+  post '/metrics/:metric/metadata' do
     protected!
     begin
       data = JSON.parse request.body.read
-      @default = MetricDefault.find_or_create_by(name: params[:metric])
-      @default.type = data['type']
-
-      if @default.save
+      @meta = MetricMetadata.find_or_create_by(name: params[:metric])
+      @meta.type = data["type"]
+      @meta.title.merge!(data["title"] || {})
+      @meta.description.merge!(data["description"] || {})
+      if @meta.save
         return 201
       else
         return 400

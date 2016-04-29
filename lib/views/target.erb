@@ -37,7 +37,7 @@ var root = container.createShadowRoot();
 $.getJSON(document.URL, function (json) {
   t = document.querySelector('#metric-with-target');
   root.innerHTML = t.innerHTML
-  $(container.shadowRoot).find('#caption').html('<h1>' + extractTitle(document.URL) + '</h1>')
+  $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')
   drawTarget(lastOrOnlyValue(json), '<%= @barcolour %>', $(container.shadowRoot))
 })
 </script>
