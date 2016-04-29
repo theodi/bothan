@@ -130,34 +130,60 @@ Default: `chart`
 
 Background colour for the chart or number, in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
 
-Default: ddd
+Default: `ddd`
 
 #### textcolour
 
 Text colour (and line colour for the chart), in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
 
-Default: 222
+Default: `222`
 
 #### autorefresh
 
 `meta-refresh` interval for the page
 
-Default: none
+Default: `none`
 
 Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
 
-### Setting defaults
+### Setting metadata
 
-By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type via the API:
-
-```
-POST https://demo.bothan.io/metrics/{metric-name}/defaults
-```
-
-using a JSON content type, and with the following JSON in the body:
+You can also set a limited amount of metadata via the API:
 
 ```
+POST https://demo.bothan.io/metrics/{metric-name}/metadata
+```
+
+Currently accepted attributes are:
+
+* type: One of `chart`, `tasklist`, `target` or `pie`<br><br>By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type
+
+* name:
+`name` A JSON object in the form:<br>
+```JSON
 {
-  "type": "{one of `chart`, `tasklist`, `target` or `pie`}"
+    "language-code": "Title goes here"
 }
+```
+<br>
+Where `language-code` is the ISO language code of your title. You can specify as many or as few languages as you like.
+<br><br >If this is not specified, the app will attempt to titleize your metric name (so `my-cool-metric` becomes `My Cool Metric`)
+
+* description: A JSON object in the same format as `title`.<br><br>A description of what your metric shows - This will be revealed to the user when they hover over the title
+
+#### Sample request
+
+```JSON
+{
+  "type": "chart",
+  "name": {
+    "en": "My cool chart",
+    "fr": "Mon tableau fraîche"
+  },
+  "description": {
+    "en": "A chart showing some great data",
+    "fr": "Un tableau montrant un grand données"
+  }
+}
+
 ```
