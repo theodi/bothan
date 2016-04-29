@@ -230,14 +230,15 @@ $(function() {
   });
 
   $('input[name="type"]').change(function(){
-    var from, to
     if ($(this).val() == 'chart') {
       $('#singledate').addClass('hidden')
       $('#tofrom').removeClass('hidden')
-      from, to = $('input[name="oldest"]').val(), $('input[name="newest"]').val()
+      var from = $('input[name="oldest"]').val()
+      var to = $('input[name="newest"]').val()
     } else {
       $('#singledate').removeClass('hidden')
       $('#tofrom').addClass('hidden')
+      var from, to
     }
 
     updateEmbedCode({
