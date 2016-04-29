@@ -173,7 +173,7 @@ class MetricsApi < Sinatra::Base
     @metric = (metric.nil? ? {} : metric).to_json
 
     @date = time.to_s
-    @earliest_date = metrics.first.time
+    @earliest_date = metrics.first.time rescue nil
 
     respond_to do |wants|
       wants.json { @metric }
