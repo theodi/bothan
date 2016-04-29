@@ -36,12 +36,15 @@ module Helpers
   end
 
   def get_settings(params, data)
+    metadata = metadata(params['metric'])
+
     @layout = params.fetch('layout', 'rich')
-    @type = params.fetch('type', visualisation_type(params[:metric], data))
+    @type = params.fetch('type', visualisation_type(metadata.try(:type), data))
     @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
     @textcolour = "##{params.fetch('textcolour', '222')}"
     @autorefresh = params.fetch('autorefresh', nil)
-
+    @title = metadata.try(:title) || params['metric']
+    @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
   end
 
@@ -184,12 +187,11 @@ module Helpers
     MetricMetadata.where(name: metric_name).first
   end
 
-  def visualisation_type(metric_name, data)
-    metadata = metadata(metric_name)
-    if metadata.nil? || metadata.type.nil?
+  def visualisation_type(type, data)
+    if type.nil?
       guess_type(data)
     else
-      metadata.type
+      type
     end
   end
 
