@@ -188,7 +188,7 @@ function callDatePicker(format, date, earliest_date) {
 }
 
 function callFromToDatePicker(format, date_from, date_to, earliest_date) {
-  $('#from-date').datetimepicker(pickerOptions(format, date_from, earliest_date));
+  $('#from-date').datetimepicker(pickerOptions(format, earliest_date, earliest_date));
   $('#to-date').datetimepicker(pickerOptions(format, date_to, earliest_date));
 
   $('#from-date').on('dp.change', function (e) {
