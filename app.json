@@ -39,7 +39,7 @@
     },
     "METRICS_API_CERTIFICATE_URL": {
       "description": "The URL of the Open Data Certificate for your data",
-      "required": true
+      "required": false
     },
     "METRICS_API_USERNAME": {
       "description": "The username you will need to provide when adding metrics",
