@@ -140,31 +140,16 @@ Default: `rich`
 
 One of:
 
-  * `chart`, which renders a [Plotly](https://plot.ly/javascript/) line chart of the data, as best it can (it attempts to extract reasonable y-axis-values from the metric, but some metrics simply do not make sense in this form. Caveat Graphor)
-  * `number`, which displays the latest value from the metric (if it can find such a thing)
-  * `pie`, which renders a [Plotly](https://plot.ly/javascript/) pie chart of the data, as best it can
-  * `target`, which renders a meter style chart with an actual value, an annual target value and a year to date target value. For this to work, the data should be in the following format:
+  * `chart`, which renders a [Plotly](https://plot.ly/javascript/) line chart of the data: <br>
+  <iframe src="http://demo.bothan.io/metrics/simple-metric?layout=bare&amp;boxcolour=2254f4&amp;textcolour=ffffff&amp;type=" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  * `number`, which displays the latest value from the metric: <br>
+  <iframe src="http://demo.bothan.io/metrics/simple-metric?layout=bare&amp;boxcolour=0dbc37&amp;textcolour=ffffff&amp;type=number" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  * `pie`, which renders a [Plotly](https://plot.ly/javascript/) pie chart of the data, as best it can. This is only supported by the [multiple values](#multiple-values) metric type: <br>
+  <iframe src="http://demo.bothan.io/metrics/metric-with-multiple-values?layout=bare&amp;boxcolour=ef3aab&amp;textcolour=ffffff&amp;type=pie" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  * `target`, which renders a meter style chart with an actual value, an annual target value and a year to date target value. This is only supported by the [value with target](#value-with-target) metric type:<br>
+  <iframe src="http://demo.bothan.io/metrics/metric-with-target?layout=bare&amp;boxcolour=ff6700&amp;textcolour=ffffff&amp;type=target" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
 
-  ```
-  {
-    "actual": value,
-    "annual_target": value,
-    "ytd_target": value,
-  }
-  ```
-  * `tasklist`, which renders a list of tasks and their progress. This is highly specialised to ODI, and may not be relevant to anyone else's needs, but if you want to use this visualisation, the data should be in this format:
-  ```
-  [
-    {
-      "title": "Task name",
-      "due": "Due date in ISO8601 format",
-      "progress": A float value between 0 and 1,
-    },
-    ...
-  ]
-  ```
-
-Default: `chart`
+Default: By default, Bothan will attempt to work out the best visualisation for your metric
 
 #### boxcolour
 
@@ -186,7 +171,7 @@ Default: `none`
 
 Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
 
-### Setting metadata
+## Setting metadata
 
 You can also set a limited amount of metadata via the API:
 
