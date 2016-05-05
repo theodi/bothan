@@ -48,9 +48,18 @@ module Helpers
     @boxcolour = "##{params.fetch('boxcolour', 'ddd')}"
     @textcolour = "##{params.fetch('textcolour', '222')}"
     @autorefresh = params.fetch('autorefresh', nil)
-    @title = metadata.try(:title) || { "en" => title_from_slug(params['metric']) }
+    @title = get_title(metadata, params)
     @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
+  end
+
+  def get_title(metadata, params)
+    title = metadata.try(:title)
+    if title.nil? || title == {}
+      { "en" => title_from_slug(params['metric']) }
+    else
+      title
+    end
   end
 
   def get_start_date params
