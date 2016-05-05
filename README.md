@@ -1,5 +1,3 @@
-# PeoplesOpen.Net Front Page
+# Bothan.io website
 
-A landing page for [peoplesopen.net](http://peoplesopen.net/).
-
-Forked from [martini](https://github.com/codegangsta/martini) gh-pages branch.
+The gh-pages repo for [Bothan.io](http://bothan.io)
