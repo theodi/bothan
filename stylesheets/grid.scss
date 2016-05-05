@@ -1,0 +1,93 @@
+---
+---
+
+html, body{
+  height:100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+}
+
+ul.grid {
+
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    position: absolute;
+    display: table;
+    border: 3px solid #000;
+    box-sizing: border-box;
+    overflow: visible;
+
+    > div {
+      height: 100%;
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+  }
+
+}
+
+@for $i from 1 through 30 {
+
+  $ratio: 100.0 / $i;
+
+  ul.rows-#{$i} {
+
+    > li {
+      height: 1.0% * $ratio;
+    }
+
+    @for $r from 1 through $i {
+
+      > li.row-#{$r} {
+        top: 1.0% * $ratio * ($r - 1);
+      }
+
+      > li.height-#{$r} {
+        height: 1.0% * $ratio* $r;
+      }
+
+    }
+
+  }
+
+  ul.cols-#{$i} {
+
+    > li {
+      width: 1.0% * $ratio;
+    }
+
+    @for $r from 1 through $i {
+
+      > li.col-#{$r} {
+        left: 1.0% * $ratio * ($r - 1);
+      }
+
+      > li.width-#{$r} {
+        width: 1.0% * $ratio* $r;
+      }
+
+    }
+
+  }
+
+}
+
+@media all and ( max-width: 600px ) {
+  ul.grid > li {
+    position: static;
+    width: 100% !important;
+
+    div {
+      position: relative;
+    }
+  }
+}
