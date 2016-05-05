@@ -445,4 +445,28 @@ describe Helpers do
 
   end
 
+  context 'gets a title' do
+
+    let(:metadata) { MetricMetadata.create(title: {"en" => "My Custom Title"}) }
+    let(:params) {
+      {
+        'metric' => "my-original-title"
+      }
+    }
+
+    it 'with metadata' do
+      expect(helpers.get_title(metadata, params)).to eq({"en" => "My Custom Title"})
+    end
+
+    it 'with blank metadata' do
+      metadata = MetricMetadata.create
+      expect(helpers.get_title(metadata, params)).to eq({"en" => "My Original Title"})
+    end
+
+    it 'with no metadata' do
+      expect(helpers.get_title(nil, params)).to eq({"en" => "My Original Title"})
+    end
+
+  end
+
 end
