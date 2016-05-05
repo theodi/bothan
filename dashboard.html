@@ -2,17 +2,15 @@
 layout: dashboard
 ---
 
-<div class="grid grid-pad">
-  {% for panel in site.data.dashboard %}
-    <div class="col-1-3">
-      <div class="content">
-        <iframe src='http://demo.bothan.io/metrics/{{ panel.metric }}?layout=bare&boxcolour={{ panel.colours.box }}&textcolour={{ panel.colours.text }}&type={{ panel.type }}'
-                width='100%'
-                height='300px'
-                frameBorder='0'
-                scrolling='no'>
-        </iframe>
-      </div>
-    </div>
+<ul class="grid rows-{{ site.data.dashboard.rows }} cols-{{ site.data.dashboard.cols }}">
+  {% for panel in site.data.dashboard.metrics %}
+    <li class="row-{{ panel.row }} col-{{ panel.col }}">
+      <iframe src='http://demo.bothan.io/metrics/{{ panel.metric }}?layout=bare&boxcolour={{ panel.colours.box }}&textcolour={{ panel.colours.text }}&type={{ panel.type }}'
+              width='100%'
+              height='100%'
+              frameBorder='0'
+              scrolling='no'>
+      </iframe>
+    </li>
   {% endfor %}
-</div>
+</ul>

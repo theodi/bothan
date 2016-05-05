@@ -1,33 +1,48 @@
-- metric: simple-metric
-  colours:
-    text: ffffff
-    box: fa8100
+rows: 2
+cols: 3
+metrics:
+  - metric: simple-metric
+    colours:
+      text: ffffff
+      box: 2254f4
+    row: 1
+    col: 1
 
-- metric: simple-metric
-  colours:
-    text: ffffff
-    box: fa8100
-  type: number
+  - metric: simple-metric
+    colours:
+      text: ffffff
+      box: 0dbc37
+    type: number
+    row: 1
+    col: 2
 
-- metric: metric-with-target
-  colours:
-    text: ffffff
-    box: fa8100
-  type: target
+  - metric: metric-with-target
+    colours:
+      text: ffffff
+      box: ff6700
+    type: target
+    row: 1
+    col: 3
 
-- metric: metric-with-ytd-target
-  colours:
-    text: ffffff
-    box: fa8100
-  type: target
+  - metric: metric-with-ytd-target
+    colours:
+      text: ffffff
+      box: d60303
+    type: target
+    row: 2
+    col: 1
 
-- metric: simple-metric
-  colours:
-    text: ffffff
-    box: fa8100
+  - metric: simple-metric
+    colours:
+      text: ffffff
+      box: e6007c
+    row: 2
+    col: 2
 
-- metric: metric-with-multiple-values
-  colours:
-    text: ffffff
-    box: fa8100
-  type: pie
+  - metric: metric-with-multiple-values
+    colours:
+      text: ffffff
+      box: ef3aab
+    type: pie
+    row: 2
+    col: 3
