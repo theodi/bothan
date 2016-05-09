@@ -27,6 +27,7 @@
   </div>
 </template>
 
+<script src='/javascripts/webcomponents.js'></script>
 <script src="/javascripts/countup.js"></script>
 <script src="/javascripts/number.js"></script>
 
@@ -35,7 +36,6 @@ var container = document.querySelector('#number-container');
 var root = container.createShadowRoot();
 $.getJSON(document.URL, function (json) {
   t = document.querySelector('#number-template');
-  console.log(t.innerHTML)
   root.innerHTML = t.innerHTML
   title = '<%= @title["en"] %>'
   number(json, title, $(container.shadowRoot))
