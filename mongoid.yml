@@ -1,7 +1,7 @@
 production:
   clients:
     default:
-      uri: <%= ENV['MONGOLAB_URI'] %>
+      uri: <%= ENV['MONGOLAB_URI'] || ENV['MONGODB_URI'] %>
       consistency: :strong
       max_retries: 100
       retry_interval: 5
