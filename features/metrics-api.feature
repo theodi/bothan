@@ -51,6 +51,7 @@ Feature: Metrics API
       10
       """
 
+
   Scenario: GETing structured data
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
