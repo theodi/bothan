@@ -35,6 +35,29 @@ describe('number.js', function() {
       expect($('#number h2').html()).toEqual('224')
       expect($('#number small').html()).toEqual('Last updated: 2016-02-03 14:27')
     })
+
+    it('adds a percent sign', function() {
+      number(json, 'My Awesome Title', $('#number-wrapper'), 'percentage')
+      expect(window.countUp).toHaveBeenCalledWith(224, {
+        useEasing : true,
+        useGrouping : false,
+        separator : ',',
+        decimal : '.',
+        suffix: '%',
+        prefix: ''
+      }, $('#number-wrapper'))
+    })
+
+    it('adds a pound sign', function() {
+      number(json, 'My Awesome Title', $('#number-wrapper'), 'currency')
+      expect(window.countUp).toHaveBeenCalledWith(224, {
+        useEasing : true,
+        useGrouping : false,
+        separator : ',',
+        decimal : '.',
+        suffix: '',
+        prefix: '£'
+      }, $('#number-wrapper'))    })
   })
 
   describe('with single value', function() {

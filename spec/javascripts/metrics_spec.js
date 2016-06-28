@@ -188,36 +188,36 @@ describe('metrics.js', function() {
 
   describe('scale numbers appropriately', function() {
     it('does nothing with a number in normal range', function() {
-      expect(scaleNumber(100)).toEqual({number: 100, prefix: '', suffix: ''})
+      expect(scaleNumber(100)).toEqual({number: 100, suffix: ''})
     })
 
     describe('thousands', function() {
       it('represents thousands correctly', function() {
-        expect(scaleNumber(4000)).toEqual({number: (4).toFixed(1), prefix: '', suffix: 'K'})
+        expect(scaleNumber(4000)).toEqual({number: (4).toFixed(1), suffix: 'K'})
       })
 
       it('with fractional parts', function() {
-        expect(scaleNumber(6300)).toEqual({ number: '6.3', prefix: '', suffix: 'K' })
+        expect(scaleNumber(6300)).toEqual({ number: '6.3', suffix: 'K' })
       })
 
       it('with sensible rounding', function() {
-        expect(scaleNumber(89754)).toEqual({ number: '89.8', prefix: '', suffix: 'K' })
+        expect(scaleNumber(89754)).toEqual({ number: '89.8', suffix: 'K' })
       })
     })
 
     describe('millions', function() {
       it('represents millions correctly', function() {
-        expect(scaleNumber(12000000)).toEqual({ number: '12.0', prefix: '', suffix: 'M' })
+        expect(scaleNumber(12000000)).toEqual({ number: '12.0', suffix: 'M' })
       })
 
       it('with sensible rounding', function() {
-        expect(scaleNumber(35656421)).toEqual({ number: '35.7', prefix: '', suffix: 'M' })
+        expect(scaleNumber(35656421)).toEqual({ number: '35.7', suffix: 'M' })
       })
     })
 
     describe('with a currency', function() {
       it('adds a currency symbol', function() {
-        expect(scaleNumber(35656421, true)).toEqual({ number: '35.7', prefix: '£', suffix: 'M' })
+        expect(scaleNumber(35656421, true)).toEqual({ number: '35.7', suffix: 'M' })
       })
     })
   })
