@@ -8,6 +8,6 @@
 <script src='/javascripts/chart.js'></script>
 <script>
 $.getJSON(document.URL, function(json) {
-  graph('<%= @title["en"] %>', json, '<%= @textcolour %>', '<%= @boxcolour %>', '<%= @plotly_modebar %>')
+  graph('<%= @title["en"] %>', json, '<%= @textcolour %>', '<%= @boxcolour %>', '<%= @plotly_modebar %>', '<%= @datatype %>')
 })
 </script>

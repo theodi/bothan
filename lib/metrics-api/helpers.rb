@@ -49,6 +49,7 @@ module Helpers
     @textcolour = "##{params.fetch('textcolour', '222')}"
     @autorefresh = params.fetch('autorefresh', nil)
     @title = get_title(metadata, params)
+    @datatype = metadata.try(:datatype)
     @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
   end

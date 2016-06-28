@@ -63,7 +63,7 @@ describe('metrics.js', function() {
       { time: '2014-12-08T16:18:56.000+00:00', value: 10228 }
     ]
 
-    expect(getPoints(metrics)).toEqual(
+    expect(getPoints(metrics, { prefix: '', suffix: ''})).toEqual(
       {
         x: [
           '2014-11-30 00:11:09',
@@ -84,9 +84,63 @@ describe('metrics.js', function() {
           10228,
           10228,
           10228
+        ],
+        text: [
+          '9653',
+          '9653',
+          '9655',
+          '10227',
+          '10228',
+          '10228',
+          '10228',
+          '10228'
         ]
       }
     )
+  })
+
+  it ('adds a prefix to some text', function() {
+    var metrics = [
+      { time: '2014-11-30T00:11:09.000+00:00', value: 123 },
+      { time: '2014-12-01T00:10:56.000+00:00', value: 456 },
+    ]
+
+    expect(getPoints(metrics, { prefix: '£', suffix: ''})).toEqual({
+      x: [
+        '2014-11-30T00:11:09.000+00:00',
+        '2014-12-01T00:10:56.000+00:00',
+      ],
+      y: [
+        123,
+        456
+      ]
+      text: [
+        '£123',
+        '£456'
+      ]
+    })
+  })
+
+  it ('adds a suffix to some text', function() {
+    var metrics = [
+      { time: '2014-11-30T00:11:09.000+00:00', value: 123 },
+      { time: '2014-12-01T00:10:56.000+00:00', value: 456 },
+    ]
+
+    expect(getPoints(metrics, { prefix: '', suffix: '%'})).toEqual({
+      x: [
+        '2014-11-30T00:11:09.000+00:00',
+        '2014-12-01T00:10:56.000+00:00',
+      ],
+      y: [
+        123,
+        456
+      ]
+      text: [
+        '123%',
+        '456%'
+      ]
+    })
   })
 
   it('extracts a title from a URL', function() {
@@ -212,6 +266,12 @@ describe('metrics.js', function() {
 
       it('with sensible rounding', function() {
         expect(scaleNumber(35656421)).toEqual({ number: '35.7', suffix: 'M' })
+      })
+    })
+
+    describe('with a currency', function() {
+      it('adds a currency symbol', function() {
+        expect(scaleNumber(35656421, true)).toEqual({ number: '35.7', suffix: 'M' })
       })
     })
   })
