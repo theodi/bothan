@@ -109,13 +109,18 @@ class MetricsApi < Sinatra::Base
 
     body = JSON.parse request.body.read
 
-    metric =
-
     @metric = Metric.new({
-      "name" => params[:metric],
+      "name" => params[:metric].parameterize,
       "time" => body["time"],
       "value" => body["value"]
     })
+
+    metadata = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
+
+    if metadata.title.blank?
+      metadata.title[:en] = params[:metric]
+      metadata.save
+    end
 
     if @metric.save
       return 201
@@ -128,7 +133,7 @@ class MetricsApi < Sinatra::Base
     protected!
     begin
       data = JSON.parse request.body.read
-      @meta = MetricMetadata.find_or_create_by(name: params[:metric])
+      @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
       @meta.type = data["type"]
       @meta.title.merge!(data["title"] || {})
       @meta.description.merge!(data["description"] || {})
@@ -143,7 +148,7 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/?' do
-    @metric = Metric.where(name: params[:metric]).order_by(:time.asc).last
+    @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
     respond_to do |wants|
       wants.json { @metric.to_json }
 
@@ -163,7 +168,7 @@ class MetricsApi < Sinatra::Base
     time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
-    metrics = Metric.where(name: params[:metric], :time.lte => time).order_by(:time.asc)
+    metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
     metric = metrics.last
 
     if params['default-dates'].present?
@@ -201,7 +206,7 @@ class MetricsApi < Sinatra::Base
 
     error_400 dates.errors.join ' ' if dates.errors
 
-    metrics = Metric.where(:name => params[:metric]).asc(:time)
+    metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
     if params['default-dates'].present?
       url = generate_url(metrics.first, keep_params(params))

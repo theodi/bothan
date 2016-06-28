@@ -8,6 +8,20 @@ Then(/^the "([a-z\-]+)" "([a-z\-]+)" in locale "([a-z\-]+)" should be "(.*?)"$/)
   expect(metadata.send(field)[locale]).to eql value
 end
 
+Given(/^it has a "(.*?)" in the locale "(.*?)" of "(.*?)"$/) do |key, locale, value|
+  steps %Q{
+    When I send a POST request to "metrics/#{@metric.name}/metadata" with the following:
+      """
+      {
+        "#{key}": {
+          "#{locale}": "#{value}"
+        }
+      }
+      """
+    Then the response status should be "201"
+  }
+end
+
 Given(/^the "(.*?)" "(.*?)" is "(.*?)"$/) do |metric_name, field, value|
   meta = MetricMetadata.find_or_create_by(name: metric_name)
   meta.send("#{field}=", value)
