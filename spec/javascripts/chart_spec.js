@@ -3,13 +3,16 @@ describe('chart.js', function() {
   it('gets data for a single point', function() {
     points = {
       x: ['1', '2', '3', '4'],
-      y: ['30', '40', '55', '2']
+      y: ['30', '40', '55', '2'],
+      text: ['1', '2', '3', '4']
     }
 
     expect(singlePoint(points, '#000')).toEqual([
       {
         x: ['1', '2', '3', '4'],
         y: ['30', '40', '55', '2'],
+        text: ['1', '2', '3', '4'],
+        hoverinfo: 'text',
         type: 'scatter',
         line: {
           shape: 'spline',
