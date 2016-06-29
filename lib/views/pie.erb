@@ -45,6 +45,7 @@ function pie(json) {
     values: extractValues(json.value, '//total'),
     labels: extractKeys(json.value, '//total'),
     type: 'pie',
+    textinfo: 'label+percent',
     marker: {
       colors: ['#FF6700', '#D60303']
     }
@@ -53,6 +54,7 @@ function pie(json) {
   var layout = {
     paper_bgcolor: '<%= @boxcolour %>',
     plot_bgcolor: '<%= @boxcolour %>',
+    showlegend: false,
     margin: {
       l: 0, r: 0
     }
