@@ -21,6 +21,10 @@
     div {
       font-family: 'Open Sans';
     }
+
+    #number h1 {
+      font-size: <%= @font_size %>;
+    }
   </style>
   <div id='widget'>
     <div id='number'></div>
@@ -35,7 +39,7 @@
 var container = document.querySelector('#number-container');
 var root = container.createShadowRoot();
 $.getJSON(document.URL, function (json) {
-  t = document.querySelector('#number-template');
+  t = document.querySelector('#number-template')
   root.innerHTML = t.innerHTML
   title = '<%= @title["en"] %>'
   number(json, title, $(container.shadowRoot), '<%= @datatype %>')
