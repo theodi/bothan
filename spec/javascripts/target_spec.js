@@ -12,17 +12,15 @@ describe('target.js', function() {
 
     drawTarget(value, '', $('#target-wrapper'))
 
-    expect($('#target .actual-bar')).toHaveClass('col-md-2')
-    expect($('#target .annual_target-bar')).toHaveClass('col-md-12')
-    expect($('#target .ytd_target-bar')).toHaveClass('col-md-6')
+    expect($('#target .actual-bar').attr('style')).toMatch(/width:9\./)
+    expect($('#target .annual_target-bar').attr('style')).toMatch(/width:100/)
+    expect($('#target .ytd_target-bar').attr('style')).toMatch(/width:44\./)
 
-    expect($('#target-little .actual-bar')).toHaveClass('col-xs-2')
-    expect($('#target-little .annual_target-bar')).toHaveClass('col-xs-12')
-    expect($('#target-little .ytd_target-bar')).toHaveClass('col-xs-6')
+    expect($('#target .flagpole').attr('style')).toMatch(/left:100/)
 
-    expect($('#target .actual-bar span').html()).toEqual('45')
-    expect($('#target .annual_target-bar span').html()).toEqual('486')
-    expect($('#target .ytd_target-bar span').html()).toEqual('215')
+    expect($('#target .actual-bar span .inner').html()).toEqual('45')
+    expect($('#target .annual_target-bar span .inner').html()).toEqual('486')
+    expect($('#target .ytd_target-bar span .inner').html()).toEqual('215')
   })
 
   it('does not show a ytd target when only the annual target is present', function(){
@@ -48,6 +46,23 @@ describe('target.js', function() {
     expect($('#target .actual-bar')).toHaveCss({'background-color': 'rgb(99, 99, 93)'})
     expect($('#target .annual_target-bar')).toHaveCss({'background-color': 'rgb(99, 99, 93)'})
     expect($('#target .ytd_target-bar')).toHaveCss({'background-color': 'rgb(99, 99, 93)'})
+  })
+
+  it('sets the actual higher than the target if that is the case', function() {
+    value = {
+      "actual": 500,
+      "annual_target": 486,
+    }
+
+    drawTarget(value, '', $('#target-wrapper'))
+
+    expect($('#target .actual-bar').attr('style')).toMatch(/width:100/)
+    expect($('#target .annual_target-bar').attr('style')).toMatch(/width:97\./)
+
+    expect($('#target .flagpole').attr('style')).toMatch(/left:97\./)
+
+    expect($('#target .actual-bar span .inner').html()).toEqual('500')
+    expect($('#target .annual_target-bar span .inner').html()).toEqual('486')
   })
 
 })
