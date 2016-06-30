@@ -52,6 +52,7 @@ module Helpers
     @datatype = metadata.try(:datatype)
     @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
+    @font_size = params.fetch('font_size', '9vh')
   end
 
   def get_title(metadata, params)
@@ -151,7 +152,8 @@ module Helpers
       'textcolour',
       'barcolour',
       'autorefresh',
-      'with_path'
+      'with_path',
+      'font_size'
     ]
 
     good_params = {}
