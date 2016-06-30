@@ -23,7 +23,6 @@
 #target, #target-little {
   text-align: center;
   height: 40vh;
-  border-right: 2px solid #000;
   margin: 10vh 5%;
   display: block;
 }
@@ -42,18 +41,18 @@
   background-color: rgba(255,255,255,0.4);
 }
 
-.ytd_target-bar .bar-label, .actual-bar .bar-label {
+.ytd_target-bar .bar-label .inner, .actual-bar .bar-label .inner {
   background-color: #fff;
   margin: 0;
   position: absolute;
   padding: 0.5vh;
 }
 
-.ytd_target-bar .bar-label {
+.ytd_target-bar .bar-label .inner {
   top: -10.5vh;
 }
 
-.actual-bar .bar-label {
+.actual-bar .bar-label .inner {
   bottom: -10.5vh;
 }
 
@@ -69,7 +68,7 @@
   bottom: 0;
 }
 
-.annual_target-bar .bar-label {
+.annual_target-bar .bar-label .inner {
   position: absolute;
   top: -20vh;
   right: -2px;
@@ -80,11 +79,17 @@
   margin: 0;
 }
 
-.bar-label {
+.bar-label .inner {
   position: relative;
   z-index: 1000;
   right: 0;
   font-size: 7vh;
+}
+
+.flagpole {
+  border-right: 2px solid #000;
+  height: 100%;
+  display: block;
 }
 
 @media only screen and (max-width: 400px) and (min-height: 300px) {
@@ -96,11 +101,11 @@
     font-size: 4vw;
   }
 
-  .ytd_target-bar .bar-label {
+  .ytd_target-bar .bar-label .inner {
     top: -6vh;
   }
 
-  .actual-bar .bar-label {
+  .actual-bar .bar-label .inner {
     bottom: -6vh;
   }
 
@@ -112,7 +117,7 @@
     height: 10vh;
   }
 
-  .annual_target-bar .bar-label {
+  .annual_target-bar .bar-label .inner {
     top: -10vh;
   }
 
