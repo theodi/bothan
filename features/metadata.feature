@@ -86,3 +86,15 @@ Feature: Metrics API
     And the "membership-count" "title" in locale "en" should be "Member Count"
     And the "membership-count" "title" in locale "de" should be "Die Mitgliedschaft Graf"
     And the "membership-count" "description" in locale "en" should be "How many members there are"
+
+  Scenario: Editing metadata in a form
+    Given I authenticate as the user "foo" with the password "bar"
+    And I send and accept HTML
+    And there is a metric in the database with the name "membership-count"
+    And metadata already exists for the metric type "membership-count"
+    And I send a GET request to "metrics/membership-count/metadata"
+    Then I should see a form
+    And the form should have a field "title[en]"
+    And the form should have a field "description[en]"
+    And the form should have a field "type"
+    And the form should have a field "datatype"
