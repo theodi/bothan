@@ -69,3 +69,8 @@ h1#title {
   height: 450px;
   position: relative;
 }
+
+#login {
+  position: relative;
+  left: -60px;
+}

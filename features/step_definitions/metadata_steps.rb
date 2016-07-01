@@ -43,3 +43,14 @@ Given(/^metadata already exists for the metric type "(.*?)"$/) do |metric_name|
     Then the response status should be "201"
   }
 end
+
+Then(/^I should see a form$/) do
+  body = Nokogiri::HTML(last_response.body)
+  @form = body.css('form')
+
+  expect(@form).to_not be(nil)
+end
+
+Then(/^the form should have a field "(.*?)"$/) do |name|
+  expect(@form.css("[name='#{name}']")).to_not be(nil)
+end

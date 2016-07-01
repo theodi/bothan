@@ -65,6 +65,12 @@ class MetricsApi < Sinatra::Base
     redirect to '/metrics'
   end
 
+  get '/login' do
+    protected!
+
+    redirect to '/metrics'
+  end
+
   get '/documentation' do
     respond_to do |wants|
 
@@ -126,6 +132,27 @@ class MetricsApi < Sinatra::Base
       return 201
     else
       return 500
+    end
+  end
+
+  get '/metrics/:metric/metadata' do
+    protected!
+
+    @metric = Metric.find_by(name: params[:metric].parameterize)
+    @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
+    @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter)
+
+    @alternatives = get_alternatives(@metric.value)
+
+    respond_to do |wants|
+
+      wants.html do
+        @config = config
+        @title = {
+          'en' => 'Metadata'
+        }
+        erb :metadata, layout: 'layouts/default'.to_sym
+      end
     end
   end
 
