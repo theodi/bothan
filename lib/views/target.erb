@@ -15,6 +15,7 @@
   <style>
     @import '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css';
     @import '/css/target.css';
+    @import '/css/tooltip.css';
 
     div {
       font-family: 'Open Sans', 'Calibri';
@@ -23,7 +24,7 @@
 
   <div id="widget">
       <div id='target-wrapper'>
-        <div id='caption'></div>
+        <div id='caption' data-tip='<%= @description['en'] %>'></div>
         <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
         <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
       </div>
