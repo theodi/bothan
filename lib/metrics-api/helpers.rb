@@ -53,7 +53,7 @@ module Helpers
     @description = metadata.try(:description)
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
     @font_size = params.fetch('font_size', '9vh')
-    @metric = params.fetch('metric')
+    @metric = params.fetch('metric', '')
   end
 
   def get_title(metadata, params)
