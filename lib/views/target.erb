@@ -1,33 +1,22 @@
 <div id='target-container'>
 </div>
 
-<style>
-  @font-face {
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-  }
-</style>
-
 <template id='metric-with-target'>
   <style>
-    @import '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css';
     @import '/css/target.css';
 
-    div {
-      font-family: 'Open Sans';
+    #caption h1 {
+      font-size: <%= @font_size %>;
     }
   </style>
 
   <div id="widget">
-      <div id='target-wrapper'>
-        <div id='caption'></div>
-        <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
-        <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
-      </div>
+    <div id='target-wrapper'>
+      <div id='caption'></div>
+      <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
+      <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
     </div>
+  </div>
 </template>
 
 <script src='/javascripts/webcomponents.js'></script>
