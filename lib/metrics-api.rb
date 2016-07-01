@@ -161,8 +161,8 @@ class MetricsApi < Sinatra::Base
     begin
       data = JSON.parse request.body.read
       @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
-      @meta.type = data["type"]
-      @meta.datatype = data["datatype"]
+      @meta.type = data["type"].presence
+      @meta.datatype = data["datatype"].presence
       @meta.title.merge!(data["title"] || {})
       @meta.description.merge!(data["description"] || {})
       if @meta.save
