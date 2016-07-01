@@ -1,0 +1,73 @@
+@import 'common';
+
+body {
+  font-family: 'Open Sans'
+}
+
+#readme img {
+  display: none;
+}
+
+#number {
+  text-align: center;
+}
+
+#metric-value {
+  font-size: 10em;
+}
+
+body.dashboard {
+  background-color: black;
+}
+
+.board-member {
+  padding-top: 50px;
+}
+
+.dashboard h1 {
+  color: white;
+  text-align: center;
+}
+
+#caption {
+  text-align: center;
+}
+
+#tasklist {
+  margin: 0;
+  padding: 0 20px 20px 20px;
+  list-style-type: none;
+}
+
+#tasklist li {
+  position: relative;
+  padding: 2px 0;
+}
+
+#tasklist progress {
+  position: absolute;
+  right: 0;
+}
+
+h1#title {
+  padding: 20px 20px 10px 20px;
+}
+
+.tab-content {
+  margin: 25px 0;
+}
+
+#iframe_embed {
+  height: 470px;
+}
+
+#embed textarea {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+#wrapper {
+  width: 100%;
+  height: 450px;
+  position: relative;
+}
