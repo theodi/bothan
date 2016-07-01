@@ -65,6 +65,12 @@ class MetricsApi < Sinatra::Base
     redirect to '/metrics'
   end
 
+  get '/login' do
+    protected!
+
+    redirect to '/metrics'
+  end
+
   get '/documentation' do
     respond_to do |wants|
 
