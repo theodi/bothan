@@ -23,6 +23,11 @@
           Embed
         </a>
       </li>
+      <% if authorized? %>
+        <li>
+          <a href="/metrics/<%= @metric %>/metadata">Edit Metadata</a>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>
