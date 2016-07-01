@@ -1,0 +1,55 @@
+<h1>Metadata</h1>
+
+<form method="post" action="/metrics/<%= @metric.name %>/metadata" id="form">
+
+  <div class="form-group">
+    <label for="title">Metric Title</label>
+    <input type="text" class="form-control" id="title" value="<%= @metadata.title["en"] %>" name="title[en]">
+  </div>
+
+  <div class="form-group">
+    <label for="description">Metric Description</label>
+    <textarea class="form-control" rows="2" id="description" name="description[en]"><%= @metadata.description["en"] %></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="type">Default view</label>
+    <select class="form-control" name="type" id="type">
+      <option></option>
+      <% @alternatives.each do |view| %>
+        <option value="<%= view %>" <%= view == @metadata.type ? "selected" : "" %> ><%= view.capitalize %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="datatype">Data type</label>
+    <select class="form-control" name="datatype" id="datatype">
+      <option></option>
+      <% @allowed_datatypes.each do |datatype| %>
+        <option value="<%= datatype %>" <%= datatype == @metadata.datatype ? "selected" : "" %> ><%= datatype.capitalize %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary btn-block">Submit <i class="fa fa-spinner fa-spin hidden" id="spinner" aria-hidden="true"></i></button>
+  </div>
+
+</form>
+
+<script src="/javascripts/jquery.serialize-object.min.js"></script>
+<script>
+  $('#form').submit(function(e) {
+    e.preventDefault();
+
+    form = $('#form')
+    spinner = $('#spinner')
+
+    spinner.removeClass('hidden')
+
+    jQuery.post(form.attr('action'), form.serializeJSON(), function() {
+      spinner.addClass('hidden')
+    })
+  })
+</script>

@@ -4,6 +4,7 @@
 <template id='metric-with-target'>
   <style>
     @import '/css/target.css';
+    @import '/css/tooltip.css';
 
     #caption h1 {
       font-size: <%= @font_size %>;
@@ -12,7 +13,7 @@
 
   <div id="widget">
     <div id='target-wrapper'>
-      <div id='caption'></div>
+      <div id='caption' data-tip='<%= @description['en'] %>'></div>
       <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
       <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
     </div>
@@ -20,7 +21,9 @@
 </template>
 
 <script src='/javascripts/webcomponents.js'></script>
+<script src='/javascripts/tooltip.js'></script>
 <script src='/javascripts/target.js'></script>
+
 <script>
 var container = document.querySelector('#target-container');
 var root = container.createShadowRoot();

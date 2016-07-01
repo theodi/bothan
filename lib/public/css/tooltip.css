@@ -1,0 +1,26 @@
+/* line 1, ../sass/tooltip.scss */
+[data-tip] {
+  position: relative;
+  cursor: help;
+}
+
+/* line 6, ../sass/tooltip.scss */
+[data-tip]:after {
+  display: none;
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 5px 8px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  z-index: 9;
+  font-size: 5vh;
+}
+
+/* line 20, ../sass/tooltip.scss */
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+  display: block;
+}
