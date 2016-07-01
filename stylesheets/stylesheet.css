@@ -220,7 +220,12 @@ a {
 @media screen and (max-width: 42em) {
   .main-content {
     padding: 2rem 1rem;
-    font-size: 1rem; } }
+    font-size: 1rem;
+  }
+  div#logo {
+    display: none;
+  }  
+}
 
 .site-footer {
   padding-top: 2rem;
@@ -248,4 +253,12 @@ a {
 
 #odi-logo {
   height: 100px;
+}
+
+div#logo {
+  float: left; 
+}
+
+div#logo img {
+  height: 13rem;
 }
