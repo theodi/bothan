@@ -469,4 +469,14 @@ describe Helpers do
 
   end
 
+  it 'turns a list of colours into a JS array' do
+    expect(helpers.fix_pie_colours '1d91a1:8cdbe6:faa2c7:').to eq (
+      "['#1d91a1', '#8cdbe6', '#faa2c7']"
+    )
+  end
+
+  it 'is fine with no pie colours' do
+    expect(helpers.fix_pie_colours '').to eq '[]'
+  end
+
 end
