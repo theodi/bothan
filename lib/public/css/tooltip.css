@@ -7,13 +7,15 @@
 	display:none;
 	content:attr(data-tip);
 	position:absolute;
-	bottom: 0px;
+//	bottom: 0px;
 	left: 0px;
-	right: 0px;
-	padding:5px 8px;
-	background:rgba(0,0,0,0.4);
+	right: 15px;
+	top: 0px;
+	margin:10px;
+	padding:10px;
+	background:rgba(0,0,0,0.9);
 	color:#fff;
-	z-index:9;
+//	z-index:9;
 	font-size: 5vh;
 }
 
