@@ -1,3 +1,5 @@
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js'></script>
+
 <div id='target-container'>
 </div>
 
@@ -20,6 +22,16 @@
     div {
       font-family: 'Open Sans', 'Calibri';
     }
+
+    #last-updated {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      font-size: 3vh;
+      opacity: 0.6;
+      left:0;
+      bottom: 1.5em;
+    }
   </style>
 
   <div id="widget">
@@ -27,7 +39,10 @@
         <div id='caption' data-tip='<%= @description['en'] %>'></div>
         <div id='target' class='col-md-12 hidden-xs hidden-sm'></div>
         <div id='target-little' class='col-md-12 hidden-md hidden-lg'></div>
+
+        <small id="last-updated"></small>
       </div>
+
     </div>
 </template>
 
@@ -40,8 +55,13 @@ var container = document.querySelector('#target-container');
 var root = container.createShadowRoot();
 $.getJSON(document.URL, function (json) {
   t = document.querySelector('#metric-with-target');
+  lastUpdated = moment(json.time).format('YYYY-MM-DD HH:mm')
+
   root.innerHTML = t.innerHTML
   $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')
+  $(container.shadowRoot).find('#last-updated').html('Last updated: ' + lastUpdated)
+
   drawTarget(lastOrOnlyValue(json), '<%= @barcolour %>', $(container.shadowRoot), '<%= @datatype %>')
+
 })
 </script>
