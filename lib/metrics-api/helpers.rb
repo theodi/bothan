@@ -55,6 +55,7 @@ module Helpers
     @font_size = params.fetch('font_size', '9vh')
     @metric = params.fetch('metric', '')
     @pie_colours = fix_pie_colours(params.fetch('pie_colours', ''))
+    @date_format = params.fetch('date_format', 'YYYY-MM-DD HH:mm')
   end
 
   def fix_pie_colours list
@@ -160,7 +161,8 @@ module Helpers
       'autorefresh',
       'with_path',
       'font_size',
-      'pie_colours'
+      'pie_colours',
+      'date_format'
     ]
 
     good_params = {}
