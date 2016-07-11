@@ -55,7 +55,7 @@ var container = document.querySelector('#target-container');
 var root = container.createShadowRoot();
 $.getJSON(document.URL, function (json) {
   t = document.querySelector('#metric-with-target');
-  lastUpdated = moment(json.time).format('YYYY-MM-DD HH:mm')
+  lastUpdated = moment(json.time).format('<%= @date_format %>')
 
   root.innerHTML = t.innerHTML
   $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')

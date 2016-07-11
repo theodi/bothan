@@ -79,7 +79,7 @@ function pie(json) {
     }
   };
 
-  var lastUpdated = moment(json.time).format('YYYY-MM-DD HH:mm')
+  var lastUpdated = moment(json.time).format('<%= @date_format %>')
 
   $('#last-updated').html('Last updated: ' + lastUpdated)
 
