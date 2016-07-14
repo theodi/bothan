@@ -12,6 +12,10 @@
       font-size: <%= @font_size %>;
     }
 
+
+    #number h2 {
+      font-size: 25vw;
+    }
   </style>
   <div id='widget'>
     <div id='number'></div>
@@ -29,6 +33,6 @@ $.getJSON(document.URL, function (json) {
   t = document.querySelector('#number-template')
   root.innerHTML = t.innerHTML
   title = '<%= @title["en"] %>'
-  number(json, title, $(container.shadowRoot), '<%= @datatype %>', '<%= @description['en'] %>')
+  number(json, title, $(container.shadowRoot), '<%= @datatype %>', '<%= @description['en'] %>', '<%= @date_format %>')
 })
 </script>

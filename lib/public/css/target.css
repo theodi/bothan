@@ -8817,6 +8817,7 @@ div {
 /* line 13, ../sass/target.scss */
 #target-wrapper {
   display: table-cell;
+  padding: 0 0 10% 0;
   vertical-align: middle;
 }
 
@@ -8832,7 +8833,7 @@ div {
 #target, #target-little {
   text-align: center;
   height: 40vh;
-  margin: 10vh 5%;
+  margin: 10vh 10%;
   display: block;
 }
 

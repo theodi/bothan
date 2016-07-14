@@ -1,5 +1,7 @@
 <!-- PLOTLY -->
 <script src='//cdn.plot.ly/plotly-latest.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js'></script>
+
 <style>
   @import '/css/tooltip.css';
 
@@ -16,11 +18,22 @@
     padding: 0;
     top: 1em;
   }
+
+  #last-updated {
+    position: absolute;
+    bottom: 1.5em;
+    text-align: center;
+    width: 100%;
+    font-size: 3vh;
+    opacity: 0.6;
+  }
 </style>
 
 <div id="wrapper">
   <h1 data-tip='<%= @description['en'] %>'><%= @title['en'] %></h1>
-  <div id='chart'></div>
+  <div id='chart'>
+    <small id="last-updated"></small>
+  </div>
 </div>
 <script src='/javascripts/metrics.js'></script>
 <script src='/javascripts/defiant.js'></script>
@@ -47,12 +60,16 @@ function pie(json) {
     plot_bgcolor: '<%= @boxcolour %>',
     showlegend: false,
     margin: {
-      l: 0, r: 0, t: 60, b: 30
+      l: 0, r: 0, t: 60, b: 60
     },
     font: {
       color: '#000000'
     }
   };
+
+  var lastUpdated = moment(json.time).format('<%= @date_format %>')
+
+  $('#last-updated').html('Last updated: ' + lastUpdated)
 
   Plotly.newPlot('chart', data, layout, { displayModeBar: <%= @plotly_modebar %> });
 }

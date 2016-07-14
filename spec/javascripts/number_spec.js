@@ -30,14 +30,14 @@ describe('number.js', function() {
     })
 
     it('applies a number and title', function() {
-      number(json, 'My Awesome Title', $('#number-wrapper'))
+      number(json, 'My Awesome Title', $('#number-wrapper'), '', '', 'YYYY-MM-DD HH:mm')
       expect($('#number h1').html()).toEqual('My Awesome Title')
       expect($('#number h2').html()).toEqual('224')
       expect($('#number small').html()).toEqual('Last updated: 2016-02-03 14:27')
     })
 
     it('adds a percent sign', function() {
-      number(json, 'My Awesome Title', $('#number-wrapper'), 'percentage')
+      number(json, 'My Awesome Title', $('#number-wrapper'), 'percentage', '', 'YYYY-MM-DD HH:mm')
       expect(window.countUp).toHaveBeenCalledWith(224, {
         useEasing : true,
         useGrouping : false,
@@ -49,7 +49,7 @@ describe('number.js', function() {
     })
 
     it('adds a pound sign', function() {
-      number(json, 'My Awesome Title', $('#number-wrapper'), 'currency')
+      number(json, 'My Awesome Title', $('#number-wrapper'), 'currency', '', 'YYYY-MM-DD HH:mm')
       expect(window.countUp).toHaveBeenCalledWith(224, {
         useEasing : true,
         useGrouping : false,
@@ -73,7 +73,7 @@ describe('number.js', function() {
     })
 
     it('applies a number and title', function() {
-      number(json, 'My Awesome Title', $('#number-wrapper'))
+      number(json, 'My Awesome Title', $('#number-wrapper'), '', '', 'YYYY-MM-DD HH:mm')
       expect($('#number h1').html()).toEqual('My Awesome Title')
       expect($('#number h2').html()).toEqual('2')
       expect($('#number small').html()).toEqual('Last updated: 2015-01-05 11:21')
