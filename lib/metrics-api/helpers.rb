@@ -54,6 +54,11 @@ module Helpers
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
     @font_size = params.fetch('font_size', '9vh')
     @metric = params.fetch('metric', '')
+    @pie_colours = fix_pie_colours(params.fetch('pie_colours', ''))
+  end
+
+  def fix_pie_colours list
+    list.split(':').map { |c| "##{c}" }.to_s.gsub('"', "'")
   end
 
   def get_title(metadata, params)
@@ -154,7 +159,8 @@ module Helpers
       'barcolour',
       'autorefresh',
       'with_path',
-      'font_size'
+      'font_size',
+      'pie_colours'
     ]
 
     good_params = {}

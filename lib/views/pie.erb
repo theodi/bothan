@@ -38,7 +38,7 @@ function pie(json) {
     type: 'pie',
     textinfo: 'label+percent',
     marker: {
-      colors: ['#FF6700', '#D60303']
+      colors: <%= @pie_colours %>
     }
   }];
 
@@ -48,6 +48,9 @@ function pie(json) {
     showlegend: false,
     margin: {
       l: 0, r: 0, t: 60, b: 30
+    },
+    font: {
+      color: '#000000'
     }
   };
 
