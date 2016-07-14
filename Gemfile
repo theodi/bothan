@@ -12,6 +12,8 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
 gem 'kramdown'
 gem 'exception_notification'
+gem 'compass'
+gem 'bootstrap-sass'
 
 group :test do
   gem 'capybara-webkit'
