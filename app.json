@@ -11,6 +11,7 @@
   "logo": "https://avatars0.githubusercontent.com/u/2492770?v=3&s=200",
   "success_url": "/metrics",
   "scripts": {
+    "postdeploy": "compass compile --output-style=compressed"
   },
   "env": {
     "METRICS_API_TITLE": {
