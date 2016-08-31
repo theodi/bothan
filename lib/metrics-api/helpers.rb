@@ -50,7 +50,7 @@ module Helpers
     @autorefresh = params.fetch('autorefresh', nil)
     @title = get_title(metadata, params)
     @datatype = metadata.try(:datatype)
-    @description = metadata.try(:description)
+    @description = metadata.try(:description) || {}
     @plotly_modebar = params.fetch('plotly_modebar', 'false')
     @font_size = params.fetch('font_size', '9vh')
     @metric = params.fetch('metric', '')
