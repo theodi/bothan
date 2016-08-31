@@ -53,7 +53,7 @@ describe Helpers do
       expect(helpers.instance_variable_get("@textcolour")).to eq('#fff')
       expect(helpers.instance_variable_get("@autorefresh")).to eq(true)
       expect(helpers.instance_variable_get("@title")).to eq({"en"=>"Foo Bar"})
-      expect(helpers.instance_variable_get("@description")).to eq(nil)
+      expect(helpers.instance_variable_get("@description")).to eq({})
     end
 
     it 'with no params' do
