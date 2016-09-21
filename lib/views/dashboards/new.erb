@@ -28,7 +28,10 @@
         <label for='metric' class='text-right'>Metric</label>
         <div class="input-group">
           <select name="dashboard[metric][]" class="form-control metric input-sm">
-            <%= @metrics.map { |m| "<option>#{m}</option>" }.join("\r\n") %>
+            <option>-- Select a metric--</options>
+            <% @metrics.each do |metric| %>
+              <option data-visualisations="<%= get_alternatives(metric.value).join(',') %>"><%= metric.name %></option>
+            <% end %>
           </select>
         </div>
       </div>
@@ -49,6 +52,28 @@
             <span class="input-group-addon"><i></i></span>
           </div>
           <input type="hidden" name="dashboard[textcolour][]" class="textcolour" value="" />
+      </div>
+
+      <div class='form-group form-group-sm hidden visualisations'>
+        <label for='boxcolour' class='text-right'>Visualisation Type</label>
+        <div class="input-group textcolour">
+          <label class="chart hidden">
+            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="chart">
+            Chart
+          </label>
+          <label class="number hidden">
+            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="number">
+            Number
+          </label>
+          <label class="target hidden">
+            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="target">
+            Target
+          </label>
+          <label class="pie hidden">
+            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="pie">
+            Pie
+          </label>
+        </div>
       </div>
 
     </div>
@@ -132,6 +157,7 @@
 
     var picker = $(table).find('.colourpicker').colorpicker()
     var metrics = $(table).find('.metric')
+    var visualisations = $(table).find('.visualisation')
 
     picker.on('changeColor', function(ev){
       var iframe = $(this).parent().parent().find('iframe')
@@ -152,19 +178,42 @@
         textcolour: textcolour.replace('#', '')
       }
 
-      var uri = URI(iframe.attr('src'))
-
-      uri.removeQuery(Object.keys(params));
-      url = uri.addQuery(params).toString();
-      iframe.attr('src', url)
+      setSrc(iframe, params);
     });
 
     metrics.on('change', function() {
       var iframe = $(this).parent().parent().parent().find('iframe')
       var uri = URI(iframe.attr('src'))
+      var qs = uri.search() !== '' ? uri.search() : '?layout=bare'
       var baseURL = iframe.data('base-url')
-      var url = baseURL + $(this).val() + uri.search();
+      var url = baseURL + $(this).val() + qs;
+      showVisualisations($(this).parent().parent().parent().find('.visualisations'), $(this).find(":selected"))
       iframe.attr('src', url)
+      iframe.removeClass('hidden')
+    })
+
+    visualisations.on('change', function() {
+      var iframe = $($(this).parents()[3]).find('iframe')
+      var params = {
+        type: $(this).val()
+      }
+
+      setSrc(iframe, params);
     })
   })
+
+  function showVisualisations(selector, metric) {
+    selector.find('label').addClass('hidden')
+    $.each(metric.data('visualisations').split(','), function( index, value ) {
+      selector.find('.' + value).removeClass('hidden')
+    });
+    selector.removeClass('hidden')
+  }
+
+  function setSrc(iframe, params) {
+    var uri = URI(iframe.attr('src'))
+    uri.removeQuery(Object.keys(params));
+    url = uri.addQuery(params).toString();
+    iframe.attr('src', url)
+  }
 </script>
