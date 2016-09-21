@@ -22,7 +22,7 @@
   <div class="form-group">
     <table id="dashboard" class="hidden table"></table>
     <div id="metric-template" class="hidden">
-      <iframe src='<%= request.scheme + '://' + request.host_with_port +  '/metrics/' + @metrics.first + '?layout=bare' %>' width='100%' height='300px' frameBorder='0' scrolling='no' data-base-url='<%= request.scheme + '://' + request.host_with_port +  '/metrics/' %>'></iframe>
+      <iframe src='' width='100%' height='300px' frameBorder='0' scrolling='no' data-base-url='<%= request.scheme + '://' + request.host_with_port +  '/metrics/' %>' class='hidden'></iframe>
 
       <div class="form-group form-group-sm">
         <label for='metric' class='text-right'>Metric</label>
