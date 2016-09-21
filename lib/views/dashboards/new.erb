@@ -161,8 +161,9 @@
 
     metrics.on('change', function() {
       var iframe = $(this).parent().parent().parent().find('iframe')
+      var uri = URI(iframe.attr('src'))
       var baseURL = iframe.data('base-url')
-      var url = baseURL + $(this).val() + '?layout=bare'
+      var url = baseURL + $(this).val() + uri.search();
       iframe.attr('src', url)
     })
   })
