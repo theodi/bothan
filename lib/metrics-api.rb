@@ -295,6 +295,10 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  post '/dashboards' do
+
+  end
+
   def error_406
     content_type 'text/plain'
     error 406, "Not Acceptable"
