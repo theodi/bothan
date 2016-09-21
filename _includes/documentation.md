@@ -82,6 +82,13 @@ If you want to track multiple values for one metric (for example, diversity data
   }
 }
 ```
+### Adding metrics
+
+If a {metric-name} is sent by a POST and does not already exist in the Bothan instance then a new metric will be created.
+
+### Deleting metrics
+
+There is currently no way to delete a metric within an instance of Bothan.
 
 ### Fetching data
 
@@ -173,13 +180,13 @@ Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100
 
 ## Setting metadata
 
-You can also set a limited amount of metadata via the API:
+You can also set a limited amount of metadata via the API and front-end:
 
 ```
 POST https://demo.bothan.io/metrics/{metric-name}/metadata
 ```
 
-Currently accepted attributes are:
+Currently accepted API attributes are:
 
 * type: One of `chart`, `tasklist`, `target` or `pie`<br><br>By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type
 
@@ -212,3 +219,5 @@ Where `language-code` is the ISO language code of your title. You can specify as
 }
 
 ```
+A description can be set for the metric by logging into the Bothan instance on Heroku, selecting the metric and taking the option to 'Edit Metadata'.
+
