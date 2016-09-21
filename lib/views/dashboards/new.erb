@@ -1,0 +1,138 @@
+<h1><%= @title %></h1>
+
+<form method="post" action="/dashboards" id="form">
+
+  <div class="form-group">
+    <label for="title">Dashboard Name</label>
+    <input type="text" class="form-control" id="title" value="" name="dashboard[name]">
+  </div>
+
+  <div class="form-group">
+    <label for="title">Number of rows</label>
+    <input type="number" class="form-control rowcols" id="rows" value="1" name="dashboard[rows]" min="1" max="3">
+    <div class="help-block">Maxiumum 3 rows</div>
+  </div>
+
+  <div class="form-group">
+    <label for="title">Number of columns</label>
+    <input type="number" class="form-control rowcols" id="columns" value="1" name="dashboard[columns]" min="1" max="4">
+    <div class="help-block">Maxiumum 4 columns</div>
+  </div>
+
+  <div class="form-group">
+    <table id="dashboard" class="hidden table"></table>
+    <div id="metric-template" class="hidden">
+
+      <div class="form-group form-group-sm">
+        <label for='metric' class='text-right'>Metric</label>
+        <div class="input-group">
+          <select name="dashboard[metric][]" class="form-control metric input-sm">
+            <%= @metrics.map { |m| "<option>#{m}</option>" }.join("\r\n") %>
+          </select>
+        </div>
+      </div>
+
+      <div class='form-group form-group-sm'>
+        <label for='boxcolour' class='text-right'>Box Colour</label>
+          <div class="input-group colourpicker">
+            <input type="text" name="boxcolourpicker" value="" class="form-control input-sm" />
+            <span class="input-group-addon"><i></i></span>
+          </div>
+          <input type="hidden" name="dashboard[boxcolour][]" class="boxcolour" value="" />
+      </div>
+
+      <div class='form-group form-group-sm'>
+        <label for='boxcolour' class='text-right'>Text Colour</label>
+          <div class="input-group colourpicker">
+            <input type="text" name="textcolourpicker" value="" class="form-control input-sm" />
+            <span class="input-group-addon"><i></i></span>
+          </div>
+          <input type="hidden" name="dashboard[textcolour][]" class="textcolour" value="" />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary btn-block">Submit</button>
+  </div>
+
+</form>
+
+<script>
+  $('.rowcols').change(function(e) {
+    var table = $('#dashboard');
+
+    var row_num = parseInt($('#rows').val());
+    var col_num = parseInt($('#columns').val());
+
+    var form = $('#metric-template').clone();
+    form.removeClass('hidden')
+
+    var row_template = $('<tr></tr>');
+    var col_template = '<td>'+ form.html() +'</td>';
+
+    for (var i=0; i<col_num; i++) { row_template.append(col_template) };
+
+    var current_rows = table.find('tr').length;
+
+    if (current_rows == 0) {
+      // If there are no rows, this is easy
+      for (var i=0; i<row_num; i++) { row_template.clone().appendTo(table) };
+    } else {
+      // Otherwise, we need to append / remove columns and rows
+      rows = table.find('tr');
+
+      // If we need to add rows
+      if (rows.length <= row_num) {
+        var i = 0;
+
+        // Loop through each row
+        for (i; i < current_rows; i++) {
+          row = $(rows[i]);
+          row_cols = $(row).find('td').length;
+
+          if (col_num >= row_cols) {
+            // Append columns to the existing rows
+            col_count = col_num - row_cols;
+            for (var count=0; count<col_count; count++) { row.append(col_template) };
+          } else {
+            // Remove columns from the existing rows
+            col_count = row_cols - col_num;
+            selector = "td:nth-last-child(-n+"+ col_count +")";
+            row.find(selector).remove();
+          }
+
+          row.find('.metric').attr('name', 'dashboard[metric]['+ i +'][]')
+          row.find('.boxcolour').attr('name', 'dashboard[boxcolour]['+ i +'][]')
+          row.find('.textcolour').attr('name', 'dashboard[textcolour]['+ i +'][]')
+        }
+
+        // Append new rows
+        if (i <= row_num) {
+          for (i; i < row_num; i++) {
+            row_template.clone().appendTo(table)
+
+            row.find('.metric').attr('name', 'dashboard[metric]['+ i +'][]')
+            row.find('.boxcolour').attr('name', 'dashboard[boxcolour]['+ i +'][]')
+            row.find('.textcolour').attr('name', 'dashboard[textcolour]['+ i +'][]')
+          };
+        }
+      } else {
+        // Remove rows
+        row_count = rows.length - row_num;
+        selector = "tr:nth-last-child(-n+"+ row_count +")";
+        table.find(selector).remove();
+      }
+    }
+
+    // Show the table
+    table.removeClass('hidden');
+
+    var picker = $(table).find('.colourpicker').colorpicker()
+
+    picker.on('changeColor', function(ev){
+      $(this).next('input').val(ev.color.toHex().replace('#', ''));
+    });
+  })
+</script>

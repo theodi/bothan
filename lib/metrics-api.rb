@@ -277,6 +277,13 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  get '/dashboards/new' do
+    @title = 'Create Dashboard'
+    @metrics = Metric.all.distinct(:name).sort
+
+    erb :'dashboards/new', layout: :'layouts/full-width'
+  end
+
   get '/dashboards/:dashboard' do
     @title = "#{params[:dashboard]} dashboard".titleise
     @board = get_dashboard_data params[:dashboard]
