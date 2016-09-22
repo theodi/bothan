@@ -24,9 +24,9 @@
     <div id="metric-template" class="hidden">
       <iframe src='' width='100%' height='300px' frameBorder='0' scrolling='no' data-base-url='<%= request.scheme + '://' + request.host_with_port +  '/metrics/' %>' class='hidden'></iframe>
 
-      <div class="form-group form-group-sm">
+      <div class="form-group form-group-sm col-md-12">
         <label for='metric' class='text-right'>Metric</label>
-        <div class="input-group">
+        <div class="input-group col-md-12">
           <select name="dashboard[metric][]" class="form-control metric input-sm">
             <option>-- Select a metric--</options>
             <% @metrics.each do |metric| %>
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class='form-group form-group-sm'>
+      <div class='form-group form-group-sm col-md-6'>
         <label for='boxcolour' class='text-right'>Box Colour</label>
           <div class="input-group colourpicker boxcolour">
             <input type="text" name="boxcolourpicker" value="" class="form-control input-sm" />
@@ -45,7 +45,7 @@
           <input type="hidden" name="dashboard[boxcolour][]" class="boxcolour" value="" />
       </div>
 
-      <div class='form-group form-group-sm'>
+      <div class='form-group form-group-sm col-md-6'>
         <label for='boxcolour' class='text-right'>Text Colour</label>
           <div class="input-group colourpicker textcolour">
             <input type="text" name="textcolourpicker" value="" class="form-control input-sm" />
@@ -54,7 +54,7 @@
           <input type="hidden" name="dashboard[textcolour][]" class="textcolour" value="" />
       </div>
 
-      <div class='form-group form-group-sm hidden visualisations'>
+      <div class='form-group form-group-sm hidden visualisations col-md-12'>
         <label for='boxcolour' class='text-right'>Visualisation Type</label>
         <div class="input-group textcolour">
           <label class="chart hidden radio-inline">
