@@ -9,13 +9,13 @@
 
   <div class="form-group">
     <label for="title">Number of rows</label>
-    <input type="number" class="form-control rowcols" id="rows" value="1" name="dashboard[rows]" min="1" max="3">
+    <input type="number" class="form-control rowcols" id="rows" value="3" name="dashboard[rows]" min="1" max="3">
     <div class="help-block">Maxiumum 3 rows</div>
   </div>
 
   <div class="form-group">
     <label for="title">Number of columns</label>
-    <input type="number" class="form-control rowcols" id="columns" value="1" name="dashboard[columns]" min="1" max="4">
+    <input type="number" class="form-control rowcols" id="columns" value="3" name="dashboard[columns]" min="1" max="4">
     <div class="help-block">Maxiumum 4 columns</div>
   </div>
 
@@ -86,21 +86,45 @@
 </form>
 
 <script>
-  $('.rowcols').change(function(e) {
-    var table = $('#dashboard');
+  $(function() {
+    buildTable(3, 3);
 
-    var row_num = parseInt($('#rows').val());
-    var col_num = parseInt($('#columns').val());
+    $('.rowcols').change(function(e) {
+      var row_num = parseInt($('#rows').val());
+      var col_num = parseInt($('#columns').val());
 
-    var form = $('#metric-template').clone();
+      buildTable(row_num, col_num);
+    })
+
+  });
+
+  function showVisualisations(selector, metric) {
+    selector.find('label').addClass('hidden')
+    $.each(metric.data('visualisations').split(','), function( index, value ) {
+      selector.find('.' + value).removeClass('hidden')
+    });
+    selector.removeClass('hidden')
+  }
+
+  function setSrc(iframe, params) {
+    var uri = URI(iframe.attr('src'))
+    uri.removeQuery(Object.keys(params));
+    url = uri.addQuery(params).toString();
+    iframe.attr('src', url)
+  }
+
+  function buildTable(row_num, col_num) {
+    table = $('#dashboard');
+
+    form = $('#metric-template').clone();
     form.removeClass('hidden')
 
-    var row_template = $('<tr></tr>');
-    var col_template = '<td>'+ form.html() +'</td>';
+    row_template = $('<tr></tr>');
+    col_template = '<td>'+ form.html() +'</td>';
 
     for (var i=0; i<col_num; i++) { row_template.append(col_template) };
 
-    var current_rows = table.find('tr').length;
+    current_rows = table.find('tr').length;
 
     if (current_rows == 0) {
       // If there are no rows, this is easy
@@ -155,9 +179,9 @@
     // Show the table
     table.removeClass('hidden');
 
-    var picker = $(table).find('.colourpicker').colorpicker()
-    var metrics = $(table).find('.metric')
-    var visualisations = $(table).find('.visualisation')
+    picker = $(table).find('.colourpicker').colorpicker()
+    metrics = $(table).find('.metric')
+    visualisations = $(table).find('.visualisation');
 
     picker.on('changeColor', function(ev){
       var iframe = $(this).parent().parent().find('iframe')
@@ -200,20 +224,5 @@
 
       setSrc(iframe, params);
     })
-  })
-
-  function showVisualisations(selector, metric) {
-    selector.find('label').addClass('hidden')
-    $.each(metric.data('visualisations').split(','), function( index, value ) {
-      selector.find('.' + value).removeClass('hidden')
-    });
-    selector.removeClass('hidden')
-  }
-
-  function setSrc(iframe, params) {
-    var uri = URI(iframe.attr('src'))
-    uri.removeQuery(Object.keys(params));
-    url = uri.addQuery(params).toString();
-    iframe.attr('src', url)
   }
 </script>
