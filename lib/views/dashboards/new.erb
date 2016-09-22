@@ -27,7 +27,7 @@
       <div class="form-group form-group-sm col-md-12">
         <label for='metric' class='text-right'>Metric</label>
         <div class="input-group col-md-12">
-          <select name="dashboard[metric][]" class="form-control metric input-sm">
+          <select class="form-control metric input-sm">
             <option>-- Select a metric--</options>
             <% @metrics.each do |metric| %>
               <option data-visualisations="<%= get_alternatives(metric.value).join(',') %>"><%= metric.name %></option>
@@ -42,7 +42,7 @@
             <input type="text" name="boxcolourpicker" value="" class="form-control input-sm" />
             <span class="input-group-addon"><i></i></span>
           </div>
-          <input type="hidden" name="dashboard[boxcolour][]" class="boxcolour" value="" />
+          <input type="hidden" class="boxcolour" value="#ddd" />
       </div>
 
       <div class='form-group form-group-sm col-md-6'>
@@ -51,30 +51,34 @@
             <input type="text" name="textcolourpicker" value="" class="form-control input-sm" />
             <span class="input-group-addon"><i></i></span>
           </div>
-          <input type="hidden" name="dashboard[textcolour][]" class="textcolour" value="" />
+          <input type="hidden" class="textcolour" value="#676767" />
       </div>
 
       <div class='form-group form-group-sm hidden visualisations col-md-12'>
         <label for='boxcolour' class='text-right'>Visualisation Type</label>
+        <input type="radio" class="visualisation default hidden" value="default" checked="checked" />
         <div class="input-group textcolour">
           <label class="chart hidden radio-inline">
-            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="chart">
+            <input type="radio" class="visualisation" value="chart" />
             Chart
           </label>
           <label class="number hidden radio-inline">
-            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="number">
+            <input type="radio" class="visualisation" value="number" />
             Number
           </label>
           <label class="target hidden radio-inline">
-            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="target">
+            <input type="radio" class="visualisation" value="target" />
             Target
           </label>
           <label class="pie hidden radio-inline">
-            <input type="radio" name="dashboard[visualisation][]" class="visualisation" value="pie">
+            <input type="radio" class="visualisation" value="pie" />
             Pie
           </label>
         </div>
       </div>
+
+      <input type="hidden" class="row" />
+      <input type="hidden" class="col" />
 
     </div>
   </div>
@@ -99,6 +103,7 @@
   });
 
   function showVisualisations(selector, metric) {
+    selector.find('.default').prop('checked', true)
     selector.find('.input-group label').addClass('hidden')
     $.each(metric.data('visualisations').split(','), function( index, value ) {
       selector.find('.' + value).removeClass('hidden')
@@ -128,7 +133,11 @@
 
     if (current_rows == 0) {
       // If there are no rows, this is easy
-      for (var i=0; i<row_num; i++) { row_template.clone().appendTo(table) };
+      for (var i=0; i<row_num; i++) {
+        row = row_template.clone()
+
+        row.appendTo(table);
+      };
     } else {
       // Otherwise, we need to append / remove columns and rows
       rows = table.find('tr');
@@ -152,21 +161,11 @@
             selector = "td:nth-last-child(-n+"+ col_count +")";
             row.find(selector).remove();
           }
-
-          row.find('.metric').attr('name', 'dashboard[metric]['+ i +'][]')
-          row.find('.boxcolour').attr('name', 'dashboard[boxcolour]['+ i +'][]')
-          row.find('.textcolour').attr('name', 'dashboard[textcolour]['+ i +'][]')
         }
 
         // Append new rows
         if (i <= row_num) {
-          for (i; i < row_num; i++) {
-            row_template.clone().appendTo(table)
-
-            row.find('.metric').attr('name', 'dashboard[metric]['+ i +'][]')
-            row.find('.boxcolour').attr('name', 'dashboard[boxcolour]['+ i +'][]')
-            row.find('.textcolour').attr('name', 'dashboard[textcolour]['+ i +'][]')
-          };
+          for (i; i < row_num; i++) { row_template.clone().appendTo(table) };
         }
       } else {
         // Remove rows
@@ -178,6 +177,22 @@
 
     // Show the table
     table.removeClass('hidden');
+
+    $.each(table.find('tr'), function(i, row) {
+      $(row).find('.row').val(i + 1)
+      $.each($(row).find('td'), function(n, col) {
+        $(col).find('.col').val(n + 1)
+      })
+    })
+
+    $.each(table.find('td'), function(i, col) {
+      $(col).find('.metric').attr('name', 'dashboard[metrics]['+ i +'][name]')
+      $(col).find('.boxcolour').attr('name', 'dashboard[metrics]['+ i +'][boxcolour]')
+      $(col).find('.textcolour').attr('name', 'dashboard[metrics]['+ i +'][textcolour]')
+      $(col).find('.visualisation').attr('name', 'dashboard[metrics]['+ i +'][visualisation]')
+      $(col).find('.row').attr('name', 'dashboard[metrics]['+ i +'][row]')
+      $(col).find('.col').attr('name', 'dashboard[metrics]['+ i +'][col]')
+    })
 
     picker = $(table).find('.colourpicker').colorpicker()
     metrics = $(table).find('.metric')
