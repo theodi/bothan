@@ -5,6 +5,7 @@ require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
 require_relative 'models/metadata'
+require_relative 'models/dashboard'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -296,7 +297,11 @@ class MetricsApi < Sinatra::Base
   end
 
   post '/dashboards' do
+    slug = params[:dashboard][:name].parameterize
+    params[:dashboard][:slug] = slug
+    dashboard = Dashboard.create(params[:dashboard])
 
+    redirect "/dashboards/#{slug}"
   end
 
   def error_406
