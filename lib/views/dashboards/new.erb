@@ -99,7 +99,7 @@
   });
 
   function showVisualisations(selector, metric) {
-    selector.find('label').addClass('hidden')
+    selector.find('.input-group label').addClass('hidden')
     $.each(metric.data('visualisations').split(','), function( index, value ) {
       selector.find('.' + value).removeClass('hidden')
     });
