@@ -286,8 +286,8 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/dashboards/:dashboard' do
-    @title = "#{params[:dashboard]} dashboard".titleise
-    @board = get_dashboard_data params[:dashboard]
+    @dashboard = Dashboard.find_by(slug: params[:dashboard])
+    @title = @dashboard.name
 
     respond_to do |wants|
       wants.html do
