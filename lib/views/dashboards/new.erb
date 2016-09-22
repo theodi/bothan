@@ -184,16 +184,16 @@
     visualisations = $(table).find('.visualisation');
 
     picker.on('changeColor', function(ev){
-      var iframe = $(this).parent().parent().find('iframe')
+      var iframe = $(this).parents().eq(1).find('iframe')
       var baseURL = iframe.data('base-url')
 
       $(this).next('input').val(ev.color.toHex().replace('#', ''));
 
       if ($.inArray('textcolour', ev.target.classList) >= 0) {
         var textcolour = ev.color.toHex()
-        var boxcolour = $(this).parent().parent().find('input.boxcolour').val()
+        var boxcolour = $(this).parents().eq(1).find('input.boxcolour').val()
       } else {
-        var textcolour = $(this).parent().parent().find('input.textcolour').val()
+        var textcolour = $(this).parents().eq(1).find('input.textcolour').val()
         var boxcolour = ev.color.toHex()
       }
 
@@ -206,18 +206,18 @@
     });
 
     metrics.on('change', function() {
-      var iframe = $(this).parent().parent().parent().find('iframe')
+      var iframe = $(this).parents().eq(2).find('iframe')
       var uri = URI(iframe.attr('src'))
       var qs = uri.search() !== '' ? uri.search() : '?layout=bare'
       var baseURL = iframe.data('base-url')
       var url = baseURL + $(this).val() + qs;
-      showVisualisations($(this).parent().parent().parent().find('.visualisations'), $(this).find(":selected"))
+      showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
       iframe.attr('src', url)
       iframe.removeClass('hidden')
     })
 
     visualisations.on('change', function() {
-      var iframe = $($(this).parents()[3]).find('iframe')
+      var iframe = $(this).parents().eq(3).find('iframe')
       var params = {
         type: $(this).val()
       }
