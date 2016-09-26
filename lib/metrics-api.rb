@@ -286,6 +286,7 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/dashboards/new' do
+    @dashboard = Dashboard.new
     @title = 'Create Dashboard'
     @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
 
@@ -303,19 +304,27 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  get '/dashboards/:dashboard/edit' do
+    @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
+    @dashboard = Dashboard.find_by(slug: params[:dashboard])
+    @title = 'Edit Dashboard'
+
+    erb :'dashboards/new', layout: :'layouts/full-width'
+  end
+
   post '/dashboards' do
-    @dashboard = params[:dashboard]
-    @dashboard[:metrics] = @dashboard[:metrics].map { |m| m.last }
+    dashboard = params[:dashboard]
+    dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
                                              .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
 
-    dashboard = Dashboard.create(@dashboard)
+    @dashboard = Dashboard.create(dashboard)
 
-    if dashboard.valid?
-      redirect "/dashboards/#{dashboard.slug}"
+    if @dashboard.valid?
+      redirect "/dashboards/#{@dashboard.slug}"
     else
       @title = 'Create Dashboard'
       @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
-      @errors = dashboard.errors
+      @errors = @dashboard.errors
 
       erb :'dashboards/new', layout: :'layouts/full-width'
     end

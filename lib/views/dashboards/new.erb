@@ -16,24 +16,24 @@
 
   <div class="form-group">
     <label for="title">Dashboard Name</label>
-    <input type="text" class="form-control" id="title" value="" name="dashboard[name]">
+    <input type="text" class="form-control" id="title" value="<%= @dashboard.name %>" name="dashboard[name]">
   </div>
 
   <div class="form-group">
     <label for="title">Dashboard Slug</label>
-    <input type="text" class="form-control" id="slug" value="" name="dashboard[slug]" pattern="[a-z0-9\-]+">
+    <input type="text" class="form-control" id="slug" value="<%= @dashboard.slug %>" name="dashboard[slug]" pattern="[a-z0-9\-]+">
     <div class="help-block hidden" id="slug-preview">This means your dashboard will be accessible at <code>/dashboards/<span></span></code></div>
   </div>
 
   <div class="form-group">
     <label for="title">Number of rows</label>
-    <input type="number" class="form-control rowcols" id="rows" value="3" name="dashboard[rows]" min="1" max="3">
+    <input type="number" class="form-control rowcols" id="rows" value="<%= @dashboard.rows || 3 %>" name="dashboard[rows]" min="1" max="3">
     <div class="help-block">Maxiumum 3 rows</div>
   </div>
 
   <div class="form-group">
     <label for="title">Number of columns</label>
-    <input type="number" class="form-control rowcols" id="columns" value="3" name="dashboard[columns]" min="1" max="4">
+    <input type="number" class="form-control rowcols" id="columns" value="<%= @dashboard.columns || 3 %>" name="dashboard[columns]" min="1" max="4">
     <div class="help-block">Maxiumum 4 columns</div>
   </div>
 
@@ -109,7 +109,10 @@
 
 <script>
   $(function() {
-    buildTable(3, 3);
+    var dashboardMetrics = JSON.parse('<%= (@dashboard.metrics || {}).to_json %>')
+
+    buildTable(<%= @dashboard.rows || 3 %>, <%= @dashboard.columns || 3 %>);
+    populateTable(dashboardMetrics)
 
     $('.rowcols').change(function(e) {
       var row_num = parseInt($('#rows').val());
@@ -135,6 +138,15 @@
       selector.find('.' + value).removeClass('hidden')
     });
     selector.removeClass('hidden')
+  }
+
+  function populateIframe(iframe, metric) {
+    var uri = URI(iframe.attr('src'))
+    var qs = uri.search() !== '' ? uri.search() : '?layout=bare'
+    var baseURL = iframe.data('base-url')
+    var url = baseURL + metric + qs;
+    iframe.attr('src', url)
+    iframe.removeClass('hidden')
   }
 
   function setSrc(iframe, params) {
@@ -248,19 +260,46 @@
 
     metrics.on('change', function() {
       var iframe = $(this).parents().eq(2).find('iframe')
-      var uri = URI(iframe.attr('src'))
-      var qs = uri.search() !== '' ? uri.search() : '?layout=bare'
-      var baseURL = iframe.data('base-url')
-      var url = baseURL + $(this).val() + qs;
+      populateIframe(iframe, $(this).val())
       showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
-      iframe.attr('src', url)
-      iframe.removeClass('hidden')
     })
 
     visualisations.on('change', function() {
       var iframe = $(this).parents().eq(3).find('iframe')
       var params = {
         type: $(this).val()
+      }
+
+      setSrc(iframe, params);
+    })
+  }
+
+  function populateTable(metrics) {
+    console.log(metrics)
+    $.each(metrics, function(i, metric) {
+      var table = $('#dashboard');
+
+      var panel = $(table.find('td')[i])
+      var iframe = panel.find('iframe')
+      var type = (typeof metric.visualisation === 'undefined') ? 'default' : metric.visualisation;
+
+      panel.find('.metric').val(metric.name)
+
+      panel.find('[name=boxcolourpicker]').val('#' + metric.boxcolour)
+      panel.find('.boxpicker').val(metric.boxcolour)
+
+      panel.find('[name=textcolourpicker]').val('#' + metric.textcolour)
+      panel.find('.textcolour').val(metric.textcolour)
+
+      populateIframe(iframe, metric.name)
+      showVisualisations(panel.find('.visualisations'), panel.find(":selected"))
+
+      panel.find('[value="'+ type +'"].visualisation').prop("checked", true)
+
+      var params = {
+        boxcolour: metric.boxcolour,
+        textcolour: metric.textcolour,
+        type: metric.visualisation
       }
 
       setSrc(iframe, params);
