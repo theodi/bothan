@@ -1,7 +1,7 @@
 <% if @errors %>
   <% @errors.each do |field, error| %>
     <div class="alert alert-danger" role="alert">
-      <% if @dashboard[field].nil? %>
+      <% if @dashboard[field].blank?  %>
         The field <%= field %> <%= error %>
       <% else %>
         The <%= field %> '<%= @dashboard[field] %>' <%= error %>
