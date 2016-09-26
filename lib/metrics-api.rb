@@ -55,6 +55,8 @@ class MetricsApi < Sinatra::Base
   end
 
   before do
+    @config = config
+
     headers 'Vary' => 'Accept'
 
     if negotiated?
@@ -76,7 +78,6 @@ class MetricsApi < Sinatra::Base
     respond_to do |wants|
 
       wants.html do
-        @config = config
         @title = 'Metrics API'
         erb :index, layout: 'layouts/default'.to_sym
       end
@@ -94,8 +95,6 @@ class MetricsApi < Sinatra::Base
         }
       end
     }
-
-    @config = config
 
     respond_to do |wants|
       wants.json { @metrics.to_json }
@@ -148,7 +147,6 @@ class MetricsApi < Sinatra::Base
     respond_to do |wants|
 
       wants.html do
-        @config = config
         @title = {
           'en' => 'Metadata'
         }
@@ -340,7 +338,7 @@ class MetricsApi < Sinatra::Base
 
   post '/dashboards' do
     protected!
-    
+
     dashboard = params[:dashboard]
     dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
                                              .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }

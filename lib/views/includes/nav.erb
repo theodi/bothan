@@ -8,7 +8,15 @@
         <span class='icon-bar'></span>
         <span class='icon-bar'></span>
       </button>-->
-      <a class='navbar-brand' href='/'>Home</a>
+      <a class='navbar-brand' href='/'><%= @config[:title] %></a>
+
+      <ul class="nav navbar-nav">
+        <li><a href='/'>Home</a></li>
+        <li><a href='/dashboards'>Dashboards</a></li>
+        <% if authorized? %>
+          <li><a href='/dashboards/new'>Create Dashboard</a></li>
+        <% end %>
+      </ul>
 
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -23,4 +31,3 @@
   </div><!-- /.container-fluid -->
   <% end %>
 </nav>
-<%= erb :'includes/github-corner' %>
