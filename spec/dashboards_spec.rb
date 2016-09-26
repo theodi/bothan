@@ -7,6 +7,7 @@ describe MetricsApi do
       post '/dashboards', {
         dashboard: {
           name: 'My Awesome Dashboard',
+          slug: 'my-awesome-dashboard',
           rows: 2,
           columns: 2,
           metrics: {
