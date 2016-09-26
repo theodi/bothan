@@ -2,9 +2,8 @@ describe MetricsApi do
 
   context 'Dashboards' do
 
-    it 'creates a dashboard' do
-
-      post '/dashboards', {
+    let(:dashboard_hash) {
+      {
         dashboard: {
           name: 'My Awesome Dashboard',
           slug: 'my-awesome-dashboard',
@@ -36,9 +35,12 @@ describe MetricsApi do
               visualisation: 'number'
             }
           }
-
         }
       }
+    }
+
+    it 'creates a dashboard' do
+      post '/dashboards', dashboard_hash
 
       follow_redirect!
 
@@ -61,21 +63,9 @@ describe MetricsApi do
     end
 
     it 'does not specify a visualisation if default is set' do
-      post '/dashboards', {
-        dashboard: {
-          name: 'My Awesome Dashboard',
-          rows: 1,
-          columns: 1,
-          metrics: {
-            '0': {
-              name: 'my-first-metric',
-              boxcolour: '#000',
-              textcolour: '#fff',
-              visualisation: 'default'
-            }
-          }
-        }
-      }
+      dashboard_hash[:dashboard][:metrics][:'0'][:visualisation] = 'default'
+
+      post '/dashboards', dashboard_hash
 
       dashboard = Dashboard.first
 
@@ -89,46 +79,17 @@ describe MetricsApi do
     context 'returns an error' do
 
       it 'if the slug is invalid' do
-        post '/dashboards', {
-          dashboard: {
-            name: 'My Awesome Dashboard',
-            slug: 'This Is TOTALLY NOT A SLUG $%£@$@$@£',
-            rows: 1,
-            columns: 1,
-            metrics: {
-              '0': {
-                name: 'my-first-metric',
-                boxcolour: '#000',
-                textcolour: '#fff',
-                visualisation: 'default'
-              }
-            }
-          }
-        }
+        dashboard_hash[:dashboard][:slug] = 'This Is TOTALLY NOT A SLUG $%£@$@$@£'
+        post '/dashboards', dashboard_hash
 
         expect(last_request.url).to eq('http://example.org/dashboards')
         expect(last_response.body).to match(/The slug 'This Is TOTALLY NOT A SLUG \$\%\£\@\$\@\$\@\£' is invalid/)
       end
 
       it 'if the slug is duplicated' do
-        Dashboard.create(slug: 'my-awesome-dashboard')
+        Dashboard.create(name: 'Original', slug: 'my-awesome-dashboard', rows: 1, columns: 1)
 
-        post '/dashboards', {
-          dashboard: {
-            name: 'My Awesome Dashboard',
-            slug: 'my-awesome-dashboard',
-            rows: 1,
-            columns: 1,
-            metrics: {
-              '0': {
-                name: 'my-first-metric',
-                boxcolour: '#000',
-                textcolour: '#fff',
-                visualisation: 'default'
-              }
-            }
-          }
-        }
+        post '/dashboards', dashboard_hash
 
         expect(last_request.url).to eq('http://example.org/dashboards')
         expect(last_response.body).to match(/The slug 'my-awesome-dashboard' is already taken/)
