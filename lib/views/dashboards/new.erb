@@ -1,0 +1,313 @@
+<% if @errors %>
+  <% @errors.each do |field, error| %>
+    <div class="alert alert-danger" role="alert">
+      <% if @dashboard[field].blank?  %>
+        The field <%= field %> <%= error %>
+      <% else %>
+        The <%= field %> '<%= @dashboard[field] %>' <%= error %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<h1><%= @title %></h1>
+
+<form method="post" action="<%= "/dashboards/#{@dashboard.slug}".chomp('/') %>" id="form">
+  <% if @dashboard.persisted? %>
+    <input type="hidden" name="_method" value="PUT">
+  <% end %>
+
+  <div class="form-group">
+    <label for="title">Dashboard Name</label>
+    <input type="text" class="form-control" id="title" value="<%= @dashboard.name %>" name="dashboard[name]">
+  </div>
+
+  <div class="form-group">
+    <label for="title">Dashboard Slug</label>
+    <input type="text" class="form-control" id="slug" value="<%= @dashboard.slug %>" name="dashboard[slug]" pattern="[a-z0-9\-]+" <%= 'disabled' if @dashboard.persisted? %> >
+    <div class="help-block hidden" id="slug-preview">This means your dashboard will be accessible at <code>/dashboards/<span></span></code></div>
+  </div>
+
+  <div class="form-group">
+    <label for="title">Number of rows</label>
+    <input type="number" class="form-control rowcols" id="rows" value="<%= @dashboard.rows || 3 %>" name="dashboard[rows]" min="1" max="3">
+    <div class="help-block">Maxiumum 3 rows</div>
+  </div>
+
+  <div class="form-group">
+    <label for="title">Number of columns</label>
+    <input type="number" class="form-control rowcols" id="columns" value="<%= @dashboard.columns || 3 %>" name="dashboard[columns]" min="1" max="4">
+    <div class="help-block">Maxiumum 4 columns</div>
+  </div>
+
+  <div class="form-group">
+    <table id="dashboard" class="hidden table"></table>
+    <div id="metric-template" class="hidden">
+      <iframe src='' width='100%' height='300px' frameBorder='0' scrolling='no' data-base-url='<%= request.scheme + '://' + request.host_with_port +  '/metrics/' %>' class='hidden'></iframe>
+
+      <div class="form-group form-group-sm col-md-12">
+        <label for='metric' class='text-right'>Metric</label>
+        <div class="input-group col-md-12">
+          <select class="form-control metric input-sm">
+            <option>-- Select a metric--</options>
+            <% @metrics.each do |metric| %>
+              <option data-visualisations="<%= get_alternatives(metric.value).join(',') %>"><%= metric.name %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+
+      <div class='form-group form-group-sm col-md-6'>
+        <label for='boxcolour' class='text-right'>Box Colour</label>
+          <div class="input-group colourpicker boxcolour">
+            <input type="text" name="boxcolourpicker" value="" class="form-control input-sm" />
+            <span class="input-group-addon"><i></i></span>
+          </div>
+          <input type="hidden" class="boxcolour" value="ddd" />
+      </div>
+
+      <div class='form-group form-group-sm col-md-6'>
+        <label for='boxcolour' class='text-right'>Text Colour</label>
+          <div class="input-group colourpicker textcolour">
+            <input type="text" name="textcolourpicker" value="" class="form-control input-sm" />
+            <span class="input-group-addon"><i></i></span>
+          </div>
+          <input type="hidden" class="textcolour" value="676767" />
+      </div>
+
+      <div class='form-group form-group-sm hidden visualisations col-md-12'>
+        <label for='boxcolour' class='text-right'>Visualisation Type</label>
+        <input type="radio" class="visualisation default hidden" value="default" checked="checked" />
+        <div class="input-group textcolour">
+          <label class="chart hidden radio-inline">
+            <input type="radio" class="visualisation" value="chart" />
+            Chart
+          </label>
+          <label class="number hidden radio-inline">
+            <input type="radio" class="visualisation" value="number" />
+            Number
+          </label>
+          <label class="target hidden radio-inline">
+            <input type="radio" class="visualisation" value="target" />
+            Target
+          </label>
+          <label class="pie hidden radio-inline">
+            <input type="radio" class="visualisation" value="pie" />
+            Pie
+          </label>
+        </div>
+      </div>
+
+      <input type="hidden" class="row" />
+      <input type="hidden" class="col" />
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary btn-block">Submit</button>
+  </div>
+
+</form>
+
+<script>
+  $(function() {
+    var dashboardMetrics = JSON.parse('<%= (@dashboard.metrics || {}).to_json %>')
+
+    buildTable(<%= @dashboard.rows || 3 %>, <%= @dashboard.columns || 3 %>);
+    populateTable(dashboardMetrics)
+
+    $('.rowcols').change(function(e) {
+      var row_num = parseInt($('#rows').val());
+      var col_num = parseInt($('#columns').val());
+
+      buildTable(row_num, col_num);
+    })
+
+    $('#title').keyup(function() {
+      title = $(this).val()
+      slug = title.toLowerCase().replace(/[^\w ]+/g,"").replace(/ +/g,"-").replace(/^-+|-+$/,"")
+      if ($('#slug').prop('disabled') === false) {
+        $('#slug').val(slug)
+        $('#slug-preview').removeClass('hidden')
+        $('#slug-preview span').html(slug)
+      }
+    })
+
+  });
+
+  function showVisualisations(selector, metric) {
+    selector.find('.default').prop('checked', true)
+    selector.find('.input-group label').addClass('hidden')
+    $.each(metric.data('visualisations').split(','), function( index, value ) {
+      selector.find('.' + value).removeClass('hidden')
+    });
+    selector.removeClass('hidden')
+  }
+
+  function populateIframe(iframe, metric) {
+    var uri = URI(iframe.attr('src'))
+    var qs = uri.search() !== '' ? uri.search() : '?layout=bare'
+    var baseURL = iframe.data('base-url')
+    var url = baseURL + metric + qs;
+    iframe.attr('src', url)
+    iframe.removeClass('hidden')
+  }
+
+  function setSrc(iframe, params) {
+    var uri = URI(iframe.attr('src'))
+    uri.removeQuery(Object.keys(params));
+    url = uri.addQuery(params).toString();
+    iframe.attr('src', url)
+  }
+
+  function buildTable(row_num, col_num) {
+    table = $('#dashboard');
+
+    form = $('#metric-template').clone();
+    form.removeClass('hidden')
+
+    row_template = $('<tr></tr>');
+    col_template = '<td>'+ form.html() +'</td>';
+
+    for (var i=0; i<col_num; i++) { row_template.append(col_template) };
+
+    current_rows = table.find('tr').length;
+
+    if (current_rows == 0) {
+      // If there are no rows, this is easy
+      for (var i=0; i<row_num; i++) {
+        row = row_template.clone()
+
+        row.appendTo(table);
+      };
+    } else {
+      // Otherwise, we need to append / remove columns and rows
+      rows = table.find('tr');
+
+      // If we need to add rows
+      if (rows.length <= row_num) {
+        var i = 0;
+
+        // Loop through each row
+        for (i; i < current_rows; i++) {
+          row = $(rows[i]);
+          row_cols = $(row).find('td').length;
+
+          if (col_num >= row_cols) {
+            // Append columns to the existing rows
+            col_count = col_num - row_cols;
+            for (var count=0; count<col_count; count++) { row.append(col_template) };
+          } else {
+            // Remove columns from the existing rows
+            col_count = row_cols - col_num;
+            selector = "td:nth-last-child(-n+"+ col_count +")";
+            row.find(selector).remove();
+          }
+        }
+
+        // Append new rows
+        if (i <= row_num) {
+          for (i; i < row_num; i++) { row_template.clone().appendTo(table) };
+        }
+      } else {
+        // Remove rows
+        row_count = rows.length - row_num;
+        selector = "tr:nth-last-child(-n+"+ row_count +")";
+        table.find(selector).remove();
+      }
+    }
+
+    // Show the table
+    table.removeClass('hidden');
+
+    $.each(table.find('tr'), function(i, row) {
+      $(row).find('.row').val(i + 1)
+      $.each($(row).find('td'), function(n, col) {
+        $(col).find('.col').val(n + 1)
+      })
+    })
+
+    $.each(table.find('td'), function(i, col) {
+      $(col).find('.metric').attr('name', 'dashboard[metrics]['+ i +'][name]')
+      $(col).find('.boxcolour').attr('name', 'dashboard[metrics]['+ i +'][boxcolour]')
+      $(col).find('.textcolour').attr('name', 'dashboard[metrics]['+ i +'][textcolour]')
+      $(col).find('.visualisation').attr('name', 'dashboard[metrics]['+ i +'][visualisation]')
+      $(col).find('.row').attr('name', 'dashboard[metrics]['+ i +'][row]')
+      $(col).find('.col').attr('name', 'dashboard[metrics]['+ i +'][col]')
+    })
+
+    picker = $(table).find('.colourpicker').colorpicker()
+    metrics = $(table).find('.metric')
+    visualisations = $(table).find('.visualisation');
+
+    picker.on('changeColor', function(ev){
+      var iframe = $(this).parents().eq(1).find('iframe')
+      var baseURL = iframe.data('base-url')
+
+      $(this).next('input').val(ev.color.toHex().replace('#', ''));
+
+      if ($.inArray('textcolour', ev.target.classList) >= 0) {
+        var textcolour = ev.color.toHex()
+        var boxcolour = $(this).parents().eq(1).find('input.boxcolour').val()
+      } else {
+        var textcolour = $(this).parents().eq(1).find('input.textcolour').val()
+        var boxcolour = ev.color.toHex()
+      }
+
+      params = {
+        boxcolour: boxcolour.replace('#', ''),
+        textcolour: textcolour.replace('#', '')
+      }
+
+      setSrc(iframe, params);
+    });
+
+    metrics.on('change', function() {
+      var iframe = $(this).parents().eq(2).find('iframe')
+      populateIframe(iframe, $(this).val())
+      showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
+    })
+
+    visualisations.on('change', function() {
+      var iframe = $(this).parents().eq(3).find('iframe')
+      var params = {
+        type: $(this).val()
+      }
+
+      setSrc(iframe, params);
+    })
+  }
+
+  function populateTable(metrics) {
+    console.log(metrics)
+    $.each(metrics, function(i, metric) {
+      var table = $('#dashboard');
+
+      var panel = $(table.find('td')[i])
+      var iframe = panel.find('iframe')
+      var type = (typeof metric.visualisation === 'undefined') ? 'default' : metric.visualisation;
+
+      panel.find('.metric').val(metric.name)
+
+      panel.find('[name=boxcolourpicker]').val('#' + metric.boxcolour)
+      panel.find('.boxcolour').val(metric.boxcolour)
+
+      panel.find('[name=textcolourpicker]').val('#' + metric.textcolour)
+      panel.find('.textcolour').val(metric.textcolour)
+
+      populateIframe(iframe, metric.name)
+      showVisualisations(panel.find('.visualisations'), panel.find(":selected"))
+
+      panel.find('[value="'+ type +'"].visualisation').prop("checked", true)
+
+      var params = {
+        boxcolour: metric.boxcolour,
+        textcolour: metric.textcolour,
+        type: metric.visualisation
+      }
+
+      setSrc(iframe, params);
+    })
+  }
+</script>

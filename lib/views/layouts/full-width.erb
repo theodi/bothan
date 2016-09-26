@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <%= erb :'includes/header' %>
+  <body>
+    <%= erb :'includes/nav' %>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

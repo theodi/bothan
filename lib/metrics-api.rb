@@ -5,6 +5,7 @@ require 'tilt/kramdown'
 require 'mongoid'
 require_relative 'models/metrics'
 require_relative 'models/metadata'
+require_relative 'models/dashboard'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -54,6 +55,8 @@ class MetricsApi < Sinatra::Base
   end
 
   before do
+    @config = config
+
     headers 'Vary' => 'Accept'
 
     if negotiated?
@@ -75,7 +78,6 @@ class MetricsApi < Sinatra::Base
     respond_to do |wants|
 
       wants.html do
-        @config = config
         @title = 'Metrics API'
         erb :index, layout: 'layouts/default'.to_sym
       end
@@ -93,8 +95,6 @@ class MetricsApi < Sinatra::Base
         }
       end
     }
-
-    @config = config
 
     respond_to do |wants|
       wants.json { @metrics.to_json }
@@ -147,7 +147,6 @@ class MetricsApi < Sinatra::Base
     respond_to do |wants|
 
       wants.html do
-        @config = config
         @title = {
           'en' => 'Metadata'
         }
@@ -277,14 +276,83 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  get '/dashboards' do
+    @dashboards = Dashboard.all
+    @title = "Dashboards"
+
+    erb :'dashboards/index', layout: :'layouts/full-width'
+  end
+
+  get '/dashboards/new' do
+    protected!
+
+    @dashboard = Dashboard.new
+    @title = 'Create Dashboard'
+    @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
+
+    erb :'dashboards/new', layout: :'layouts/full-width'
+  end
+
   get '/dashboards/:dashboard' do
-    @title = "#{params[:dashboard]} dashboard".titleise
-    @board = get_dashboard_data params[:dashboard]
+    @dashboard = Dashboard.find_by(slug: params[:dashboard])
+    @title = @dashboard.name
 
     respond_to do |wants|
       wants.html do
-        erb :dashboard, layout: :"layouts/dashboard"
+        erb :'dashboards/show', layout: :"layouts/dashboard"
       end
+    end
+  end
+
+  put '/dashboards/:slug' do
+    protected!
+
+    @dashboard = Dashboard.find_by(slug: params[:slug])
+
+    dashboard = params[:dashboard]
+    dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
+                                             .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+
+    @dashboard.update_attributes(dashboard)
+
+    if @dashboard.valid?
+      redirect "/dashboards/#{@dashboard.slug}"
+    else
+      @title = 'Edit Dashboard'
+      @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
+      @errors = @dashboard.errors
+
+      erb :'dashboards/new', layout: :'layouts/full-width'
+    end
+  end
+
+  get '/dashboards/:dashboard/edit' do
+    protected!
+
+    @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
+    @dashboard = Dashboard.find_by(slug: params[:dashboard])
+    @title = 'Edit Dashboard'
+
+    erb :'dashboards/new', layout: :'layouts/full-width'
+  end
+
+  post '/dashboards' do
+    protected!
+
+    dashboard = params[:dashboard]
+    dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
+                                             .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+
+    @dashboard = Dashboard.create(dashboard)
+
+    if @dashboard.valid?
+      redirect "/dashboards/#{@dashboard.slug}"
+    else
+      @title = 'Create Dashboard'
+      @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
+      @errors = @dashboard.errors
+
+      erb :'dashboards/new', layout: :'layouts/full-width'
     end
   end
 
