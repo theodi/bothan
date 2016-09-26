@@ -86,6 +86,56 @@ describe MetricsApi do
       })
     end
 
+    context 'returns an error' do
+
+      it 'if the slug is invalid' do
+        post '/dashboards', {
+          dashboard: {
+            name: 'My Awesome Dashboard',
+            slug: 'This Is TOTALLY NOT A SLUG $%£@$@$@£',
+            rows: 1,
+            columns: 1,
+            metrics: {
+              '0': {
+                name: 'my-first-metric',
+                boxcolour: '#000',
+                textcolour: '#fff',
+                visualisation: 'default'
+              }
+            }
+          }
+        }
+
+        expect(last_request.url).to eq('http://example.org/dashboards')
+        expect(last_response.body).to match(/The slug 'This Is TOTALLY NOT A SLUG \$\%\£\@\$\@\$\@\£' is invalid/)
+      end
+
+      it 'if the slug is duplicated' do
+        Dashboard.create(slug: 'my-awesome-dashboard')
+
+        post '/dashboards', {
+          dashboard: {
+            name: 'My Awesome Dashboard',
+            slug: 'my-awesome-dashboard',
+            rows: 1,
+            columns: 1,
+            metrics: {
+              '0': {
+                name: 'my-first-metric',
+                boxcolour: '#000',
+                textcolour: '#fff',
+                visualisation: 'default'
+              }
+            }
+          }
+        }
+
+        expect(last_request.url).to eq('http://example.org/dashboards')
+        expect(last_response.body).to match(/The slug 'my-awesome-dashboard' is already taken/)
+      end
+
+    end
+
   end
 
 end

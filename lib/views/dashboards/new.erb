@@ -1,3 +1,11 @@
+<% if @errors %>
+  <% @errors.each do |field, error| %>
+    <div class="alert alert-danger" role="alert">
+      The <%= field %> '<%= @dashboard[field] %>' <%= error %>
+    </div>
+  <% end %>
+<% end %>
+
 <h1><%= @title %></h1>
 
 <form method="post" action="/dashboards" id="form">
