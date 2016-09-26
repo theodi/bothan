@@ -278,6 +278,13 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  get '/dashboards' do
+    @dashboards = Dashboard.all
+    @title = "Dashboards"
+
+    erb :'dashboards/index', layout: :'layouts/full-width'
+  end
+
   get '/dashboards/new' do
     @title = 'Create Dashboard'
     @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
