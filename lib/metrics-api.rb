@@ -297,11 +297,17 @@ class MetricsApi < Sinatra::Base
   end
 
   post '/dashboards' do
-    slug = params[:dashboard][:name].parameterize
-    params[:dashboard][:slug] = slug
-    dashboard = Dashboard.create(params[:dashboard])
+    dashboard = params[:dashboard]
+    dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
+                                             .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
 
-    redirect "/dashboards/#{slug}"
+    dashboard = Dashboard.create(dashboard)
+
+    if dashboard.valid?
+      redirect "/dashboards/#{dashboard.slug}"
+    else
+      erb :'dashboards/new', layout: :'layouts/full-width'
+    end
   end
 
   def error_406
