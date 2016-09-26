@@ -286,6 +286,8 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/dashboards/new' do
+    protected!
+
     @dashboard = Dashboard.new
     @title = 'Create Dashboard'
     @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
@@ -305,6 +307,8 @@ class MetricsApi < Sinatra::Base
   end
 
   put '/dashboards/:slug' do
+    protected!
+
     @dashboard = Dashboard.find_by(slug: params[:slug])
 
     dashboard = params[:dashboard]
@@ -325,6 +329,8 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/dashboards/:dashboard/edit' do
+    protected!
+
     @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
     @dashboard = Dashboard.find_by(slug: params[:dashboard])
     @title = 'Edit Dashboard'
@@ -333,6 +339,8 @@ class MetricsApi < Sinatra::Base
   end
 
   post '/dashboards' do
+    protected!
+    
     dashboard = params[:dashboard]
     dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
                                              .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }

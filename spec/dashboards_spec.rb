@@ -2,6 +2,10 @@ describe MetricsApi do
 
   context 'Dashboards' do
 
+    before(:each) do
+      basic_authorize ENV['METRICS_API_USERNAME'], ENV['METRICS_API_PASSWORD']
+    end
+
     let(:dashboard_hash) {
       {
         dashboard: {
