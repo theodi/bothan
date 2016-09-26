@@ -111,6 +111,29 @@ describe MetricsApi do
 
     end
 
+    it 'edits a dashboard' do
+      dashboard = Dashboard.create(name: 'Original', slug: 'my-awesome-dashboard', rows: 1, columns: 1)
+
+      put "/dashboards/#{dashboard.slug}", {
+        dashboard: {
+          name: 'My Awesome Dashboard',
+          metrics: {
+            '0': {
+              name: 'my-first-metric',
+              boxcolour: '#000',
+              textcolour: '#fff',
+              visualisation: 'number'
+            }
+          }
+        }
+      }
+
+      dashboard = Dashboard.last
+
+      expect(dashboard.name).to eq('My Awesome Dashboard')
+      expect(dashboard.metrics.count).to eq(1)
+    end
+
   end
 
 end

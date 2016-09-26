@@ -304,6 +304,26 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  put '/dashboards/:slug' do
+    @dashboard = Dashboard.find_by(slug: params[:slug])
+
+    dashboard = params[:dashboard]
+    dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
+                                             .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+
+    @dashboard.update_attributes(dashboard)
+
+    if @dashboard.valid?
+      redirect "/dashboards/#{@dashboard.slug}"
+    else
+      @title = 'Edit Dashboard'
+      @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
+      @errors = @dashboard.errors
+
+      erb :'dashboards/new', layout: :'layouts/full-width'
+    end
+  end
+
   get '/dashboards/:dashboard/edit' do
     @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
     @dashboard = Dashboard.find_by(slug: params[:dashboard])

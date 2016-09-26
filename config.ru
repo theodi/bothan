@@ -13,4 +13,6 @@ use(Rack::Cors) do
   end
 end
 
+use Rack::MethodOverride
+
 run MetricsApi
