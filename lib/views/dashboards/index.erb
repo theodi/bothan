@@ -4,7 +4,9 @@
   <% @dashboards.each do |dashboard| %>
     <li><a href="/dashboards/<%= dashboard.slug %>">
       <%= dashboard.name %></a>
-      <a href="/dashboards/<%= dashboard.slug %>/edit" class="btn btn-primary btn-sm">Edit</a>
+      <% if authorized? %>
+        <a href="/dashboards/<%= dashboard.slug %>/edit" class="btn btn-primary btn-sm">Edit</a>
+      <% end %>
     </li>
   <% end %>
 </ul>
