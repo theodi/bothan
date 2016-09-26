@@ -95,6 +95,20 @@ describe MetricsApi do
         expect(last_response.body).to match(/The slug 'my-awesome-dashboard' is already taken/)
       end
 
+      [:name, :slug, :rows, :columns].each do |col|
+
+        it "when #{col} is missing" do
+          dashboard_hash[:dashboard].delete(col)
+
+          post '/dashboards', dashboard_hash
+
+          expect(last_request.url).to eq('http://example.org/dashboards')
+          expect(last_response.body).to match(/The field #{col} can't be blank/)
+        end
+
+      end
+
+
     end
 
   end
