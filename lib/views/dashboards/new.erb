@@ -24,7 +24,7 @@
 
   <div class="form-group">
     <label for="title">Dashboard Slug</label>
-    <input type="text" class="form-control" id="slug" value="<%= @dashboard.slug %>" name="dashboard[slug]" pattern="[a-z0-9\-]+">
+    <input type="text" class="form-control" id="slug" value="<%= @dashboard.slug %>" name="dashboard[slug]" pattern="[a-z0-9\-]+" <%= 'disabled' if @dashboard.persisted? %> >
     <div class="help-block hidden" id="slug-preview">This means your dashboard will be accessible at <code>/dashboards/<span></span></code></div>
   </div>
 
@@ -127,9 +127,11 @@
     $('#title').keyup(function() {
       title = $(this).val()
       slug = title.toLowerCase().replace(/[^\w ]+/g,"").replace(/ +/g,"-").replace(/^-+|-+$/,"")
-      $('#slug').val(slug)
-      $('#slug-preview').removeClass('hidden')
-      $('#slug-preview span').html(slug)
+      if ($('#slug').prop('disabled') === false) {
+        $('#slug').val(slug)
+        $('#slug-preview').removeClass('hidden')
+        $('#slug-preview span').html(slug)
+      }
     })
 
   });
