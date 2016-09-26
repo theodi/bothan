@@ -12,7 +12,10 @@
 
 <h1><%= @title %></h1>
 
-<form method="post" action="/dashboards" id="form">
+<form method="post" action="<%= "/dashboards/#{@dashboard.slug}".chomp('/') %>" id="form">
+  <% if @dashboard.persisted? %>
+    <input type="hidden" name="_method" value="PUT">
+  <% end %>
 
   <div class="form-group">
     <label for="title">Dashboard Name</label>
