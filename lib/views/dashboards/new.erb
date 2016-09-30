@@ -176,6 +176,51 @@
     iframe.attr('src', url)
   }
 
+  function updateSelects(table, row_num, col_num) {
+    this.row_num = row_num
+    this.col_num = col_num
+
+    var self = this
+
+    // Populate the rowspan selector
+    table.find('select.rows option').remove()
+
+    $.each(table.find('select.rows'), function() {
+      select = $(this)
+      tr = $(this).closest('tr')
+      index = tr.index()
+
+      options = []
+
+      for (var i = self.row_num - index; i > 0; i--) {
+        options.push(i)
+      }
+
+      $.each(options.reverse(), function() {
+        select.append('<option>'+ this +'</option>')
+      })
+    })
+
+    // Populate the colspan selector
+    table.find('select.columns option').remove()
+
+    $.each(table.find('select.columns'), function() {
+      select = $(this)
+      td = $(this).closest('td')
+      index = td.index()
+
+      options = []
+
+      for (var i = self.col_num - index; i > 0; i--) {
+        options.push(i)
+      }
+
+      $.each(options.reverse(), function() {
+        select.append('<option>'+ this +'</option>')
+      })
+    })
+  }
+
   function buildTable(row_num, col_num) {
     table = $('#dashboard');
 
@@ -233,53 +278,7 @@
       }
     }
 
-    // Populate the rowspan selector
-    table.find('select.rows option').remove()
-
-    this.row_num = row_num
-    this.col_num = col_num
-
-    var self = this
-
-    $.each(table.find('select.rows'), function() {
-      select = $(this)
-      tr = $(this).closest('tr')
-      index = tr.index()
-
-      options = []
-
-      for (var i = self.row_num - index; i > 0; i--) {
-        options.push(i)
-      }
-
-      $.each(options.reverse(), function() {
-        select.append('<option>'+ this +'</option>')
-      })
-    })
-
-    // for (var i=0; i < row_num; i++) {
-    //   table.find('select.rows').append('<option>'+ (i + 1) +'</option>')
-    // }
-
-    // Populate the colspan selector
-    table.find('select.columns option').remove()
-
-    $.each(table.find('select.columns'), function() {
-      select = $(this)
-      td = $(this).closest('td')
-      index = td.index()
-
-      options = []
-
-      for (var i = self.col_num - index; i > 0; i--) {
-        options.push(i)
-      }
-
-      $.each(options.reverse(), function() {
-        select.append('<option>'+ this +'</option>')
-      })
-    })
-
+    updateSelects(table, row_num, col_num)
     // Show the table
     table.removeClass('hidden');
 
@@ -359,6 +358,7 @@
       row.nextAll(selector).each(function () {
         $("td:eq(" + index + ")", $(this)).remove();
       });
+
     })
 
     columns.on('change', function() {
