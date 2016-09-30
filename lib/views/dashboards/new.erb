@@ -78,6 +78,7 @@
       <div class='form-group form-group-sm hidden visualisations col-md-12'>
         <label for='boxcolour' class='text-right'>Visualisation Type</label>
         <input type="radio" class="visualisation default hidden" value="default" checked="checked" />
+
         <div class="input-group textcolour">
           <label class="chart hidden radio-inline">
             <input type="radio" class="visualisation" value="chart" />
@@ -95,6 +96,20 @@
             <input type="radio" class="visualisation" value="pie" />
             Pie
           </label>
+        </div>
+      </div>
+
+      <div class='form-group form-group-sm col-md-12'>
+        <label for='columns' class='text-right'>Number of columns</label>
+        <div class='input-group col-md-12'>
+          <select name='columns' id='columns' class='form-control columns input-sm'></select>
+        </div>
+      </div>
+
+      <div class='form-group form-group-sm col-md-12'>
+        <label for='rows' class='text-right'>Number of rows</label>
+        <div class='input-group col-md-12'>
+          <select name='rows' id='rows' class='form-control rows input-sm'></select>
         </div>
       </div>
 
@@ -218,6 +233,53 @@
       }
     }
 
+    // Populate the rowspan selector
+    table.find('select.rows option').remove()
+
+    this.row_num = row_num
+    this.col_num = col_num
+
+    var self = this
+
+    $.each(table.find('select.rows'), function() {
+      select = $(this)
+      tr = $(this).closest('tr')
+      index = tr.index()
+
+      options = []
+
+      for (var i = self.row_num - index; i > 0; i--) {
+        options.push(i)
+      }
+
+      $.each(options.reverse(), function() {
+        select.append('<option>'+ this +'</option>')
+      })
+    })
+
+    // for (var i=0; i < row_num; i++) {
+    //   table.find('select.rows').append('<option>'+ (i + 1) +'</option>')
+    // }
+
+    // Populate the colspan selector
+    table.find('select.columns option').remove()
+
+    $.each(table.find('select.columns'), function() {
+      select = $(this)
+      td = $(this).closest('td')
+      index = td.index()
+
+      options = []
+
+      for (var i = self.col_num - index; i > 0; i--) {
+        options.push(i)
+      }
+
+      $.each(options.reverse(), function() {
+        select.append('<option>'+ this +'</option>')
+      })
+    })
+
     // Show the table
     table.removeClass('hidden');
 
@@ -240,6 +302,8 @@
     picker = $(table).find('.colourpicker').colorpicker()
     metrics = $(table).find('.metric')
     visualisations = $(table).find('.visualisation');
+    rows = $(table).find('.rows')
+    columns = $(table).find('.columns')
 
     picker.on('changeColor', function(ev){
       var iframe = $(this).parents().eq(1).find('iframe')
@@ -276,6 +340,36 @@
       }
 
       setSrc(iframe, params);
+    })
+
+    // Based on https://martincarlsen.com/rowspan-and-colspan-using-jquery/
+    rows.on('change', function() {
+      $this = $(this)
+
+      span = $this.val()
+
+      col = $this.closest("td")
+      row = $this.closest("tr")
+      index = col.index()
+
+      col.attr('rowspan', span)
+
+      selector = "tr:lt(" + (span - 1) + ")";
+
+      row.nextAll(selector).each(function () {
+        $("td:eq(" + index + ")", $(this)).remove();
+      });
+    })
+
+    columns.on('change', function() {
+      $this = $(this)
+
+      span = $this.val()
+      col = $this.closest("td")
+
+      col.attr('colspan', span)
+      selector = "td:lt(" + (span - 1) + ")";
+      col.nextAll(selector).remove("td");
     })
   }
 
