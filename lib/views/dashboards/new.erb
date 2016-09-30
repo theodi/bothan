@@ -370,6 +370,20 @@
       col.attr('colspan', span)
       selector = "td:lt(" + (span - 1) + ")";
       col.nextAll(selector).remove("td");
+
+      // Fill in gaps
+      row = $this.closest("tr")
+      num = 0
+
+      $.each(row.find('td'), function() {
+        $col = $(this)
+        span = (typeof $col.attr('colspan') === 'undefined') ? 1 : Number($col.attr('colspan'));
+        num += span
+      })
+
+      if (num < self.col_num) {
+        for (var count=0; count < (self.col_num - num) ; count++) { row.append(col_template) };
+      }
     })
   }
 
