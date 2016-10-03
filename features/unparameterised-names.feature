@@ -2,6 +2,7 @@ Feature: Unparameterised metric names
 
   Background:
     Given I send and accept JSON
+    And I set up a Pusher spy
 
   Scenario: POSTing unparamerized metric names
     Given I authenticate as the user "foo" with the password "bar"
@@ -13,6 +14,7 @@ Feature: Unparameterised metric names
       }
       """
     Then the response status should be "201"
+    And the Pusher endpoint should have recieved "my-metric" with "updated"
     And the data should be stored in the "my-metric" metric
     And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
@@ -37,6 +39,7 @@ Feature: Unparameterised metric names
         "value": 11
       }
       """
+    Then the Pusher endpoint should have recieved "my-metric" with "updated"
     Then the "my-metric" "title" in locale "en" should be "My excellent title"
 
   Scenario: Fetching unparameterised metric names
