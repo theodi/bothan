@@ -35,3 +35,10 @@ Feature: Time aliases
       And the JSON response should have "$.values[0].time" with the text "2013-12-24T15:00:00.000+00:00"
       And the JSON response should have "$.values[1].value.health" with the text "0.34"
       And the JSON response should have "$.values[1].time" with the text "2013-12-25T15:00:00.000+00:00"
+
+    Scenario: Using `latest` alias
+      When I send a GET request to "metrics/membership-coverage/latest"
+      Then the response status should be "200"
+      And the JSON response should have "$.name" with the text "membership-coverage"
+      And the JSON response should have "$.value.health" with the text "0.34"
+      And the JSON response should have "$.time" with the text "2013-12-25T15:00:00.000+00:00"
