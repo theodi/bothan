@@ -202,6 +202,9 @@ class MetricsApi < Sinatra::Base
   get '/metrics/:metric/this-month' do
     params[:from] = DateTime.now.beginning_of_month.to_s
     params[:to] = '*'
+  get '/metrics/:metric/this-week' do
+    params[:from] = DateTime.now.beginning_of_week.to_s
+    params[:to] = DateTime.now.to_s
     get_metric_range(params)
   end
 
