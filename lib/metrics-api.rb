@@ -195,6 +195,12 @@ class MetricsApi < Sinatra::Base
     get_metric_range(params)
   end
 
+  get '/metrics/:metric/this-month' do
+    params[:from] = DateTime.now.beginning_of_month.to_s
+    params[:to] = '*'
+    get_metric_range(params)
+  end
+
   get '/metrics/:metric/:time' do
     date_redirect(params)
 
