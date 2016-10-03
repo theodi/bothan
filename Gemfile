@@ -14,6 +14,7 @@ gem 'kramdown'
 gem 'exception_notification'
 gem 'compass'
 gem 'bootstrap-sass'
+gem 'pusher'
 
 group :test do
   gem 'capybara-webkit'
