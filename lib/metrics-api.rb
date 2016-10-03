@@ -189,6 +189,12 @@ class MetricsApi < Sinatra::Base
     end
   end
 
+  get '/metrics/:metric/all' do
+    params[:from] = '*'
+    params[:to] = '*'
+    get_metric_range(params)
+  end
+
   get '/metrics/:metric/:time' do
     date_redirect(params)
 
