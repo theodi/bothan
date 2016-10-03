@@ -39,7 +39,17 @@
 <script src='/javascripts/defiant.js'></script>
 <script src='/javascripts/chart.js'></script>
 <script>
-$.getJSON(document.URL, function(json) {
-  graph('<%= @title["en"] %>', json, '<%= @textcolour %>', '<%= @boxcolour %>', '<%= @plotly_modebar %>', '<%= @datatype %>', '<%= @date_format %>')
+function loadMetric() {
+  $.getJSON(document.URL, function(json) {
+    graph('<%= @title["en"] %>', json, '<%= @textcolour %>', '<%= @boxcolour %>', '<%= @plotly_modebar %>', '<%= @datatype %>', '<%= @date_format %>')
+  })
+}
+
+var channel = pusher.subscribe('<%= @metric %>');
+
+channel.bind('updated', function(data) {
+  loadMetric()
 })
+
+loadMetric();
 </script>

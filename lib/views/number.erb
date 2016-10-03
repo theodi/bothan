@@ -29,10 +29,21 @@
 <script>
 var container = document.querySelector('#number-container');
 var root = container.createShadowRoot();
-$.getJSON(document.URL, function (json) {
-  t = document.querySelector('#number-template')
-  root.innerHTML = t.innerHTML
-  title = '<%= @title["en"] %>'
-  number(json, title, $(container.shadowRoot), '<%= @datatype %>', '<%= @description['en'] %>', '<%= @date_format %>')
+
+var channel = pusher.subscribe('<%= @metric %>');
+
+function loadMetric() {
+  $.getJSON(document.URL, function (json) {
+    t = document.querySelector('#number-template')
+    root.innerHTML = t.innerHTML
+    title = '<%= @title["en"] %>'
+    number(json, title, $(container.shadowRoot), '<%= @datatype %>', '<%= @description['en'] %>', '<%= @date_format %>')
+  })
+}
+
+channel.bind('updated', function(data) {
+  loadMetric()
 })
+
+loadMetric()
 </script>
