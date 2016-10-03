@@ -11,6 +11,7 @@ require 'iso8601'
 require 'dotenv'
 require 'kramdown'
 require 'exception_notification'
+require 'pusher'
 
 require_relative 'metrics-api/helpers'
 require_relative 'metrics-api/date-wrangler'
@@ -129,6 +130,7 @@ class MetricsApi < Sinatra::Base
     end
 
     if @metric.save
+      Pusher.trigger(params[:metric].parameterize, 'updated', {})
       return 201
     else
       return 500

@@ -2,6 +2,7 @@ Feature: Metrics API
 
   Background:
     Given I send and accept JSON
+    And I set up a Pusher spy
 
   Scenario: GET list of all metrics
     Given there is a metric in the database with the name "membership-coverage"
@@ -27,6 +28,7 @@ Feature: Metrics API
       }
       """
     Then the response status should be "201"
+    And the Pusher endpoint should have recieved "membership-coverage" with "updated"
     And the data should be stored in the "membership-coverage" metric
     And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
@@ -44,6 +46,7 @@ Feature: Metrics API
       }
       """
     Then the response status should be "201"
+    And the Pusher endpoint should have recieved "membership-count" with "updated"
     And the data should be stored in the "membership-count" metric
     And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
@@ -141,6 +144,7 @@ Feature: Metrics API
       }
       """
     Then the response status should be "201"
+    And the Pusher endpoint should have recieved "membership-count" with "updated"
     And the data should be stored in the "membership-count" metric
     And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
     And the value of the metric should be:
