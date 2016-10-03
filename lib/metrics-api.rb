@@ -195,85 +195,12 @@ class MetricsApi < Sinatra::Base
     time = params[:time].to_datetime rescue
       error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
-    metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
-    metric = metrics.last
-
-    if params['default-dates'].present?
-      url = generate_url(metric, keep_params(params))
-      redirect to url
-    end
-
-    @metric = (metric.nil? ? {} : metric).to_json
-
-    @date = time.to_s
-    @earliest_date = metrics.first.time rescue nil
-
-    respond_to do |wants|
-      wants.json { @metric }
-
-      wants.html do
-        metric = JSON.parse(@metric, {:symbolize_names => true})
-        @alternatives = get_alternatives(metric[:value])
-
-        get_settings(params, metric)
-        erb :metric, layout: "layouts/#{@layout}".to_sym
-      end
-
-      wants.other { error_406 }
-    end
+    get_single_metric(params, time)
   end
 
   get '/metrics/:metric/:from/:to' do
     date_redirect(params)
-
-    @from = params[:from]
-    @to = params[:to]
-
-    dates = DateWrangler.new @from, @to
-
-    error_400 dates.errors.join ' ' if dates.errors
-
-    metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
-
-    if params['default-dates'].present?
-      url = generate_url(metrics.first, keep_params(params))
-      redirect to url
-    end
-
-    @earliest_date = metrics.first.time
-    @latest_date = metrics.last.time
-
-    metrics = metrics.where(:time.gte => dates.from) if dates.from
-    metrics = metrics.where(:time.lte => dates.to) if dates.to
-
-    metrics = metrics.order_by(:time.asc)
-
-    data = {
-      :count => metrics.count,
-      :values => []
-    }
-
-    metrics.each do |metric|
-      data[:values] << {
-        :time => metric.time,
-        :value => metric.value
-      }
-    end
-
-    respond_to do |wants|
-      wants.json { data.to_json }
-
-      wants.html do
-        value = data[:values].first
-        @alternatives = get_alternatives(value[:value])
-
-        get_settings(params, value)
-
-        erb :metric, layout: "layouts/#{@layout}".to_sym
-      end
-
-      wants.other { error_406 }
-    end
+    get_metric_range(params)
   end
 
   get '/dashboards' do
@@ -364,6 +291,86 @@ class MetricsApi < Sinatra::Base
   def error_400(error)
     content_type 'text/plain'
     error 400, {:status => error}.to_json
+  end
+
+  def get_single_metric(params, time)
+    metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
+    metric = metrics.last
+
+    if params['default-dates'].present?
+      url = generate_url(metric, keep_params(params))
+      redirect to url
+    end
+
+    @metric = (metric.nil? ? {} : metric).to_json
+
+    @date = time.to_s
+    @earliest_date = metrics.first.time rescue nil
+
+    respond_to do |wants|
+      wants.json { @metric }
+
+      wants.html do
+        metric = JSON.parse(@metric, {:symbolize_names => true})
+        @alternatives = get_alternatives(metric[:value])
+
+        get_settings(params, metric)
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+      end
+
+      wants.other { error_406 }
+    end
+  end
+
+  def get_metric_range(params)
+    @from = params[:from]
+    @to = params[:to]
+
+    dates = DateWrangler.new @from, @to
+
+    error_400 dates.errors.join ' ' if dates.errors
+
+    metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+
+    if params['default-dates'].present?
+      url = generate_url(metrics.first, keep_params(params))
+      redirect to url
+    end
+
+    @earliest_date = metrics.first.time
+    @latest_date = metrics.last.time
+
+    metrics = metrics.where(:time.gte => dates.from) if dates.from
+    metrics = metrics.where(:time.lte => dates.to) if dates.to
+
+    metrics = metrics.order_by(:time.asc)
+
+    data = {
+      :count => metrics.count,
+      :values => []
+    }
+
+    metrics.each do |metric|
+      data[:values] << {
+        :time => metric.time,
+        :value => metric.value
+      }
+    end
+
+    respond_to do |wants|
+      wants.json { data.to_json }
+
+      wants.html do
+        value = data[:values].first
+        @alternatives = get_alternatives(value[:value])
+
+        get_settings(params, value)
+
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+      end
+
+      wants.other { error_406 }
+    end
   end
 
   # start the server if ruby file executed directly
