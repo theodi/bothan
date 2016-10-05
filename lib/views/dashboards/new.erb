@@ -125,6 +125,8 @@
 
 </form>
 
+<script src='/javascripts/dashboard.js'></script>
+
 <script>
   $(function() {
     var dashboardMetrics = JSON.parse('<%= (@dashboard.metrics || {}).to_json %>')
@@ -376,34 +378,18 @@
 
     })
 
-    columns.on('change', function() {
+    $(document).on('change', '.columns', function() {
       $this = $(this)
 
-      span = $this.val()
-      col = $this.closest("td")
+      var span = Number($this.val())
+      var td = $this.closest("td")
+      var table = $(this).parents('table')
 
-      col.attr('colspan', span)
-      selector = "td:lt(" + (span - 1) + ")";
-      col.nextAll(selector).remove("td");
-
-      // Fill in gaps
-      row = $this.closest("tr")
-      num = 0
-
-      $.each(row.find('td'), function() {
-        $col = $(this)
-        span = (typeof $col.attr('colspan') === 'undefined') ? 1 : Number($col.attr('colspan'));
-        num += span
-      })
-
-      if (num < self.col_num) {
-        for (var count=0; count < (self.col_num - num) ; count++) { row.append(col_template) };
-      }
+      var td = growCol(td, span, col_template)
 
       updateSelects(table, row_num, col_num)
 
-      selected = Number(span) - 1
-      $this.find('option:eq('+ selected +')').prop('selected', true)
+      td.find('.columns').val(span)
     })
   }
 
