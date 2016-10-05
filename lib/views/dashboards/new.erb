@@ -345,19 +345,34 @@
     rows.on('change', function() {
       $this = $(this)
 
-      span = $this.val()
+      span = Number($this.val())
 
       col = $this.closest("td")
       row = $this.closest("tr")
       index = col.index()
 
+      old_span = (typeof col.attr('rowspan') === 'undefined') ? 1 : Number(col.attr('rowspan'));
+
       col.attr('rowspan', span)
 
-      selector = "tr:lt(" + (span - 1) + ")";
+      if (old_span < span) {
+        selector = "tr:lt(" + (span - 1) + ")";
+        row.nextAll(selector).each(function () {
+          $("td:eq(" + index + ")", $(this)).remove();
+        });
+      } else {
+        debugger;
+        row = $this.closest("tr")
+        selector = "tr:lt(" + (span - 1) + ")";
+        row.nextAll(selector).each(function () {
+          $(this).append(col_template)
+        });
+      }
 
-      row.nextAll(selector).each(function () {
-        $("td:eq(" + index + ")", $(this)).remove();
-      });
+      if (old_span > 1) {
+        count = old_span - span
+
+      }
 
     })
 
