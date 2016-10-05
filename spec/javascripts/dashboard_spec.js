@@ -67,6 +67,25 @@ describe('dashboard.js', function() {
       expect($($('#row-c td')[0]).html()).toEqual('YO!')
     })
 
+    it('fills in gaps correctly when in the middle row', function() {
+      col = $('table td#b1')
+
+      growRow(col, 2)
+      growRow(col, 1)
+
+      expect($('#row-a td').length).toEqual(3)
+      expect($('#row-b td').length).toEqual(3)
+      expect($('#row-c td').length).toEqual(3)
+
+      col = $('table td#b0')
+      growRow(col, 2)
+      growRow(col, 1)
+
+      expect($('#row-a td').length).toEqual(3)
+      expect($('#row-b td').length).toEqual(3)
+      expect($('#row-c td').length).toEqual(3)
+    })
+
     it ('works with a centre column', function() {
       col = $('table td#a1')
 
