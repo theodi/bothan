@@ -300,11 +300,9 @@
       $(col).find('.col').attr('name', 'dashboard[metrics]['+ i +'][col]')
     })
 
-    picker = $(table).find('.colourpicker').colorpicker()
-    metrics = $(table).find('.metric')
-    visualisations = $(table).find('.visualisation');
-    rows = $(table).find('.rows')
-    columns = $(table).find('.columns')
+    var picker = $(table).find('.colourpicker').colorpicker()
+    var metrics = $(table).find('.metric')
+    var visualisations = $(table).find('.visualisation');
 
     picker.on('changeColor', function(ev){
       var iframe = $(this).parents().eq(1).find('iframe')
@@ -343,39 +341,17 @@
       setSrc(iframe, params);
     })
 
-    // Based on https://martincarlsen.com/rowspan-and-colspan-using-jquery/
-    rows.on('change', function() {
+    $(document).on('change', '.rows', function() {
       $this = $(this)
 
-      span = Number($this.val())
+      var span = Number($this.val())
+      var td = $this.closest("td")
 
-      col = $this.closest("td")
-      row = $this.closest("tr")
-      index = col.index()
+      var td = growRow(td, span, col_template)
 
-      old_span = (typeof col.attr('rowspan') === 'undefined') ? 1 : Number(col.attr('rowspan'));
+      updateSelects(table, row_num, col_num)
 
-      col.attr('rowspan', span)
-
-      if (old_span < span) {
-        selector = "tr:lt(" + (span - 1) + ")";
-        row.nextAll(selector).each(function () {
-          $("td:eq(" + index + ")", $(this)).remove();
-        });
-      } else {
-        debugger;
-        row = $this.closest("tr")
-        selector = "tr:lt(" + (span - 1) + ")";
-        row.nextAll(selector).each(function () {
-          $(this).append(col_template)
-        });
-      }
-
-      if (old_span > 1) {
-        count = old_span - span
-
-      }
-
+      td.find('.rows').val(span)
     })
 
     $(document).on('change', '.columns', function() {
