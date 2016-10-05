@@ -57,6 +57,16 @@ describe('dashboard.js', function() {
       expect($('#row-c td').length).toEqual(3)
     })
 
+    it('fills in gaps with a particular HTML string', function() {
+      col = $('table td#a0')
+
+      growRow(col, 3)
+      growRow(col, 1, '<td>YO!</td>')
+
+      expect($($('#row-b td')[0]).html()).toEqual('YO!')
+      expect($($('#row-c td')[0]).html()).toEqual('YO!')
+    })
+
     it ('works with a centre column', function() {
       col = $('table td#a1')
 
@@ -65,6 +75,15 @@ describe('dashboard.js', function() {
       expect($('table td#a1').attr('rowspan')).toEqual('2')
       expect($('#row-b #b1').length).toEqual(0)
       expect($('#row-c #c1').html()).toEqual('b1')
+    })
+
+    it('fills in gaps in a centre column', function() {
+      col = $('table td#a1')
+      growRow(col, 3)
+      growRow(col, 1, '<td>YO!</td>')
+
+      expect($($('#row-b td')[1]).html()).toEqual('YO!')
+      expect($($('#row-c td')[1]).html()).toEqual('YO!')
     })
   })
 
@@ -120,6 +139,25 @@ describe('dashboard.js', function() {
       growCol(col, 1)
 
       expect($('#row-a td').length).toEqual(3)
+    })
+
+    it ('fills in gaps with a particular HTML string', function() {
+      col = $('table td#a0')
+
+      growCol(col, 3)
+      growCol(col, 1, '<td>YO!</td>')
+
+      expect($($('#row-a td')[1]).html()).toEqual('YO!')
+      expect($($('#row-a td')[2]).html()).toEqual('YO!')
+    })
+
+    it ('fills in gaps at the right index', function() {
+      col = $('table td#a1')
+
+      growCol(col, 2)
+      growCol(col, 1, '<td>YO!</td>')
+
+      expect($($('#row-a td')[2]).html()).toEqual('YO!')
     })
 
     it ('works with a centre column', function() {
