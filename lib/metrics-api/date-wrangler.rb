@@ -16,13 +16,17 @@ class DateWrangler
     @to ||= if @right.is_duration?
       from + finish
     else
-      @right.to_datetime
+      @right.to_datetime || DateTime.now
     end
   end
 
   def from
     @from ||= if @left.is_duration?
-      to - start
+      if to.nil?
+        DateTime.now - start
+      else
+        to - start
+      end
     else
       @left.to_datetime
     end
