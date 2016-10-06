@@ -104,6 +104,14 @@ describe('dashboard.js', function() {
       expect($($('#row-b td')[1]).html()).toEqual('YO!')
       expect($($('#row-c td')[1]).html()).toEqual('YO!')
     })
+
+    it('fills in gaps when going down to two rows from three', function() {
+      col = $('table td#a2')
+      growRow(col, 3)
+      growRow(col, 2, '<td>YO!</td>')
+
+      expect($($('#row-c td')[2]).html()).toEqual('YO!')
+    })
   })
 
   describe('growCol', function() {
