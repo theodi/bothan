@@ -175,6 +175,7 @@
       var td = growRow(td, span, col_template)
 
       updateSelects(table, row_num, col_num)
+      setPickers()
 
       td.find('.rows').val(span)
     })
@@ -189,6 +190,7 @@
       var td = growCol(td, span, col_template)
 
       updateSelects(table, row_num, col_num)
+      setPickers()
 
       td.find('.columns').val(span)
     })
