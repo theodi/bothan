@@ -102,19 +102,21 @@
       <div class='form-group form-group-sm col-md-12'>
         <label for='columns' class='text-right'>Number of columns</label>
         <div class='input-group col-md-12'>
-          <select name='columns' id='columns' class='form-control columns input-sm'></select>
+          <select name='width' id='width' class='form-control width-selector input-sm'></select>
         </div>
       </div>
 
       <div class='form-group form-group-sm col-md-12'>
         <label for='rows' class='text-right'>Number of rows</label>
         <div class='input-group col-md-12'>
-          <select name='rows' id='rows' class='form-control rows input-sm'></select>
+          <select name='height' id='height' class='form-control height-selector input-sm'></select>
         </div>
       </div>
 
       <input type="hidden" class="row" />
       <input type="hidden" class="col" />
+      <input type="hidden" class="width" />
+      <input type="hidden" class="height" />
 
     </div>
   </div>
@@ -166,7 +168,7 @@
       setSrc(iframe, params);
     })
 
-    $(document).on('change', '.rows', function() {
+    $(document).on('change', '.height-selector', function() {
       $this = $(this)
 
       var span = Number($this.val())
@@ -178,10 +180,11 @@
       setInputs($('#dashboard'))
       setPickers()
 
-      td.find('.rows').val(span)
+      $this.val(span)
+      td.find('.height').val(span)
     })
 
-    $(document).on('change', '.columns', function() {
+    $(document).on('change', '.width-selector', function() {
       $this = $(this)
 
       var span = Number($this.val())
@@ -194,7 +197,8 @@
       setInputs($('#dashboard'))
       setPickers()
 
-      td.find('.columns').val(span)
+      $this.val(span)
+      td.find('.width').val(span)
     })
 
   });
