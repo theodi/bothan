@@ -301,8 +301,6 @@
     })
 
     var picker = $(table).find('.colourpicker').colorpicker()
-    var metrics = $(table).find('.metric')
-    var visualisations = $(table).find('.visualisation');
 
     picker.on('changeColor', function(ev){
       var iframe = $(this).parents().eq(1).find('iframe')
@@ -326,13 +324,13 @@
       setSrc(iframe, params);
     });
 
-    metrics.on('change', function() {
+    $(document).on('change', '.metric', function() {
       var iframe = $(this).parents().eq(2).find('iframe')
       populateIframe(iframe, $(this).val())
       showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
     })
 
-    visualisations.on('change', function() {
+    $(document).on('change', '.visualisation', function() {
       var iframe = $(this).parents().eq(3).find('iframe')
       var params = {
         type: $(this).val()
