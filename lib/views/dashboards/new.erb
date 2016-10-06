@@ -151,5 +151,47 @@
       }
     })
 
+    $(document).on('change', '.metric', function() {
+      var iframe = $(this).parents().eq(2).find('iframe')
+      populateIframe(iframe, $(this).val())
+      showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
+    })
+
+    $(document).on('change', '.visualisation', function() {
+      var iframe = $(this).parents().eq(3).find('iframe')
+      var params = {
+        type: $(this).val()
+      }
+
+      setSrc(iframe, params);
+    })
+
+    $(document).on('change', '.rows', function() {
+      $this = $(this)
+
+      var span = Number($this.val())
+      var td = $this.closest("td")
+
+      var td = growRow(td, span, col_template)
+
+      updateSelects(table, row_num, col_num)
+
+      td.find('.rows').val(span)
+    })
+
+    $(document).on('change', '.columns', function() {
+      $this = $(this)
+
+      var span = Number($this.val())
+      var td = $this.closest("td")
+      var table = $(this).parents('table')
+
+      var td = growCol(td, span, col_template)
+
+      updateSelects(table, row_num, col_num)
+
+      td.find('.columns').val(span)
+    })
+
   });
 </script>
