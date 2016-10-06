@@ -96,7 +96,3 @@ Feature: Time ranges
     And the JSON response should have "$.count" with the text "1"
     And the JSON response should have "$.values[0].value.health" with the text "0.31"
     And the JSON response should have "$.values[0].time" with the text "2013-12-22T15:00:00.000+00:00"
-
-
-  Scenario: Using `this-month` alias
-    When I send a GET request to "metrics/membership-coverage/this-month"
