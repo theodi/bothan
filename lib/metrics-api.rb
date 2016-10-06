@@ -199,19 +199,19 @@ class MetricsApi < Sinatra::Base
     get_single_metric(params, DateTime.now)
   end
 
-  get '/metrics/:metric/this-month' do
+  get '/metrics/:metric/since-beginning-of-month' do
     params[:from] = DateTime.now.beginning_of_month.to_s
     params[:to] = DateTime.now.to_s
     get_metric_range(params)
   end
 
-  get '/metrics/:metric/this-week' do
+  get '/metrics/:metric/since-beginning-of-week' do
     params[:from] = DateTime.now.beginning_of_week.to_s
     params[:to] = DateTime.now.to_s
     get_metric_range(params)
   end
 
-  get '/metrics/:metric/this-year' do
+  get '/metrics/:metric/since-beginning-of-year' do
     params[:from] = DateTime.now.beginning_of_year.to_s
     params[:to] = DateTime.now.to_s
     get_metric_range(params)

@@ -40,7 +40,7 @@ Feature: Time aliases
 
     Scenario: Using `this-month` alias
       Given the time is "2013-12-31T00:00:00Z"
-      When I send a GET request to "metrics/membership-coverage/this-month"
+      When I send a GET request to "metrics/membership-coverage/since-beginning-of-month"
       Then the response status should be "200"
       And the JSON response should have "$.count" with the text "3"
       And the JSON response should have "$.values[0].value.health" with the text "0.33"
@@ -60,7 +60,7 @@ Feature: Time aliases
 
     Scenario: Using `this-week` alias
       Given the time is "2013-12-26T00:00:00Z"
-      When I send a GET request to "metrics/membership-coverage/this-week"
+      When I send a GET request to "metrics/membership-coverage/since-beginning-of-week"
       Then the response status should be "200"
       And the JSON response should have "$.count" with the text "2"
       And the JSON response should have "$.values[0].value.health" with the text "0.33"
@@ -71,7 +71,7 @@ Feature: Time aliases
 
     Scenario: Using `this-year` alias
       Given the time is "2014-01-01T20:00:00Z"
-      When I send a GET request to "metrics/membership-coverage/this-year"
+      When I send a GET request to "metrics/membership-coverage/since-beginning-of-year"
       And the JSON response should have "$.count" with the text "1"
       And the JSON response should have "$.values[0].value.health" with the text "0.33"
       And the JSON response should have "$.values[0].time" with the text "2014-01-01T15:00:00.000+00:00"
