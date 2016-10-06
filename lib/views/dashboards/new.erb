@@ -78,6 +78,7 @@
       <div class='form-group form-group-sm hidden visualisations col-md-12'>
         <label for='boxcolour' class='text-right'>Visualisation Type</label>
         <input type="radio" class="visualisation default hidden" value="default" checked="checked" />
+
         <div class="input-group textcolour">
           <label class="chart hidden radio-inline">
             <input type="radio" class="visualisation" value="chart" />
@@ -98,8 +99,24 @@
         </div>
       </div>
 
+      <div class='form-group form-group-sm col-md-12'>
+        <label for='columns' class='text-right'>Number of columns</label>
+        <div class='input-group col-md-12'>
+          <select name='width' id='width' class='form-control width-selector input-sm'></select>
+        </div>
+      </div>
+
+      <div class='form-group form-group-sm col-md-12'>
+        <label for='rows' class='text-right'>Number of rows</label>
+        <div class='input-group col-md-12'>
+          <select name='height' id='height' class='form-control height-selector input-sm'></select>
+        </div>
+      </div>
+
       <input type="hidden" class="row" />
       <input type="hidden" class="col" />
+      <input type="hidden" class="width" />
+      <input type="hidden" class="height" />
 
     </div>
   </div>
@@ -109,6 +126,8 @@
   </div>
 
 </form>
+
+<script src='/javascripts/dashboard.js'></script>
 
 <script>
   $(function() {
@@ -134,142 +153,13 @@
       }
     })
 
-  });
-
-  function showVisualisations(selector, metric) {
-    selector.find('.default').prop('checked', true)
-    selector.find('.input-group label').addClass('hidden')
-    $.each(metric.data('visualisations').split(','), function( index, value ) {
-      selector.find('.' + value).removeClass('hidden')
-    });
-    selector.removeClass('hidden')
-  }
-
-  function populateIframe(iframe, metric) {
-    var uri = URI(iframe.attr('src'))
-    var qs = uri.search() !== '' ? uri.search() : '?layout=bare'
-    var baseURL = iframe.data('base-url')
-    var url = baseURL + metric + qs;
-    iframe.attr('src', url)
-    iframe.removeClass('hidden')
-  }
-
-  function setSrc(iframe, params) {
-    var uri = URI(iframe.attr('src'))
-    uri.removeQuery(Object.keys(params));
-    url = uri.addQuery(params).toString();
-    iframe.attr('src', url)
-  }
-
-  function buildTable(row_num, col_num) {
-    table = $('#dashboard');
-
-    form = $('#metric-template').clone();
-    form.removeClass('hidden')
-
-    row_template = $('<tr></tr>');
-    col_template = '<td>'+ form.html() +'</td>';
-
-    for (var i=0; i<col_num; i++) { row_template.append(col_template) };
-
-    current_rows = table.find('tr').length;
-
-    if (current_rows == 0) {
-      // If there are no rows, this is easy
-      for (var i=0; i<row_num; i++) {
-        row = row_template.clone()
-
-        row.appendTo(table);
-      };
-    } else {
-      // Otherwise, we need to append / remove columns and rows
-      rows = table.find('tr');
-
-      // If we need to add rows
-      if (rows.length <= row_num) {
-        var i = 0;
-
-        // Loop through each row
-        for (i; i < current_rows; i++) {
-          row = $(rows[i]);
-          row_cols = $(row).find('td').length;
-
-          if (col_num >= row_cols) {
-            // Append columns to the existing rows
-            col_count = col_num - row_cols;
-            for (var count=0; count<col_count; count++) { row.append(col_template) };
-          } else {
-            // Remove columns from the existing rows
-            col_count = row_cols - col_num;
-            selector = "td:nth-last-child(-n+"+ col_count +")";
-            row.find(selector).remove();
-          }
-        }
-
-        // Append new rows
-        if (i <= row_num) {
-          for (i; i < row_num; i++) { row_template.clone().appendTo(table) };
-        }
-      } else {
-        // Remove rows
-        row_count = rows.length - row_num;
-        selector = "tr:nth-last-child(-n+"+ row_count +")";
-        table.find(selector).remove();
-      }
-    }
-
-    // Show the table
-    table.removeClass('hidden');
-
-    $.each(table.find('tr'), function(i, row) {
-      $(row).find('.row').val(i + 1)
-      $.each($(row).find('td'), function(n, col) {
-        $(col).find('.col').val(n + 1)
-      })
-    })
-
-    $.each(table.find('td'), function(i, col) {
-      $(col).find('.metric').attr('name', 'dashboard[metrics]['+ i +'][name]')
-      $(col).find('.boxcolour').attr('name', 'dashboard[metrics]['+ i +'][boxcolour]')
-      $(col).find('.textcolour').attr('name', 'dashboard[metrics]['+ i +'][textcolour]')
-      $(col).find('.visualisation').attr('name', 'dashboard[metrics]['+ i +'][visualisation]')
-      $(col).find('.row').attr('name', 'dashboard[metrics]['+ i +'][row]')
-      $(col).find('.col').attr('name', 'dashboard[metrics]['+ i +'][col]')
-    })
-
-    picker = $(table).find('.colourpicker').colorpicker()
-    metrics = $(table).find('.metric')
-    visualisations = $(table).find('.visualisation');
-
-    picker.on('changeColor', function(ev){
-      var iframe = $(this).parents().eq(1).find('iframe')
-      var baseURL = iframe.data('base-url')
-
-      $(this).next('input').val(ev.color.toHex().replace('#', ''));
-
-      if ($.inArray('textcolour', ev.target.classList) >= 0) {
-        var textcolour = ev.color.toHex()
-        var boxcolour = $(this).parents().eq(1).find('input.boxcolour').val()
-      } else {
-        var textcolour = $(this).parents().eq(1).find('input.textcolour').val()
-        var boxcolour = ev.color.toHex()
-      }
-
-      params = {
-        boxcolour: boxcolour.replace('#', ''),
-        textcolour: textcolour.replace('#', '')
-      }
-
-      setSrc(iframe, params);
-    });
-
-    metrics.on('change', function() {
+    $(document).on('change', '.metric', function() {
       var iframe = $(this).parents().eq(2).find('iframe')
       populateIframe(iframe, $(this).val())
       showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
     })
 
-    visualisations.on('change', function() {
+    $(document).on('change', '.visualisation', function() {
       var iframe = $(this).parents().eq(3).find('iframe')
       var params = {
         type: $(this).val()
@@ -277,37 +167,39 @@
 
       setSrc(iframe, params);
     })
-  }
 
-  function populateTable(metrics) {
-    console.log(metrics)
-    $.each(metrics, function(i, metric) {
-      var table = $('#dashboard');
+    $(document).on('change', '.height-selector', function() {
+      $this = $(this)
 
-      var panel = $(table.find('td')[i])
-      var iframe = panel.find('iframe')
-      var type = (typeof metric.visualisation === 'undefined') ? 'default' : metric.visualisation;
+      var span = Number($this.val())
+      var td = $this.closest("td")
 
-      panel.find('.metric').val(metric.name)
+      var td = growRow(td, span, col_template)
 
-      panel.find('[name=boxcolourpicker]').val('#' + metric.boxcolour)
-      panel.find('.boxcolour').val(metric.boxcolour)
+      updateSelects(table, row_num, col_num)
+      setInputs($('#dashboard'))
+      setPickers()
 
-      panel.find('[name=textcolourpicker]').val('#' + metric.textcolour)
-      panel.find('.textcolour').val(metric.textcolour)
-
-      populateIframe(iframe, metric.name)
-      showVisualisations(panel.find('.visualisations'), panel.find(":selected"))
-
-      panel.find('[value="'+ type +'"].visualisation').prop("checked", true)
-
-      var params = {
-        boxcolour: metric.boxcolour,
-        textcolour: metric.textcolour,
-        type: metric.visualisation
-      }
-
-      setSrc(iframe, params);
+      $this.val(span)
+      td.find('.height').val(span)
     })
-  }
+
+    $(document).on('change', '.width-selector', function() {
+      $this = $(this)
+
+      var span = Number($this.val())
+      var td = $this.closest("td")
+      var table = $(this).parents('table')
+
+      var td = growCol(td, span, col_template)
+
+      updateSelects(table, row_num, col_num)
+      setInputs($('#dashboard'))
+      setPickers()
+
+      $this.val(span)
+      td.find('.width').val(span)
+    })
+
+  });
 </script>

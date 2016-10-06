@@ -1,6 +1,6 @@
 <ul class="grid rows-<%= @dashboard.rows %> cols-<%= @dashboard.columns %>" id="<%= @dashboard.slug %>">
   <% @dashboard.metrics.each do |metric| %>
-    <li class="row-<%= metric[:row] %> col-<%= metric[:col] %> height-1 width-1">
+    <li class="row-<%= metric[:row] %> col-<%= metric[:col] %> height-<%= metric[:height] || 1 %> width-<%= metric[:width] || 1 %>">
       <div style="postition: relative">
         <iframe src='/metrics/<%= metric[:name] %>?layout=bare&boxcolour=<%= metric[:boxcolour] %>&textcolour=<%= metric[:textcolour] %><%= metric[:visualisation].blank? ? '' : "&type=#{metric[:visualisation]}" %>'
                 width='100%'
