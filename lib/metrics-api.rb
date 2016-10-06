@@ -211,6 +211,12 @@ class MetricsApi < Sinatra::Base
     get_metric_range(params)
   end
 
+  get '/metrics/:metric/this-year' do
+    params[:from] = DateTime.now.beginning_of_year.to_s
+    params[:to] = DateTime.now.to_s
+    get_metric_range(params)
+  end
+
   get '/metrics/:metric/:time' do
     date_redirect(params)
 
