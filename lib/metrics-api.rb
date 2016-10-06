@@ -199,6 +199,16 @@ class MetricsApi < Sinatra::Base
     get_single_metric(params, DateTime.now)
   end
 
+  get '/metrics/:metric/today' do
+    redirect("/metrics/#{params[:metric]}/since-midnight")
+  end
+
+  get '/metrics/:metric/since-midnight' do
+    params[:from] = DateTime.now.beginning_of_day.to_s
+    params[:to] = DateTime.now.to_s
+    get_metric_range(params)
+  end
+
   get '/metrics/:metric/since-beginning-of-month' do
     params[:from] = DateTime.now.beginning_of_month.to_s
     params[:to] = DateTime.now.to_s

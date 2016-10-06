@@ -75,3 +75,16 @@ Feature: Time aliases
       And the JSON response should have "$.count" with the text "1"
       And the JSON response should have "$.values[0].value.health" with the text "0.33"
       And the JSON response should have "$.values[0].time" with the text "2014-01-01T15:00:00.000+00:00"
+
+    Scenario: Using `since-midnight` alias
+      Given the time is "2013-12-25T18:00:00Z"
+      When I send a GET request to "metrics/membership-coverage/since-midnight"
+      Then the response status should be "200"
+      And the JSON response should have "$.count" with the text "1"
+      And the JSON response should have "$.values[0].value.health" with the text "0.34"
+      And the JSON response should have "$.values[0].time" with the text "2013-12-25T15:00:00.000+00:00"
+      And I return to the present in my DeLorean
+
+    Scenario: Using `today` alias
+      When I send a GET request to "metrics/membership-coverage/today"
+      Then the response status should be "302"
