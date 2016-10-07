@@ -290,6 +290,12 @@ describe('dashboard.js', function() {
       expect(select.attr('name')).toEqual('dashboard[metrics][99][date]')
     })
 
+    it('unhides the wrapper', function() {
+      showDates($('.form'), 'target')
+
+      expect($('.date-wrapper')).not.toHaveClass('hidden')
+    })
+
 
   })
 
