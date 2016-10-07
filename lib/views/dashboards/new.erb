@@ -215,5 +215,16 @@
       td.find('.width').val(span)
     })
 
+    $(document).on('change', '.date', function() {
+      $this = $(this)
+
+      var date = $this.val()
+      var td = $this.closest('td')
+      var metric = td.find('.metric').val()
+      var iframe = td.find('iframe')
+
+      populateIframe(iframe, metric, date)
+    })
+
   });
 </script>

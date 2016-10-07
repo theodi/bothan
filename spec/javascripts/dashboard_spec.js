@@ -1,9 +1,11 @@
 describe('dashboard.js', function() {
-  beforeEach(function() {
-    fixture = loadFixtures("dashboard.html")
-  })
 
   describe('growRow', function() {
+
+    beforeEach(function() {
+      fixture = loadFixtures("dashboard.html")
+    })
+
     it ('applies the rowspan correctly', function() {
       col = $('table td#a0')
 
@@ -116,6 +118,10 @@ describe('dashboard.js', function() {
 
   describe('growCol', function() {
 
+    beforeEach(function() {
+      fixture = loadFixtures("dashboard.html")
+    })
+
     it ('applies a colspan', function() {
       col = $('table td#a0')
 
@@ -194,6 +200,31 @@ describe('dashboard.js', function() {
 
       expect($('table td#a1').attr('colspan')).toEqual('2')
       expect($('#row-a #a2').length).toEqual(0)
+    })
+
+  })
+
+  describe('populateIframe', function() {
+
+    beforeEach(function() {
+      loadFixtures("iframe.html")
+      iframe = $('iframe')
+    })
+
+    it ('populates an iframe with a metric', function() {
+      populateIframe(iframe, 'my-awesome-metric')
+      expect(iframe.attr('src')).toEqual('http://example.org/metrics/my-awesome-metric/*/*?layout=bare')
+    })
+
+    it ('populates an iframe with a custom daterange', function() {
+      populateIframe(iframe, 'my-awesome-metric', 'my-custom-date-range')
+      expect(iframe.attr('src')).toEqual('http://example.org/metrics/my-awesome-metric/my-custom-date-range?layout=bare')
+    })
+
+    it ('retains query strings', function() {
+      iframe.attr('src', 'http://example.org/metrics/my-awesome-metric/*/*?layout=bare&foo=bar')
+      populateIframe(iframe, 'my-other-awesome-metric')
+      expect(iframe.attr('src')).toEqual('http://example.org/metrics/my-other-awesome-metric/*/*?layout=bare&foo=bar')
     })
 
   })
