@@ -1,9 +1,11 @@
 describe('dashboard.js', function() {
-  beforeEach(function() {
-    fixture = loadFixtures("dashboard.html")
-  })
 
   describe('growRow', function() {
+
+    beforeEach(function() {
+      fixture = loadFixtures("dashboard.html")
+    })
+
     it ('applies the rowspan correctly', function() {
       col = $('table td#a0')
 
@@ -116,6 +118,10 @@ describe('dashboard.js', function() {
 
   describe('growCol', function() {
 
+    beforeEach(function() {
+      fixture = loadFixtures("dashboard.html")
+    })
+
     it ('applies a colspan', function() {
       col = $('table td#a0')
 
@@ -195,6 +201,101 @@ describe('dashboard.js', function() {
       expect($('table td#a1').attr('colspan')).toEqual('2')
       expect($('#row-a #a2').length).toEqual(0)
     })
+
+  })
+
+  describe('populateIframe', function() {
+
+    beforeEach(function() {
+      loadFixtures("iframe.html")
+      iframe = $('iframe')
+    })
+
+    it ('populates an iframe with a metric', function() {
+      populateIframe(iframe, 'my-awesome-metric')
+      expect(iframe.attr('src')).toEqual('http://example.org/metrics/my-awesome-metric/*/*?layout=bare')
+    })
+
+    it ('populates an iframe with a custom daterange', function() {
+      populateIframe(iframe, 'my-awesome-metric', 'my-custom-date-range')
+      expect(iframe.attr('src')).toEqual('http://example.org/metrics/my-awesome-metric/my-custom-date-range?layout=bare')
+    })
+
+    it ('retains query strings', function() {
+      iframe.attr('src', 'http://example.org/metrics/my-awesome-metric/*/*?layout=bare&foo=bar')
+      populateIframe(iframe, 'my-other-awesome-metric')
+      expect(iframe.attr('src')).toEqual('http://example.org/metrics/my-other-awesome-metric/*/*?layout=bare&foo=bar')
+    })
+
+  })
+
+  describe('showDates', function() {
+
+    beforeEach(function() {
+      loadFixtures("dates.html")
+    })
+
+    it('shows supported date types for a pie chart', function() {
+      showDates($('.form'), 'pie')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(3)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('latest')
+      expect($(options[2]).val()).toEqual('since-midnight')
+    })
+
+    it('shows supported date types for a chart', function() {
+      showDates($('.form'), 'chart')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(6)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('since-beginning-of-month')
+      expect($(options[2]).val()).toEqual('since-beginning-of-week')
+      expect($(options[3]).val()).toEqual('since-beginning-of-year')
+      expect($(options[4]).val()).toEqual('P30D/*')
+      expect($(options[5]).val()).toEqual('P7D/*')
+    })
+
+    it('shows supported date types for a number', function() {
+      showDates($('.form'), 'number')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(3)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('latest')
+      expect($(options[2]).val()).toEqual('since-midnight')
+    })
+
+    it('shows supported date types for a target', function() {
+      showDates($('.form'), 'target')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(3)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('latest')
+      expect($(options[2]).val()).toEqual('since-midnight')
+    })
+
+    it('sets the index correctly', function() {
+      showDates($('.form'), 'target')
+
+      select = $('.date-wrapper select')
+
+      expect(select.attr('name')).toEqual('dashboard[metrics][99][date]')
+    })
+
+    it('unhides the wrapper', function() {
+      showDates($('.form'), 'target')
+
+      expect($('.date-wrapper')).not.toHaveClass('hidden')
+    })
+
 
   })
 

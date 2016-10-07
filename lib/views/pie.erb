@@ -45,9 +45,11 @@ $.getJSON(document.URL + '?with_path=true', function(json) {
 function pie(json) {
   $('#chart').height($(window).height())
 
+  value = typeof(json.value) === 'undefined' ? json.values[0] : json.value
+
   var data = [{
-    values: extractValues(json.value, '//total'),
-    labels: extractKeys(json.value, '//total'),
+    values: extractValues(value, '//total'),
+    labels: extractKeys(value, '//total'),
     type: 'pie',
     textinfo: 'label+percent',
     marker: {
