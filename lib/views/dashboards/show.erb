@@ -2,7 +2,7 @@
   <% @dashboard.metrics.each do |metric| %>
     <li class="row-<%= metric[:row] %> col-<%= metric[:col] %> height-<%= metric[:height] || 1 %> width-<%= metric[:width] || 1 %>">
       <div style="postition: relative">
-        <iframe src='/metrics/<%= metric[:name] %>/<%= metric[:date] || '*/*' %>?layout=bare&boxcolour=<%= metric[:boxcolour] %>&textcolour=<%= metric[:textcolour] %><%= metric[:visualisation].blank? ? '' : "&type=#{metric[:visualisation]}" %>'
+        <iframe src='/metrics/<%= metric[:name] %>/<%= metric[:date] || '*/*' %>?layout=bare&boxcolour=<%= metric[:boxcolour] %>&textcolour=<%= metric[:textcolour] %>&title=<%= metric[:title] %><%= metric[:visualisation].blank? ? '' : "&type=#{metric[:visualisation]}" %>'
                 width='100%'
                 height='100%'
                 frameBorder='0'
