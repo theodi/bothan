@@ -126,6 +126,18 @@ describe Helpers do
     expect(helpers.title_from_slug('certificated-datasets')).to eq('Certificated Datasets')
   end
 
+  it 'gets a title from the params' do
+    expect(helpers.title_from_slug_or_params({'title' => 'Here%20is%20my%20title'})).to eq('Here is my title')
+  end
+
+  it 'gets a the default if title is blank' do
+    expect(helpers.title_from_slug_or_params({'title' => '', 'metric' => 'certificated-datasets'})).to eq('Certificated Datasets')
+  end
+
+  it 'strips out anything dodgy' do
+    expect(helpers.title_from_slug_or_params({'title' => '%3Cscript%3Ealert(%22Pwopa%20nawty%22)%3C%2Fscript%3E', 'metric' => 'certificated-datasets'})).to eq('Certificated Datasets')
+  end
+
   describe '#extract_query_string' do
     it 'chops-up a query string' do
       expect(helpers.extract_query_string 'type=target&boxcolour=fa8100').to eq (
@@ -477,6 +489,25 @@ describe Helpers do
 
   it 'is fine with no pie colours' do
     expect(helpers.fix_pie_colours '').to eq '[]'
+  end
+
+  it 'builds a dashboard url' do
+    metric = {
+      name: 'foo-bar',
+      date: 'my-date'
+    }
+
+    params = {
+      layout: 'bare',
+      boxcolour: 'abc123',
+      textcolour: 'def345',
+      title: 'my title',
+      type: 'foo'
+    }
+
+    url = helpers.dashboard_url(metric[:name], metric[:date], params)
+
+    expect(url).to eq('/metrics/foo-bar/my-date?boxcolour=abc123&layout=bare&textcolour=def345&title=my+title&type=foo')
   end
 
 end

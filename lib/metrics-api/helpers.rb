@@ -1,4 +1,7 @@
+require 'action_view'
+
 module Helpers
+
   def protected!
     return if authorized?
     headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
@@ -30,6 +33,11 @@ module Helpers
     regex = /http.*metrics\/([^\/]*)[\/|\.].*/
     result = url.match(regex)
     title_from_slug(result[1])
+  end
+
+  def title_from_slug_or_params(params)
+    title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
+    title.to_s.empty? ? title_from_slug(params['metric']) : title
   end
 
   def title_from_slug(slug)
@@ -65,7 +73,7 @@ module Helpers
   def get_title(metadata, params)
     title = metadata.try(:title)
     if title.nil? || title == {}
-      { "en" => title_from_slug(params['metric']) }
+      { "en" => title_from_slug_or_params(params) }
     else
       title
     end
@@ -248,6 +256,11 @@ module Helpers
       }
     )).to_query
     request.scheme + '://' + request.host_with_port + request.path +  '?' + params
+  end
+
+  def dashboard_url(name, date, params)
+    params = params.to_query
+    "/metrics/#{name}/#{date || '*/*'}?#{params}"
   end
 
 end

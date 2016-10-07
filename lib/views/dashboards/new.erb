@@ -70,6 +70,11 @@
         </div>
       </div>
 
+      <div class='form-group form-group-sm col-md-12 title-wrapper hidden'>
+        <label for='title' class='text-right'>Metric Title</label>
+        <input type="text" name="title" value="" class="form-control input-sm title" />
+      </div>
+
       <div class='form-group form-group-sm col-md-6'>
         <label for='boxcolour' class='text-right'>Box Colour</label>
           <div class="input-group colourpicker boxcolour">
@@ -183,7 +188,10 @@
       populateIframe(iframe, $this.val())
 
       showVisualisations(visualisations, selected)
+
       td.find('[value='+ defaultVis +']').prop('checked', true)
+      td.find('.title-wrapper').removeClass('hidden')
+
       showDates(td, defaultVis)
     })
 
@@ -242,6 +250,18 @@
       var iframe = td.find('iframe')
 
       populateIframe(iframe, metric, date)
+    })
+
+    $(document).on('keyup', '.title', function() {
+      $this = $(this)
+      var title = $this.val()
+      var td = $this.closest('td')
+      var iframe = td.find('iframe')
+      var params = {
+        title: title
+      }
+
+      setSrc(iframe, params);
     })
 
   });
