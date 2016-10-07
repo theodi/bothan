@@ -399,7 +399,7 @@ class MetricsApi < Sinatra::Base
       wants.json { data.to_json }
 
       wants.html do
-        value = data[:values].first
+        value = data[:values].first || { value: '' }
         @alternatives = get_alternatives(value[:value])
 
         get_settings(params, value)
