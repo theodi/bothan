@@ -42,6 +42,18 @@
 
   <div class="form-group">
     <table id="dashboard" class="hidden table"></table>
+
+    <select name='date' id='date-template' class='form-control date input-sm hidden'>
+      <option value="*/*" data-support="pie,chart,number,target">Default</option>
+      <option value="latest" data-support="pie,number,target">Latest metric</option>
+      <option value="since-beginning-of-month" data-support="chart">Current month</option>
+      <option value="since-beginning-of-week" data-support="chart">Current week</option>
+      <option value="since-beginning-of-year" data-support="chart">Current year</option>
+      <option value="since-midnight" data-support="pie,number,target">Current day</option>
+      <option value="P30D/*" data-support="chart">Last 30 days</option>
+      <option value="P7D/*" data-support="chart">Last 7 days</option>
+    </select>
+
     <div id="metric-template" class="hidden">
       <iframe src='' width='100%' height='300px' frameBorder='0' scrolling='no' data-base-url='<%= request.scheme + '://' + request.host_with_port +  '/metrics/' %>' class='hidden'></iframe>
 
@@ -116,16 +128,7 @@
 
       <div class='form-group form-group-sm col-md-12'>
         <label for='date' class='text-right'>Date Range</label>
-        <select name='date' id='date' class='form-control date input-sm'>
-          <option value="*/*">Default</option>
-          <option value="latest">Latest metric</option>
-          <option value="since-beginning-of-month">Current month</option>
-          <option value="since-beginning-of-week">Current week</option>
-          <option value="since-beginning-of-year">Current year</option>
-          <option value="since-midnight">Current day</option>
-          <option value="P30D/*">Last 30 days</option>
-          <option value="P7D/*">Last 7 days</option>
-        </select>
+        <div class='date-wrapper'></div>
       </div>
 
       <input type="hidden" class="row" />
@@ -181,14 +184,19 @@
 
       showVisualisations(visualisations, selected)
       td.find('[value='+ defaultVis +']').prop('checked', true)
+      showDates(td, defaultVis)
     })
 
     $(document).on('change', '.visualisation', function() {
-      var iframe = $(this).parents().eq(3).find('iframe')
+      $this = $(this)
+
+      var td = $this.closest("td")
+      var iframe = td.find('iframe')
       var params = {
         type: $(this).val()
       }
 
+      showDates(td, $(this).val())
       setSrc(iframe, params);
     })
 

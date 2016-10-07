@@ -229,4 +229,59 @@ describe('dashboard.js', function() {
 
   })
 
+  describe('showDates', function() {
+
+    beforeEach(function() {
+      loadFixtures("dates.html")
+    })
+
+    it('shows supported date types for a pie chart', function() {
+      showDates($('.form'), 'pie')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(3)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('latest')
+      expect($(options[2]).val()).toEqual('since-midnight')
+    })
+
+    it('shows supported date types for a chart', function() {
+      showDates($('.form'), 'chart')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(6)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('since-beginning-of-month')
+      expect($(options[2]).val()).toEqual('since-beginning-of-week')
+      expect($(options[3]).val()).toEqual('since-beginning-of-year')
+      expect($(options[4]).val()).toEqual('P30D/*')
+      expect($(options[5]).val()).toEqual('P7D/*')
+    })
+
+    it('shows supported date types for a number', function() {
+      showDates($('.form'), 'number')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(3)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('latest')
+      expect($(options[2]).val()).toEqual('since-midnight')
+    })
+
+    it('shows supported date types for a target', function() {
+      showDates($('.form'), 'target')
+
+      options = $('.date-wrapper select option')
+
+      expect(options.length).toEqual(3)
+      expect($(options[0]).val()).toEqual('*/*')
+      expect($(options[1]).val()).toEqual('latest')
+      expect($(options[2]).val()).toEqual('since-midnight')
+    })
+
+  })
+
 })
