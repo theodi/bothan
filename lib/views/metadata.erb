@@ -48,7 +48,7 @@
 
     spinner.removeClass('hidden')
 
-    jQuery.post(form.attr('action'), form.serializeJSON(), function() {
+    jQuery.post(form.attr('action'), form.serializeJSON().replace(/%/g, '&#37'), function() {
       spinner.addClass('hidden')
     })
   })
