@@ -282,6 +282,15 @@ describe('dashboard.js', function() {
       expect($(options[2]).val()).toEqual('since-midnight')
     })
 
+    it('sets the index correctly', function() {
+      showDates($('.form'), 'target')
+
+      select = $('.date-wrapper select')
+
+      expect(select.attr('name')).toEqual('dashboard[metrics][99][date]')
+    })
+
+
   })
 
 })
