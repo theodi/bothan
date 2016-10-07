@@ -51,7 +51,8 @@
           <select class="form-control metric input-sm">
             <option>-- Select a metric--</options>
             <% @metrics.each do |metric| %>
-              <option data-visualisations="<%= get_alternatives(metric.value).join(',') %>"><%= metric.name %></option>
+              <% get_settings({'metric' => metric.name}, metric) %>
+              <option data-visualisations="<%= get_alternatives(metric.value).join(',') %>" data-default="<%= @type %>"><%= metric.name %></option>
             <% end %>
           </select>
         </div>
@@ -168,9 +169,18 @@
     })
 
     $(document).on('change', '.metric', function() {
-      var iframe = $(this).parents().eq(2).find('iframe')
-      populateIframe(iframe, $(this).val())
-      showVisualisations($(this).parents().eq(2).find('.visualisations'), $(this).find(":selected"))
+      $this = $(this)
+
+      var td = $this.closest("td")
+      var iframe = td.find('iframe')
+      var visualisations = td.find('.visualisations')
+      var selected = $this.find(":selected")
+      var defaultVis = selected.data('default')
+
+      populateIframe(iframe, $this.val())
+
+      showVisualisations(visualisations, selected)
+      td.find('[value='+ defaultVis +']').prop('checked', true)
     })
 
     $(document).on('change', '.visualisation', function() {
