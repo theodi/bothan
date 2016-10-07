@@ -491,4 +491,23 @@ describe Helpers do
     expect(helpers.fix_pie_colours '').to eq '[]'
   end
 
+  it 'builds a dashboard url' do
+    metric = {
+      name: 'foo-bar',
+      date: 'my-date'
+    }
+
+    params = {
+      layout: 'bare',
+      boxcolour: 'abc123',
+      textcolour: 'def345',
+      title: 'my title',
+      type: 'foo'
+    }
+
+    url = helpers.dashboard_url(metric[:name], metric[:date], params)
+
+    expect(url).to eq('/metrics/foo-bar/my-date?boxcolour=abc123&layout=bare&textcolour=def345&title=my+title&type=foo')
+  end
+
 end

@@ -258,6 +258,11 @@ module Helpers
     request.scheme + '://' + request.host_with_port + request.path +  '?' + params
   end
 
+  def dashboard_url(name, date, params)
+    params = params.to_query
+    "/metrics/#{name}/#{date || '*/*'}?#{params}"
+  end
+
 end
 
 class String
