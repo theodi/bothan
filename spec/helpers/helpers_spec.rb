@@ -126,6 +126,14 @@ describe Helpers do
     expect(helpers.title_from_slug('certificated-datasets')).to eq('Certificated Datasets')
   end
 
+  it 'gets a title from the params' do
+    expect(helpers.title_from_slug_or_params({'title' => 'Here%20is%20my%20title'})).to eq('Here is my title')
+  end
+
+  it 'strips out anything dodgy' do
+    expect(helpers.title_from_slug_or_params({'title' => '%3Cscript%3Ealert(%22Pwopa%20nawty%22)%3C%2Fscript%3E'})).to eq('')
+  end
+
   describe '#extract_query_string' do
     it 'chops-up a query string' do
       expect(helpers.extract_query_string 'type=target&boxcolour=fa8100').to eq (
