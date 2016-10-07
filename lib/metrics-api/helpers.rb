@@ -36,13 +36,8 @@ module Helpers
   end
 
   def title_from_slug_or_params(params)
-    if params['title']
-      ActionView::Base.full_sanitizer.sanitize URI.unescape(params['title'])
-    elsif params['metric']
-      title_from_slug params['metric']
-    else
-      nil
-    end
+    title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
+    title.to_s.empty? ? title_from_slug(params['metric']) : title
   end
 
   def title_from_slug(slug)

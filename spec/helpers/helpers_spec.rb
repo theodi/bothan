@@ -130,8 +130,12 @@ describe Helpers do
     expect(helpers.title_from_slug_or_params({'title' => 'Here%20is%20my%20title'})).to eq('Here is my title')
   end
 
+  it 'gets a the default if title is blank' do
+    expect(helpers.title_from_slug_or_params({'title' => '', 'metric' => 'certificated-datasets'})).to eq('Certificated Datasets')
+  end
+
   it 'strips out anything dodgy' do
-    expect(helpers.title_from_slug_or_params({'title' => '%3Cscript%3Ealert(%22Pwopa%20nawty%22)%3C%2Fscript%3E'})).to eq('')
+    expect(helpers.title_from_slug_or_params({'title' => '%3Cscript%3Ealert(%22Pwopa%20nawty%22)%3C%2Fscript%3E', 'metric' => 'certificated-datasets'})).to eq('Certificated Datasets')
   end
 
   describe '#extract_query_string' do
