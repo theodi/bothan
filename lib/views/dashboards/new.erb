@@ -113,6 +113,20 @@
         </div>
       </div>
 
+      <div class='form-group form-group-sm col-md-12'>
+        <label for='date' class='text-right'>Date Range</label>
+        <select name='date' id='date' class='form-control date input-sm'>
+          <option value="*/*">Default</option>
+          <option value="latest">Latest metric</option>
+          <option value="since-beginning-of-month">Current month</option>
+          <option value="since-beginning-of-week">Current week</option>
+          <option value="since-beginning-of-year">Current year</option>
+          <option value="since-midnight">Current day</option>
+          <option value="P30D/*">Last 30 days</option>
+          <option value="P7D/*">Last 7 days</option>
+        </select>
+      </div>
+
       <input type="hidden" class="row" />
       <input type="hidden" class="col" />
       <input type="hidden" class="width" />
