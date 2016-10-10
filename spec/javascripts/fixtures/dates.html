@@ -1,0 +1,16 @@
+<select name='date' id='date-template' class='form-control date input-sm hidden'>
+  <option value="*/*" data-support="pie,chart,number,target">Default</option>
+  <option value="latest" data-support="pie,number,target">Latest metric</option>
+  <option value="since-beginning-of-month" data-support="chart">Current month</option>
+  <option value="since-beginning-of-week" data-support="chart">Current week</option>
+  <option value="since-beginning-of-year" data-support="chart">Current year</option>
+  <option value="since-midnight" data-support="pie,number,target">Current day</option>
+  <option value="P30D/*" data-support="chart">Last 30 days</option>
+  <option value="P7D/*" data-support="chart">Last 7 days</option>
+</select>
+
+
+<div class="form">
+  <input class="index" value="99" />
+  <div class="date-wrapper hidden"></div>
+</div>
