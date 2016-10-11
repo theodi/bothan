@@ -44,15 +44,24 @@
 <script>
 var container = document.querySelector('#target-container');
 var root = container.createShadowRoot();
-$.getJSON(document.URL, function (json) {
-  t = document.querySelector('#metric-with-target');
-  lastUpdated = jQuery.timeago(json.time)
+var channel = pusher.subscribe('<%= @metric %>');
 
-  root.innerHTML = t.innerHTML
-  $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')
-  $(container.shadowRoot).find('#last-updated').html('Last updated ' + lastUpdated)
+function loadMetric() {
+  $.getJSON(document.URL, function (json) {
+    t = document.querySelector('#metric-with-target');
+    lastUpdated = jQuery.timeago(json.time)
 
-  drawTarget(lastOrOnlyValue(json), '<%= @barcolour %>', $(container.shadowRoot), '<%= @datatype %>')
+    root.innerHTML = t.innerHTML
+    $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')
+    $(container.shadowRoot).find('#last-updated').html('Last updated: ' + lastUpdated)
 
+    drawTarget(lastOrOnlyValue(json), '<%= @barcolour %>', $(container.shadowRoot), '<%= @datatype %>')
+  })
+}
+
+channel.bind('updated', function(data) {
+  loadMetric()
 })
+
+loadMetric()
 </script>

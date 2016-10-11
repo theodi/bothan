@@ -39,9 +39,11 @@
 <script src='/javascripts/metrics.js'></script>
 <script src='/javascripts/defiant.js'></script>
 <script>
-$.getJSON(document.URL + '?with_path=true', function(json) {
-  pie(json)
-})
+function loadMetric() {
+  $.getJSON(document.URL + '?with_path=true', function(json) {
+    pie(json)
+  })
+}
 
 function pie(json) {
   $('#chart').height($(window).height())
@@ -76,4 +78,12 @@ function pie(json) {
 
   Plotly.newPlot('chart', data, layout, { displayModeBar: <%= @plotly_modebar %> });
 }
+
+var channel = pusher.subscribe('<%= @metric %>');
+
+channel.bind('updated', function(data) {
+  loadMetric()
+})
+
+loadMetric();
 </script>
