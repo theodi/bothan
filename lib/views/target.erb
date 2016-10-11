@@ -1,4 +1,5 @@
-<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js'></script>
+<!-- TIMEAGO -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js" integrity="sha256-RqSm4Z6+4QIEP1fNwc4t5kbWaLkW66s+WqcYnZJl/fo=" crossorigin="anonymous"></script>
 
 <div id='target-container'>
 </div>
@@ -48,7 +49,7 @@ var channel = pusher.subscribe('<%= @metric %>');
 function loadMetric() {
   $.getJSON(document.URL, function (json) {
     t = document.querySelector('#metric-with-target');
-    lastUpdated = moment(json.time).format('<%= @date_format %>')
+    lastUpdated = jQuery.timeago(json.time)
 
     root.innerHTML = t.innerHTML
     $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')
