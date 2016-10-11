@@ -14,12 +14,19 @@
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js'></script>
   <!-- URI -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.17.1/URI.min.js'></script>
+  <script src="//js.pusher.com/2.2/pusher.min.js"></script>
 
   <%= erb :'includes/rich-header' unless @layout == 'bare' %>
 
   <!-- OUR STUFF -->
   <script src='/javascripts/metrics.js'></script>
   <link rel='stylesheet' href='/css/font.css' />
+
+  <script>
+    Pusher.host = 'ws-eu.pusher.com';
+    Pusher.sockjs_host = 'sockjs-eu.pusher.com';
+    var pusher = new Pusher('<%= Pusher.key %>');
+  </script>
 
   <title><%= @title["en"] %></title>
   <% if @autorefresh %>
