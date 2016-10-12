@@ -1,6 +1,6 @@
 Like the [spies in Return of the Jedi](https://www.youtube.com/watch?v=CQeabed9N9M), Bothan brings you information.
 
-It's a simple platform for storing and publishing metrics, both as JSON, and as simple, embeddable visualisations, which you can embded standalone in webpages, or use in [dashboards](http://dashboards.bothan.io/). Take a look at the [demo](#demo), or [read the docs](#documenation)
+It's a simple platform for storing and publishing metrics, both as JSON, and as simple, embeddable visualisations, which you can embded standalone in webpages, or use to build [dashboards](http://demo.bothan.io/dashboards/bothan). Take a look at the [demo](#demo), or [read the docs](#documenation)
 
 ## Getting started
 

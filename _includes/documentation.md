@@ -221,3 +221,8 @@ Where `language-code` is the ISO language code of your title. You can specify as
 ```
 A description can be set for the metric by logging into the Bothan instance on Heroku, selecting the metric and taking the option to 'Edit Metadata'.
 
+### Dashboards
+
+Once you've got some metrics, you can then get on with the serious business of building dashboards. Once logged in on your Bothan instance, you click on 'Create Dashboard' and build a dashboard with your metrics.
+
+[Check out an example dashboard](http://demo.bothan.io/dashboards/bothan)
