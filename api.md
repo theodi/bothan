@@ -3,6 +3,8 @@ layout: default
 title: API
 ---
 
+The API is the heart of Bothan, where you submit the data you want to store and visualise. There is also a read portion of the API that allows you to list metrics for a given time period.
+
 ## Adding data
 
 All POST requests require a username and password (sent via basic auth)
