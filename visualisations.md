@@ -3,9 +3,15 @@ layout: default
 title: Visualisations
 ---
 
-# Visualisations
+![Metrics view](/images/metric-page.png){: .screenshot}
 
-Once you have data, you can then visualise it in a number of different ways, depending on the metric. You can explore these on your individual metrics page (for example http://demo.bothan.io/metrics/simple-metric/), or manipulate options via query strings.
+Once you have data, you can then visualise it in a number of different ways, depending on the metric. You can explore these on your individual metrics page (for example [http://demo.bothan.io/metrics/simple-metric/](http://demo.bothan.io/metrics/simple-metric/)), or manipulate options via query strings.
+
+You will also be able to copy and paste embed code for a metric as an iframe.
+
+<hr />
+
+## Showing a metric's visualisation
 
 ```
 GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
@@ -16,15 +22,6 @@ GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
 #### query-string options
 
 The rendering can be manipulated by the following query-string options:
-
-#### layout
-
-One of:
-
-  * `rich`, with a nav-bar and other controls, or
-  * `bare`, a minimal layout designed for inclusion elsewhere as an iframe
-
-Default: `rich`
 
 #### type
 
@@ -40,6 +37,15 @@ One of:
   <iframe src="http://demo.bothan.io/metrics/metric-with-target?layout=bare&amp;boxcolour=ff6700&amp;textcolour=ffffff&amp;type=target" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
 
 Default: By default, Bothan will attempt to work out the best visualisation for your metric
+
+#### layout
+
+One of:
+
+  * `rich`, with a nav-bar and other controls, or
+  * `bare`, a minimal layout designed for inclusion elsewhere as an iframe
+
+Default: `rich`
 
 #### boxcolour
 
@@ -59,4 +65,8 @@ Default: `222`
 
 Default: `none`
 
-Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
+#### title
+
+The title for the metric. This defaults to a titleized version of the metric (for example, `my-cool-metric` will display as `My Cool Metric`)
+
+Example: [https://demo.bothan.io/metrics/simple-metric?boxcolour=fa8100&textcolour=00ffff&layout=bare](https://demo.bothan.io/metrics/simple-metric?boxcolour=fa8100&textcolour=00ffff&layout=bare)
