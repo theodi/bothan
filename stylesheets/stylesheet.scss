@@ -1,0 +1,87 @@
+---
+---
+
+@import "bootstrap";
+
+.navbar-brand {
+  img {
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-right: 10px;
+  }
+}
+
+.jumbotron {
+  background-image: url(//i.imgur.com/SZ8pEHu.jpg);
+
+  h1, p {
+    color: #fff;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid #fff;
+  }
+}
+
+#marketing {
+  .col-lg-4 {
+    text-align: center;
+    color: #5a5a5a;
+
+     p {
+       margin-right: .75rem;
+       margin-left: .75rem;
+     }
+
+     .icon {
+       color: #fff;
+       border-radius: 50%;
+       padding: 20px;
+       font-size: 80px;
+     }
+
+     h2 {
+       margin-top: 1rem;
+     }
+
+     &:first-child{
+        .icon {
+          background-color: #741eaa;
+        }
+     }
+
+     &:nth-child(2) {
+       .icon {
+         background-color: #fcbd00;
+       }
+     }
+
+     &:nth-child(3) {
+       .icon {
+         background-color: #00d4aa;
+       }
+     }
+  }
+
+}
+
+footer  {
+  background-color: #f7f7f9;
+  padding: 10px 0;
+
+  #odi-labs {
+    width: 175px;
+    margin: -10px 0 0 -10px;
+  }
+}
+
+.screenshot {
+  width: 450px;
+  float: right;
+  border: 1px solid #eee;
+  padding: 5px;
+  margin: 0 0 5px 20px;
+}

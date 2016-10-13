@@ -2,21 +2,23 @@
 layout: default
 ---
 
-<section id="get-started">
-  {% capture getting_started %}{% include getting_started.md %}{% endcapture %}
-  {{ getting_started | markdownify }}
-</section>
-
-<hr />
-
-<section id="documentation">
-  {% capture documentation %}{% include documentation.md %}{% endcapture %}
-  {{ documentation | markdownify }}
-</section>
-
-<hr />
-
-<section id="demo">
-  {% capture demo %}{% include demo.md %}{% endcapture %}
-  {{ demo | markdownify }}
-</section>
+<div class="row" id="marketing">
+  <div class="col-lg-4">
+    <span class="icon"><i class="fa fa-code" aria-hidden="true"></i></span>
+    <h2>Submit</h2>
+    <p>Bothan's simple RESTful API allows you to submit timeseries metrics in various different formats. It can be easily integrated into any development environment.</p>
+    <p><a class="btn btn-secondary" href="/api" role="button">View details &raquo;</a></p>
+  </div><!-- /.col-lg-4 -->
+  <div class="col-lg-4">
+    <span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
+    <h2>Visualise</h2>
+    <p>Visalising metrics is a snap with Bothan. View your metrics as a line chart, number, pie chart or target, customise the look and feel and generate embed code.</p>
+    <p><a class="btn btn-secondary" href="/visualisations" role="button">View details &raquo;</a></p>
+  </div><!-- /.col-lg-4 -->
+  <div class="col-lg-4">
+    <span class="icon"><i class="fa fa-television" aria-hidden="true"></i></span>
+    <h2>Dashboard</h2>
+    <p>Once you've got enough metrics, you can gather them all up on a dashboard using our visual dashboarding tool. Build, customise and share to your heart's content.</p>
+    <p><a class="btn btn-secondary" href="/dashboards" role="button">View details &raquo;</a></p>
+  </div><!-- /.col-lg-4 -->
+</div><!-- /.row -->
