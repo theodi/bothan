@@ -5,7 +5,7 @@ title: Visualisations
 
 # Visualisations
 
-While this is primarily a JSON API, some of our endpoints will also serve HTML. Primarily:
+Once you have data, you can then visualise it in a number of different ways, depending on the metric. You can explore these on your individual metrics page (for example http://demo.bothan.io/metrics/simple-metric/), or manipulate options via query strings.
 
 ```
 GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
