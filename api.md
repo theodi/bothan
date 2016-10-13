@@ -3,8 +3,6 @@ layout: default
 title: API
 ---
 
-# API
-
 ## Adding data
 
 All POST requests require a username and password (sent via basic auth)
