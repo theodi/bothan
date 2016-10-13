@@ -7,13 +7,13 @@ title: API
 
 All POST requests require a username and password (sent via basic auth)
 
-```
+```bash
 POST https://username:password@demo.bothan.io/metrics/{metric-name}
 ```
 
 using a JSON content type, and with the following JSON in the body:
 
-```
+```json
 {
   "time": "{iso8601-date-time}",
   "value": ...
@@ -22,7 +22,7 @@ using a JSON content type, and with the following JSON in the body:
 
 cURL example:
 
-```
+```bash
 curl -X POST -H "Content-Type: application/json" -d '{
   "time": "2016-04-12T10:00:00",
   "value": 500
@@ -35,7 +35,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 The simplest format that a `value` can take is a single number. For example:
 
-```
+```json
 {
   "time": "{iso8601-date-time}",
   "value": 123
@@ -46,7 +46,7 @@ The simplest format that a `value` can take is a single number. For example:
 
 A value can also be a JSON object with an `actual`, `annual_target` and an optional `ytd_target`. For example:
 
-```
+```json
 {
   "time": "{iso8601-date-time}",
   "value": {
@@ -59,7 +59,7 @@ A value can also be a JSON object with an `actual`, `annual_target` and an optio
 
 Or:
 
-```
+```json
 {
   "time": "{iso8601-date-time}",
   "value": {
@@ -73,7 +73,7 @@ Or:
 
 If you want to track multiple values for one metric (for example, diversity data), we can do that too:
 
-```
+```json
 {
   "time": "{iso8601-date-time}",
   "value": {
@@ -95,25 +95,25 @@ There is currently no way to delete a metric within an instance of Bothan.
 
 ## Fetching data
 
-```
+```bash
 GET https://demo.bothan.io/metrics[.json]
 ```
 
 Fetches list of available metrics
 
-```
+```bash
 GET https://demo.bothan.io/metrics/{metric_name}[.json]
 ```
 
 Fetches latest value for specified metric
 
-```
+```bash
 GET https://demo.bothan.io/metrics/{metric_name}/{time}
 ```
 
 Fetch the most recent value of the metric at the specified time. `time` is an ISO8601 date/time.
 
-```
+```bash
 GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
 ```
 
