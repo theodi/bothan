@@ -2,6 +2,7 @@
   <a href="/" class="navbar-brand"><img src='/images/logo.png'/> Bothan</a>
   <ul class="nav navbar-nav">
     {% for node in site.pages %}
+    {% if node.title %}
       {% if page.url == node.url %}
         <li class="nav-item active">
           <a class="nav-link" href="{{node.url}}">{{node.title}} <span class="sr-only">(current)</span></a></li>
@@ -11,6 +12,7 @@
         <a class="nav-link" href="{{node.url}}">{{node.title}}</a></li>
       </li>
       {% endif %}
+    {% endif %}
     {% endfor %}
   </ul>
 </nav>
