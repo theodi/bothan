@@ -2,7 +2,14 @@ describe('number.js', function() {
   beforeEach(function() {
     fixture = setFixtures("<div id='number-wrapper'><div id='number'></div></div>")
     spyOn(window, 'countUp')
+    jasmine.clock().install();
+    var date = new Date(2016, 03, 03) // 2016-02-03T14:27:35.000+00:00
+    jasmine.clock().mockDate(date);
   })
+
+  afterEach(function() {
+    jasmine.clock().uninstall();
+  });
 
   describe('with multiple values', function() {
     beforeEach(function() {
@@ -33,7 +40,7 @@ describe('number.js', function() {
       number(json, 'My Awesome Title', $('#number-wrapper'), '', '', 'YYYY-MM-DD HH:mm')
       expect($('#number h1').html()).toEqual('My Awesome Title')
       expect($('#number h2').html()).toEqual('224')
-      expect($('#number small').html()).toEqual('Last updated 9 months ago')
+      expect($('#number small').html()).toEqual('Last updated 2 months ago')
     })
 
     it('adds a percent sign', function() {
@@ -76,7 +83,7 @@ describe('number.js', function() {
       number(json, 'My Awesome Title', $('#number-wrapper'), '', '', 'YYYY-MM-DD HH:mm')
       expect($('#number h1').html()).toEqual('My Awesome Title')
       expect($('#number h2').html()).toEqual('2')
-      expect($('#number small').html()).toEqual('Last updated 2 years ago')
+      expect($('#number small').html()).toEqual('Last updated about a year ago')
     })
   })
 
