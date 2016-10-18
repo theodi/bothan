@@ -72,7 +72,13 @@ function pie(json) {
     }
   };
 
-  var lastUpdated = jQuery.timeago(json.time)
+  if (json.values) {
+    time = json.values[json.values.length - 1].time
+  } else {
+    time = json.time
+  }
+
+  var lastUpdated = jQuery.timeago(time)
 
   $('#last-updated').html('Last updated ' + lastUpdated)
 

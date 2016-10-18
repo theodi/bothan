@@ -49,7 +49,14 @@ var channel = pusher.subscribe('<%= @metric %>');
 function loadMetric() {
   $.getJSON(document.URL, function (json) {
     t = document.querySelector('#metric-with-target');
-    lastUpdated = jQuery.timeago(json.time)
+
+    if (json.values) {
+      time = json.values[json.values.length - 1].time
+    } else {
+      time = json.time
+    }
+
+    lastUpdated = jQuery.timeago(time)
 
     root.innerHTML = t.innerHTML
     $(container.shadowRoot).find('#caption').html('<h1><%= @title["en"] %></h1>')
