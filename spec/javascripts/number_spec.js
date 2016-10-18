@@ -33,7 +33,7 @@ describe('number.js', function() {
       number(json, 'My Awesome Title', $('#number-wrapper'), '', '', 'YYYY-MM-DD HH:mm')
       expect($('#number h1').html()).toEqual('My Awesome Title')
       expect($('#number h2').html()).toEqual('224')
-      expect($('#number small').html()).toEqual('Last updated 8 months ago')
+      expect($('#number small').html()).toEqual('Last updated 9 months ago')
     })
 
     it('adds a percent sign', function() {
