@@ -5,7 +5,7 @@ title: Visualisations
 
 ![Metrics view](/images/metric-page.png){: .screenshot}
 
-Once you have data, you can then visualise it in a number of different ways, depending on the metric. You can explore these on your individual metrics page (for example [http://demo.bothan.io/metrics/simple-metric/](http://demo.bothan.io/metrics/simple-metric/)), or manipulate options via query strings.
+Once you have data, you can then visualise it in a number of different ways, depending on the metric. You can explore these on your individual metrics page (for example [https://demo.bothan.io/metrics/simple-metric/](https://demo.bothan.io/metrics/simple-metric/)), or manipulate options via query strings.
 
 You will also be able to copy and paste embed code for a metric as an iframe.
 
@@ -28,13 +28,13 @@ The rendering can be manipulated by the following query-string options:
 One of:
 
   * `chart`, which renders a [Plotly](https://plot.ly/javascript/) line chart of the data: <br>
-  <iframe src="http://demo.bothan.io/metrics/simple-metric?layout=bare&amp;boxcolour=2254f4&amp;textcolour=ffffff&amp;type=" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  <iframe src="https://demo.bothan.io/metrics/simple-metric?layout=bare&amp;boxcolour=2254f4&amp;textcolour=ffffff&amp;type=" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
   * `number`, which displays the latest value from the metric: <br>
-  <iframe src="http://demo.bothan.io/metrics/simple-metric?layout=bare&amp;boxcolour=0dbc37&amp;textcolour=ffffff&amp;type=number" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  <iframe src="https://demo.bothan.io/metrics/simple-metric?layout=bare&amp;boxcolour=0dbc37&amp;textcolour=ffffff&amp;type=number" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
   * `pie`, which renders a [Plotly](https://plot.ly/javascript/) pie chart of the data, as best it can. This is only supported by the [multiple values](#multiple-values) metric type: <br>
-  <iframe src="http://demo.bothan.io/metrics/metric-with-multiple-values?layout=bare&amp;boxcolour=ef3aab&amp;textcolour=ffffff&amp;type=pie" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  <iframe src="https://demo.bothan.io/metrics/metric-with-multiple-values?layout=bare&amp;boxcolour=ef3aab&amp;textcolour=ffffff&amp;type=pie" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
   * `target`, which renders a meter style chart with an actual value, an annual target value and a year to date target value. This is only supported by the [value with target](#value-with-target) metric type:<br>
-  <iframe src="http://demo.bothan.io/metrics/metric-with-target?layout=bare&amp;boxcolour=ff6700&amp;textcolour=ffffff&amp;type=target" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
+  <iframe src="https://demo.bothan.io/metrics/metric-with-target?layout=bare&amp;boxcolour=ff6700&amp;textcolour=ffffff&amp;type=target" width="100%" height="350px" frameborder="0" scrolling="no"></iframe>
 
 Default: By default, Bothan will attempt to work out the best visualisation for your metric
 
