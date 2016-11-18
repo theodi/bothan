@@ -199,6 +199,7 @@ describe('dashboard.js', function() {
       growCol(col, 2)
 
       expect($('table td#a1').attr('colspan')).toEqual('2')
+      expect($('table td#a1').html()).toEqual('a1')
       expect($('#row-a #a2').length).toEqual(0)
     })
 

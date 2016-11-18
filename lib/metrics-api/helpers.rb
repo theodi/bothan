@@ -71,11 +71,15 @@ module Helpers
   end
 
   def get_title(metadata, params)
-    title = metadata.try(:title)
-    if title.nil? || title == {}
-      { "en" => title_from_slug_or_params(params) }
+    if params['title'].blank?
+      title = metadata.try(:title)
+      if title.nil? || title == {}
+        { "en" => title_from_slug_or_params(params) }
+      else
+        title
+      end
     else
-      title
+      { "en" => params['title'] }
     end
   end
 
