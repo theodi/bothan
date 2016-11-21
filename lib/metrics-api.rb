@@ -66,13 +66,13 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/' do
-    redirect to '/metrics'
+    redirect to "#{request.scheme}://#{request.host}/metrics"
   end
 
   get '/login' do
     protected!
 
-    redirect to '/metrics'
+    redirect to "#{request.scheme}://#{request.host}/metrics"
   end
 
   get '/documentation' do
@@ -202,7 +202,7 @@ class MetricsApi < Sinatra::Base
   end
 
   get '/metrics/:metric/today' do
-    redirect("/metrics/#{params[:metric]}/since-midnight")
+    redirect("#{request.scheme}://#{request.host}/metrics/#{params[:metric]}/since-midnight")
   end
 
   get '/metrics/:metric/since-midnight' do
@@ -283,7 +283,7 @@ class MetricsApi < Sinatra::Base
     @dashboard.update_attributes(dashboard)
 
     if @dashboard.valid?
-      redirect "/dashboards/#{@dashboard.slug}"
+      redirect "#{request.scheme}://#{request.host}/dashboards/#{@dashboard.slug}"
     else
       @title = 'Edit Dashboard'
       @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
@@ -313,7 +313,7 @@ class MetricsApi < Sinatra::Base
     @dashboard = Dashboard.create(dashboard)
 
     if @dashboard.valid?
-      redirect "/dashboards/#{@dashboard.slug}"
+      redirect "#{request.scheme}://#{request.host}/dashboards/#{@dashboard.slug}"
     else
       @title = 'Create Dashboard'
       @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
