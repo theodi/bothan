@@ -119,12 +119,13 @@ class MetricsApi < Sinatra::Base
     update_metric(params[:metric], body["time"], body["value"])
   end
 
-  post '/metrics/:metric/increment' do
+  post '/metrics/:metric/increment/?:amount?' do
     protected!
 
     last_metric = Metric.where(name: params[:metric].parameterize).last
     last_amount = last_metric["value"]
-    value = last_amount + 1
+    increment = (params[:amount] || 1).to_i
+    value = last_amount + increment
 
     update_metric(params[:metric], DateTime.now, value)
   end
