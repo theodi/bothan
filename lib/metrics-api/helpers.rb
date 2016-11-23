@@ -281,8 +281,6 @@ module Helpers
       metadata.save
     end
 
-    puts @metric.to_yaml
-
     if @metric.save
       Pusher.trigger(name.parameterize, 'updated', {})
       return 201
