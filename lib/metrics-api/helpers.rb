@@ -122,22 +122,22 @@ module Helpers
   def datetime_path(metric, datetime)
     now = Time.now.iso8601
     if single?(metric.value, datetime)
-      "#{request.scheme}://#{request.host}/metrics/#{metric.name}/#{now}"
+      "#{request.scheme}://#{request.host_with_port}/metrics/#{metric.name}/#{now}"
     else
       days = 30
       before = (Time.now - (60 * 60 * 24 * days)).iso8601
-      "#{request.scheme}://#{request.host}/metrics/#{metric.name}/#{before}/#{now}"
+      "#{request.scheme}://#{request.host_with_port}/metrics/#{metric.name}/#{before}/#{now}"
     end
   end
 
   def date_redirect params
     if params['oldest'].present? && params['newest'].present?
       params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
-      redirect to "#{request.scheme}://#{request.host}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+      redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
     end
 
     if params['oldest'].present?
-      redirect to "#{request.scheme}://#{request.host}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
+      redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
     end
   end
 
