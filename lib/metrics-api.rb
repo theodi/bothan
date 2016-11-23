@@ -119,8 +119,14 @@ class MetricsApi < Sinatra::Base
     update_metric(params[:metric], body["time"], body["value"])
   end
 
+  post '/metrics/:metric/increment' do
+    protected!
 
+    last_metric = Metric.where(name: params[:metric].parameterize).last
+    last_amount = last_metric["value"]
+    value = last_amount + 1
 
+    update_metric(params[:metric], DateTime.now, value)
   end
 
   get '/metrics/:metric/metadata' do
