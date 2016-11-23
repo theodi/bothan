@@ -116,25 +116,11 @@ class MetricsApi < Sinatra::Base
 
     body = JSON.parse request.body.read
 
-    @metric = Metric.new({
-      "name" => params[:metric].parameterize,
-      "time" => body["time"],
-      "value" => body["value"]
-    })
+    update_metric(params[:metric], body["time"], body["value"])
+  end
 
-    metadata = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
 
-    if metadata.title.blank?
-      metadata.title[:en] = params[:metric]
-      metadata.save
-    end
 
-    if @metric.save
-      Pusher.trigger(params[:metric].parameterize, 'updated', {})
-      return 201
-    else
-      return 500
-    end
   end
 
   get '/metrics/:metric/metadata' do
