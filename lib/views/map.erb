@@ -29,7 +29,7 @@
 
 <script>
   var map = L.map('map').setView([0,0], 13);
-  L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map);
+  L.tileLayer.provider('<%= @tiles %>').addTo(map);
 
   $("#map").height($(window).height()).width($(window).width());
   map.invalidateSize();

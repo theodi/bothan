@@ -64,6 +64,7 @@ module Helpers
     @metric = params.fetch('metric', '')
     @pie_colours = fix_pie_colours(params.fetch('pie_colours', ''))
     @date_format = params.fetch('date_format', 'YYYY-MM-DD HH:mm')
+    @tiles = params.fetch('tiles', 'OpenStreetMap.Mapnik')
   end
 
   def fix_pie_colours list
