@@ -127,6 +127,10 @@ class MetricsApi < Sinatra::Base
     return 404 if last_metric.nil?
 
     last_amount = last_metric["value"]
+
+    # Return 400 if the metric type is anything other than a single metric
+    return 400 if last_amount.class == BSON::Document
+
     increment = (params[:amount] || 1).to_i
     value = last_amount + increment
 

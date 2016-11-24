@@ -42,3 +42,14 @@ Feature: Incrementing Metrics
     Given I authenticate as the user "foo" with the password "bar"
     And I send a POST request to "metrics/membership-count/increment"
     Then the response status should be "404"
+
+  Scenario: Returns 400 if the metric is an object
+    Given I authenticate as the user "foo" with the password "bar"
+    And there is a metric in the database with the name "membership-coverage"
+    And it has a time of "2013-12-25T15:00:00+00:00"
+    And it has a value of:
+      """
+      {"health":0.34,"telecoms":0.34,"energy":0.34}
+      """
+    And I send a POST request to "metrics/membership-coverage/increment/5"
+    Then the response status should be "400"
