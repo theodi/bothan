@@ -498,6 +498,48 @@ describe Helpers do
       ])
     end
 
+    it 'data is geodata' do
+      data = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [112, 0.7]
+            },
+            properties: {
+              prop0: "value0"
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [102, 0.5]
+            },
+            properties: {
+              prop0: "value0"
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [112, 0.8]
+            },
+            properties: {
+              prop0: "value0"
+            }
+          }
+        ]
+      }
+
+      expect(helpers.get_alternatives data).to eq([
+        'map'
+      ])
+    end
+
   end
 
   context 'gets a title' do

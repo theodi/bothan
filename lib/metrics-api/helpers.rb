@@ -159,6 +159,7 @@ module Helpers
       v = ActiveSupport::HashWithIndifferentAccess.new(value)
       alt << 'target' if v['annual_target']
       alt << 'pie' if v['total']
+      alt = ['map'] if v['features']
     end
     alt
   end
