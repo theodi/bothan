@@ -1,5 +1,5 @@
 Then(/^the data should be stored in the "(.*?)" metric$/) do |metric_name|
-  @metric = Metric.where(name: metric_name).last
+  @metric = Metric.where(name: metric_name).order_by(time: 'asc').last
   @metric.name.should == metric_name
 end
 

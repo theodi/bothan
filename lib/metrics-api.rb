@@ -116,25 +116,22 @@ class MetricsApi < Sinatra::Base
 
     body = JSON.parse request.body.read
 
-    @metric = Metric.new({
-      "name" => params[:metric].parameterize,
-      "time" => body["time"],
-      "value" => body["value"]
-    })
+    update_metric(params[:metric], body["time"], body["value"])
+  end
 
-    metadata = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
+  post '/metrics/:metric/increment/?:amount?' do
+    protected!
 
-    if metadata.title.blank?
-      metadata.title[:en] = params[:metric]
-      metadata.save
-    end
+    last_metric = Metric.where(name: params[:metric].parameterize).last
+    last_amount = last_metric.try(:[], 'value') || 0
 
-    if @metric.save
-      Pusher.trigger(params[:metric].parameterize, 'updated', {})
-      return 201
-    else
-      return 500
-    end
+    # Return 400 if the metric type is anything other than a single metric
+    return 400 if last_amount.class == BSON::Document
+
+    increment = (params[:amount] || 1).to_i
+    value = last_amount + increment
+
+    update_metric(params[:metric], DateTime.now, value)
   end
 
   get '/metrics/:metric/metadata' do

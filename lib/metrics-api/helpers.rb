@@ -267,6 +267,28 @@ module Helpers
     "/metrics/#{name}/#{date || '*/*'}?#{params}"
   end
 
+  def update_metric(name, time, value)
+    @metric = Metric.new({
+      "name" => name.parameterize,
+      "time" => time,
+      "value" => value
+    })
+
+    metadata = MetricMetadata.find_or_create_by(name: name.parameterize)
+
+    if metadata.title.blank?
+      metadata.title[:en] = name
+      metadata.save
+    end
+
+    if @metric.save
+      Pusher.trigger(name.parameterize, 'updated', {})
+      return 201
+    else
+      return 500
+    end
+  end
+
 end
 
 class String
