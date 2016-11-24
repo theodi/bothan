@@ -93,6 +93,57 @@ describe MetricsApi do
       expect(types[0][:value]).to eq('tasklist')
     end
 
+    it 'with a geo type' do
+      Metric.create(
+        name: "geo-metric",
+        time: DateTime.now - 1,
+        value: {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [112, 0.7]
+              },
+              properties: {
+                prop0: "value0"
+              }
+            },
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [102, 0.5]
+              },
+              properties: {
+                prop0: "value0"
+              }
+            },
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [112, 0.8]
+              },
+              properties: {
+                prop0: "value0"
+              }
+            }
+          ]
+        }
+      )
+
+      get '/metrics/geo-metric'
+      follow_redirect!
+
+      body = Nokogiri::HTML(last_response.body)
+      types = body.css('#types input')
+
+      expect(types.count).to eq(1)
+      expect(types[0][:value]).to eq('map')
+    end
+
   end
 
   context 'redirects to dates correctly' do
