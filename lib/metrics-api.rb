@@ -123,6 +123,9 @@ class MetricsApi < Sinatra::Base
     protected!
 
     last_metric = Metric.where(name: params[:metric].parameterize).last
+
+    return 404 if last_metric.nil?
+
     last_amount = last_metric["value"]
     increment = (params[:amount] || 1).to_i
     value = last_amount + increment

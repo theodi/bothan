@@ -37,3 +37,8 @@ Feature: Incrementing Metrics
       """
       15
       """
+
+  Scenario: Returns 404 if a metric doesn't exist
+    Given I authenticate as the user "foo" with the password "bar"
+    And I send a POST request to "metrics/membership-count/increment"
+    Then the response status should be "404"
