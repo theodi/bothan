@@ -54,6 +54,67 @@ Feature: Metrics API
       10
       """
 
+  Scenario: POSTing geodata
+    Given I authenticate as the user "foo" with the password "bar"
+    When I send a POST request to "metrics/geopoints" with the following:
+      """
+      {
+        "time": "2013-12-25T15:00:00+00:00",
+        "value": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  112,
+                  0.7
+                ]
+              },
+              "properties": {
+                "prop0": "value0"
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  102,
+                  0.5
+                ]
+              },
+              "properties": {
+                "prop0": "value0"
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  112,
+                  0.8
+                ]
+              },
+              "properties": {
+                "prop0": "value0"
+              }
+            }
+          ]
+        }
+      }
+      """
+    Then the response status should be "201"
+    And the Pusher endpoint should have recieved "geopoints" with "updated"
+    And the data should be stored in the "geopoints" metric
+    And the time of the stored metric should be "2013-12-25T15:00:00+00:00"
+    And the value of the metric should be:
+      """
+      {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[112,0.7]},"properties":{"prop0":"value0"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[102,0.5]},"properties":{"prop0":"value0"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[112,0.8]},"properties":{"prop0":"value0"}}]}
+      """
+
   Scenario: GETing structured data
     Given there is a metric in the database with the name "membership-coverage"
     And it has a time of "2013-12-25T15:00:00+00:00"
