@@ -38,10 +38,14 @@ Feature: Incrementing Metrics
       15
       """
 
-  Scenario: Returns 404 if a metric doesn't exist
+  Scenario: Create a metric if a metric doesn't exist
     Given I authenticate as the user "foo" with the password "bar"
     And I send a POST request to "metrics/membership-count/increment"
-    Then the response status should be "404"
+    Then the data should be stored in the "membership-count" metric
+    And the value of the metric should be:
+      """
+      1
+      """
 
   Scenario: Returns 400 if the metric is an object
     Given I authenticate as the user "foo" with the password "bar"

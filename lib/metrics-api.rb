@@ -123,10 +123,7 @@ class MetricsApi < Sinatra::Base
     protected!
 
     last_metric = Metric.where(name: params[:metric].parameterize).last
-
-    return 404 if last_metric.nil?
-
-    last_amount = last_metric["value"]
+    last_amount = last_metric.try(:[], 'value') || 0
 
     # Return 400 if the metric type is anything other than a single metric
     return 400 if last_amount.class == BSON::Document
