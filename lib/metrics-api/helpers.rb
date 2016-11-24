@@ -243,7 +243,7 @@ module Helpers
     elsif data[:value].class == Hash && !data[:value][:annual_target].nil?
       'target'
     elsif data[:value].class == Hash && Hash[*data[:value].first].class == Hash
-      'pie'
+      data[:value][:type].nil? ? 'pie' : 'map'
     else
       'chart'
     end
