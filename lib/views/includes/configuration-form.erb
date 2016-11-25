@@ -106,7 +106,9 @@
         </div>
 
         <script>
+          var excludes = ['HERE', 'MapBox', 'Thunderforest']
           for (var provider in L.TileLayer.Provider.providers) {
+            if (excludes.includes(provider)) continue
             if (L.TileLayer.Provider.providers[provider].variants) {
               for (var variant in L.TileLayer.Provider.providers[provider].variants) {
                 $('#tiles').append($('<option>', {value: provider + '.' + variant, text: provider + '.' + variant}));
