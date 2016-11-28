@@ -330,7 +330,8 @@ class MetricsApi < Sinatra::Base
     error 400, {:status => error}.to_json
   end
 
-  def get_single_metric(params, time = DateTime.today)
+  def get_single_metric(params, time)
+    time ||= DateTime.now
     metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
     metric = metrics.last
 
