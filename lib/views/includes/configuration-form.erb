@@ -96,6 +96,31 @@
 
     <div role="tabpanel" class="tab-pane" id="customise">
 
+      <% if @type == 'map' %>
+        <script src="//unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+        <script src="//unpkg.com/leaflet-providers@1.1.16/leaflet-providers.js"></script>
+
+        <div class='col-md-12 form-group'>
+          <label for='tiles' class='col-md-3 text-right'>Map tiles</label>
+          <select name='tiles' id='tiles' class='form-control'></select>
+        </div>
+
+        <script>
+          var excludes = ['HERE', 'MapBox', 'Thunderforest']
+          for (var provider in L.TileLayer.Provider.providers) {
+            if (excludes.includes(provider)) continue
+            if (L.TileLayer.Provider.providers[provider].variants) {
+              for (var variant in L.TileLayer.Provider.providers[provider].variants) {
+                $('#tiles').append($('<option>', {value: provider + '.' + variant, text: provider + '.' + variant}));
+              }
+            } else {
+              $('#tiles').append($('<option>', {value: provider, text: provider}));
+            }
+          }
+        </script>
+
+      <% else %>
+
       <div class='col-md-12'>
         <div class='form-group col-md-6'>
           <label for='boxcolour' class='col-md-3 text-right'>Box Colour</label>
@@ -115,7 +140,7 @@
             <input type="hidden" name="textcolour" value="<%= @textcolour[1..-1] %>" />
         </div>
 
-      </div>
+      <% end %>
 
     </div>
 
@@ -208,6 +233,12 @@ $(function() {
     updatePage({
       type: $(this).val()
     }, from, to)
+  })
+
+  $('#tiles').change(function() {
+    updatePage({
+      tiles: $(this).val()
+    })
   })
 
 })

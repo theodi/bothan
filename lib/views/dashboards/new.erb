@@ -75,7 +75,7 @@
         <input type="text" name="title" value="" class="form-control input-sm title" />
       </div>
 
-      <div class='form-group form-group-sm col-md-6'>
+      <div class='form-group form-group-sm col-md-6 colour'>
         <label for='boxcolour' class='text-right'>Box Colour</label>
           <div class="input-group colourpicker boxcolour">
             <input type="text" name="boxcolourpicker" value="" class="form-control input-sm" />
@@ -84,13 +84,20 @@
           <input type="hidden" class="boxcolour" value="ddd" />
       </div>
 
-      <div class='form-group form-group-sm col-md-6'>
+      <div class='form-group form-group-sm col-md-6 colour'>
         <label for='boxcolour' class='text-right'>Text Colour</label>
           <div class="input-group colourpicker textcolour">
             <input type="text" name="textcolourpicker" value="" class="form-control input-sm" />
             <span class="input-group-addon"><i></i></span>
           </div>
           <input type="hidden" class="textcolour" value="676767" />
+      </div>
+
+      <div class='form-group form-group-sm hidden tile-wrapper col-md-12'>
+        <label for='tiles' class='text-right'>Map tiles</label>
+        <div class="input-group col-md-12">
+          <select name='tiles' id='tiles' class='form-control input-sm tiles'></select>
+        </div>
       </div>
 
       <div class='form-group form-group-sm hidden visualisations col-md-12'>
@@ -113,6 +120,10 @@
           <label class="pie hidden radio-inline">
             <input type="radio" class="visualisation" value="pie" />
             Pie
+          </label>
+          <label class="map hidden radio-inline">
+            <input type="radio" class="visualisation" value="map" />
+            Map
           </label>
         </div>
       </div>
@@ -158,6 +169,7 @@
 
     buildTable(<%= @dashboard.rows || 3 %>, <%= @dashboard.columns || 3 %>);
     populateTable(dashboardMetrics)
+    buildMapTiles()
 
     $('.rowcols').change(function(e) {
       var row_num = parseInt($('#rows').val());
@@ -192,6 +204,7 @@
       td.find('[value='+ defaultVis +']').prop('checked', true)
       td.find('.title-wrapper').removeClass('hidden')
 
+      showTiles(td)
       showDates(td, defaultVis)
     })
 
@@ -250,6 +263,17 @@
       var iframe = td.find('iframe')
 
       populateIframe(iframe, metric, date)
+    })
+
+    $(document).on('change', '.tiles', function() {
+      $this = $(this)
+
+      var tiles = $this.val()
+      var td = $this.closest('td')
+      var metric = td.find('.metric').val()
+      var iframe = td.find('iframe')
+
+      setSrc(iframe, {tiles: tiles})
     })
 
     $(document).on('keyup', '.title', function() {

@@ -64,6 +64,7 @@ module Helpers
     @metric = params.fetch('metric', '')
     @pie_colours = fix_pie_colours(params.fetch('pie_colours', ''))
     @date_format = params.fetch('date_format', 'YYYY-MM-DD HH:mm')
+    @tiles = params.fetch('tiles', 'OpenStreetMap.Mapnik')
   end
 
   def fix_pie_colours list
@@ -159,6 +160,7 @@ module Helpers
       v = ActiveSupport::HashWithIndifferentAccess.new(value)
       alt << 'target' if v['annual_target']
       alt << 'pie' if v['total']
+      alt = ['map'] if v['features']
     end
     alt
   end
@@ -240,10 +242,10 @@ module Helpers
       'chart'
     elsif data[:value].class == Array && !data[:value].first[:progress].nil?
       'tasklist'
-    elsif data[:value].class == Hash && !data[:value][:annual_target].nil?
+    elsif [Hash, BSON::Document].include?(data[:value].class) && !data[:value][:annual_target].nil?
       'target'
-    elsif data[:value].class == Hash && Hash[*data[:value].first].class == Hash
-      'pie'
+    elsif [Hash, BSON::Document].include?(data[:value].class) && Hash[*data[:value].first].class == Hash
+      data[:value][:type].nil? ? 'pie' : 'map'
     else
       'chart'
     end

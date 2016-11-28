@@ -310,6 +310,49 @@ describe Helpers do
       expect(helpers.guess_type data).to eq('chart')
     end
 
+    it 'for geodata' do
+      data = {
+        time: "2016-02-02T00:27:38.000+00:00",
+        value: {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [112, 0.7]
+              },
+              properties: {
+                prop0: "value0"
+              }
+            },
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [102, 0.5]
+              },
+              properties: {
+                prop0: "value0"
+              }
+            },
+            {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [112, 0.8]
+              },
+              properties: {
+                prop0: "value0"
+              }
+            }
+          ]
+        }
+      }
+
+      expect(helpers.guess_type data).to eq('map')
+    end
+
   end
 
   context 'with a request' do
@@ -452,6 +495,48 @@ describe Helpers do
 
       expect(helpers.get_alternatives data).to eq([
         'tasklist'
+      ])
+    end
+
+    it 'data is geodata' do
+      data = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [112, 0.7]
+            },
+            properties: {
+              prop0: "value0"
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [102, 0.5]
+            },
+            properties: {
+              prop0: "value0"
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [112, 0.8]
+            },
+            properties: {
+              prop0: "value0"
+            }
+          }
+        ]
+      }
+
+      expect(helpers.get_alternatives data).to eq([
+        'map'
       ])
     end
 
