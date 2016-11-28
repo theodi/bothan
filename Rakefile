@@ -1,5 +1,18 @@
 require './lib/metrics-api'
 
+class Random
+  def location(lat, lng, max_dist_meters)
+    max_radius = Math.sqrt((max_dist_meters ** 2) / 2.0)
+    lat_offset = rand(10 ** (Math.log10(max_radius / 1.11)-5))
+    lng_offset = rand(10 ** (Math.log10(max_radius / 1.11)-5))
+    lat += [1,-1].sample * lat_offset
+    lng += [1,-1].sample * lng_offset
+    lat = [[-90, lat].max, 90].min
+    lng = [[-180, lng].max, 180].min
+    [lng, lat]
+  end
+end
+
 desc "Purely for setting up metrics on the demo site"
 namespace :demo do
   task :setup do
@@ -58,6 +71,27 @@ namespace :demo do
       MetricMetadata.create(
         name: "metric-with-multiple-values",
         type: "pie"
+      )
+
+      features = []
+
+      5.times do |i|
+        features << {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: Random.new.location(54.110943,-4.130859, 500000)
+          }
+        }
+      end
+
+      Metric.create(
+        name: "metric-with-geodata",
+        time: DateTime.now - i,
+        value: {
+          type: "FeatureCollection",
+          features: features
+        }
       )
 
     end
