@@ -35,7 +35,13 @@
   map.invalidateSize();
 
   $.getJSON(document.URL, function (json) {
-    features = L.geoJSON(json.value)
+    if (json.values) {
+      var data = json.values[json.values.length - 1]
+      var value = data.value
+    } else {
+      var value = json.value
+    }
+    features = L.geoJSON(value)
     features.addTo(map);
     map.fitBounds(features.getBounds())
   })
