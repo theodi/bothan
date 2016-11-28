@@ -176,7 +176,8 @@ module Helpers
       'with_path',
       'font_size',
       'pie_colours',
-      'date_format'
+      'date_format',
+      'tiles'
     ]
 
     good_params = {}
