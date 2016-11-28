@@ -13,8 +13,8 @@ require 'kramdown'
 require 'exception_notification'
 require 'pusher'
 
-require_relative 'metrics-api/helpers'
-require_relative 'metrics-api/date-wrangler'
+require_relative 'bothan/helpers'
+require_relative 'bothan/date-wrangler'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 

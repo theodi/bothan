@@ -3,7 +3,7 @@ Coveralls.wear_merged!
 
 ENV['RACK_ENV'] = 'test'
 
-require 'metrics-api'
+require 'bothan'
 require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
