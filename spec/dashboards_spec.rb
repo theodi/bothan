@@ -1,4 +1,4 @@
-describe MetricsApi do
+describe Bothan do
 
   context 'Dashboards' do
 

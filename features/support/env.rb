@@ -23,18 +23,18 @@ require 'timecop'
 
 DatabaseCleaner.strategy = :truncation
 
-Capybara.app = MetricsApi
+Capybara.app = Bothan
 
-class MetricsApiWorld
+class BothanWorld
   include Capybara::DSL
   include RSpec::Expectations
   include RSpec::Matchers
 
   def app
-    MetricsApi
+    Bothan
   end
 end
 
 World do
-  MetricsApiWorld.new
+  BothanWorld.new
 end

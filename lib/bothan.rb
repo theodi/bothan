@@ -22,7 +22,7 @@ Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['R
 
 Metric.create_indexes
 
-class MetricsApi < Sinatra::Base
+class Bothan < Sinatra::Base
 
   # Disable JSON CSRF protection - this is a JSON API goddammit.
   set :protection, :except => [:json_csrf, :frame_options]

@@ -20,7 +20,7 @@ end
 module RSpecMixin
   include Rack::Test::Methods
   def app
-    MetricsApi
+    Bothan
   end
 end
 
