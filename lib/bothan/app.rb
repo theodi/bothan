@@ -4,6 +4,7 @@ class Bothan::App < Sinatra::Base
   set :protection, :except => [:json_csrf, :frame_options]
 
   set :views, Proc.new { File.join(root, "..", "views") }
+  set :public_folder, Proc.new { File.join(root, "..", "public") }
 
   use ExceptionNotification::Rack,
     :email => {
