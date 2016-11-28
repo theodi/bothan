@@ -242,9 +242,9 @@ module Helpers
       'chart'
     elsif data[:value].class == Array && !data[:value].first[:progress].nil?
       'tasklist'
-    elsif data[:value].class == Hash && !data[:value][:annual_target].nil?
+    elsif [Hash, BSON::Document].include?(data[:value].class) && !data[:value][:annual_target].nil?
       'target'
-    elsif data[:value].class == Hash && Hash[*data[:value].first].class == Hash
+    elsif [Hash, BSON::Document].include?(data[:value].class) && Hash[*data[:value].first].class == Hash
       data[:value][:type].nil? ? 'pie' : 'map'
     else
       'chart'
