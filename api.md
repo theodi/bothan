@@ -87,6 +87,40 @@ If you want to track multiple values for one metric (for example, diversity data
   }
 }
 ```
+
+### Geographical data
+
+Want to add geodata to visualise on a map? You got it! Simply POST your data with an iso8601 DateTime, with a GeoJSON `FeatureCollection` as the value. For example:
+
+```json
+{
+  "time": "{iso8601-date-time}",
+  "value": {
+    "type:": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates":
+            [-2.6156582783015017, 54.3497405310758]
+          }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+           "coordinates":
+           [-6.731370299641439, 55.856756177781186]
+          }
+      }
+    ]
+  }
+}
+```
+
+Any type of `geometry` is supported. For more information, check out the [GeoJSON spec](http://geojson.org/).
+
 ## Adding metrics
 
 If a {metric-name} is sent by a POST and does not already exist in the Bothan instance then a new metric will be created.
