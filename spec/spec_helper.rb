@@ -20,7 +20,7 @@ end
 module RSpecMixin
   include Rack::Test::Methods
   def app
-    Bothan
+    Bothan::App
   end
 end
 

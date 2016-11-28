@@ -23,18 +23,18 @@ require 'timecop'
 
 DatabaseCleaner.strategy = :truncation
 
-Capybara.app = Bothan
+Capybara.app = Bothan::App
 
-class BothanWorld
+class Bothan::AppWorld
   include Capybara::DSL
   include RSpec::Expectations
   include RSpec::Matchers
 
   def app
-    Bothan
+    Bothan::App
   end
 end
 
 World do
-  BothanWorld.new
+  Bothan::AppWorld.new
 end

@@ -15,4 +15,4 @@ end
 
 use Rack::MethodOverride
 
-run Bothan
+run Bothan::App
