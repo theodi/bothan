@@ -13,10 +13,6 @@ require 'nokogiri'
 require 'dotenv'
 Dotenv.load
 
-class TestHelper
-  include Helpers
-end
-
 module RSpecMixin
   include Rack::Test::Methods
   def app

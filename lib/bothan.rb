@@ -1,11 +1,10 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'sinatra'
 require 'rack/cors'
 require 'tilt/erubis'
 require 'tilt/kramdown'
 require 'mongoid'
-require_relative 'models/metrics'
-require_relative 'models/metadata'
-require_relative 'models/dashboard'
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -16,12 +15,14 @@ require 'pusher'
 module Bothan
 end
 
-require_relative 'bothan/helpers/helpers'
-require_relative 'bothan/helpers/date-wrangler'
-require_relative 'bothan/api'
-require_relative 'bothan/metrics'
-require_relative 'bothan/dashboards'
-require_relative 'bothan/app'
+require 'models/metrics'
+require 'models/metadata'
+require 'models/dashboard'
+
+require 'bothan/api'
+require 'bothan/metrics'
+require 'bothan/dashboards'
+require 'bothan/app'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 

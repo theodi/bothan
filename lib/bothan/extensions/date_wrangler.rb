@@ -69,18 +69,3 @@ class DateWrangler
     end
   end
 end
-
-class String
-  def is_duration?
-    !self.match(/^P/).nil?
-  end
-
-  def to_seconds
-    ISO8601::Duration.new(self).to_seconds.seconds
-  end
-
-  def to_datetime
-    return nil if self == '*'
-    DateTime.parse self
-  end
-end

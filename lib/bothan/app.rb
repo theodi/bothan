@@ -1,4 +1,16 @@
+$:.unshift File.dirname(__FILE__)
+
+require 'action_view'
+
+require 'extensions/string'
+
+require 'helpers/app_helpers'
+require 'helpers/auth_helpers'
+require 'helpers/metrics_helpers'
+require 'helpers/views_helpers'
+
 class Bothan::App < Sinatra::Base
+  helpers Bothan::Helpers::App, Bothan::Helpers::Auth, Bothan::Helpers::Metrics, Bothan::Helpers::Views
 
   # Disable JSON CSRF protection - this is a JSON API goddammit.
   set :protection, :except => [:json_csrf, :frame_options]
@@ -21,8 +33,6 @@ class Bothan::App < Sinatra::Base
         :enable_starttls_auto => true
       }
     }
-
-  helpers Helpers
 
   use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
