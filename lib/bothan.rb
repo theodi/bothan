@@ -19,6 +19,7 @@ end
 require_relative 'bothan/helpers/helpers'
 require_relative 'bothan/helpers/date-wrangler'
 require_relative 'bothan/api'
+require_relative 'bothan/metrics'
 require_relative 'bothan/dashboards'
 require_relative 'bothan/app'
 
