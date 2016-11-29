@@ -13,28 +13,6 @@ module Helpers
     @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [ENV['METRICS_API_USERNAME'], ENV['METRICS_API_PASSWORD']]
   end
 
-  def get_dashboard_data board, yaml = 'config/dashboards.yml'
-    defaults = YAML.load_file('config/defaults.yml')['dashboards']
-    data = YAML.load_file(yaml)[board]
-
-    data.map { |d| defaults.merge d }
-  end
-
-  def query_string hash
-    qs = []
-    hash.each_pair do |key, value|
-      qs.push "#{key}=#{value}" unless key == 'metric'
-    end
-
-    qs.join '&'
-  end
-
-  def extract_title url
-    regex = /http.*metrics\/([^\/]*)[\/|\.].*/
-    result = url.match(regex)
-    title_from_slug(result[1])
-  end
-
   def title_from_slug_or_params(params)
     title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
     title.to_s.empty? ? title_from_slug(params['metric']) : title
@@ -105,9 +83,7 @@ module Helpers
   end
 
   def generate_url(metric, params)
-    defaults = metric_defaults(metric.name)
-    url = datetime_path(metric, defaults.delete('datetime'))
-    params.merge!(defaults)
+    url = datetime_path(metric, '')
     build_url(url, params.to_query)
   end
 
