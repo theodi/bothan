@@ -1,38 +1,9 @@
-describe Helpers do
-  let(:helpers) { TestHelper.new }
+class MetricsHelpers
+  include Bothan::Helpers::Metrics
+end
 
-  it 'merges dashboards YAML with defaults' do
-    data = helpers.get_dashboard_data 'labs', 'spec/support/fixtures/dashboards.yaml'
-
-    expect(data.first).to eq (
-      {
-        'metric' => 'github-forks',
-        'type' => 'chart',
-        'boxcolour' => 'fa8100',
-        'textcolour' => 'ffffff'
-      }
-    )
-
-    expect(data[1]).to eq (
-      {
-        'metric' => 'github-repository-count',
-        'type' => 'number',
-        'boxcolour' => 'ffffff',
-        'textcolour' => '000000'
-      }
-    )
-  end
-
-  it 'makes a query-string' do
-    data = {
-      'metric' => 'github-repository-count',
-      'type' => 'number',
-      'boxcolour' => 'ffffff',
-      'textcolour' => '000000'
-    }
-
-    expect(helpers.query_string data).to eq 'type=number&boxcolour=ffffff&textcolour=000000'
-  end
+describe Bothan::Helpers::Metrics do
+  let(:helpers) { MetricsHelpers.new }
 
   context 'gets the settings' do
     it 'with params' do
@@ -104,27 +75,7 @@ describe Helpers do
 
   end
 
-  it 'extracts a title from a URL' do
-    expect(
-      helpers.extract_title(
-        'http://localhost:9292/metrics/certificated-datasets/2013-01-01T00:00:00/2016-02-01T00:00:00'
-      )
-    ).to eq(
-      'Certificated Datasets'
-    )
 
-    expect(
-      helpers.extract_title(
-        'http://localhost:9292/metrics/2013-q1-completed-tasks.json'
-      )
-    ).to eq(
-      '2013 Q1 Completed Tasks'
-    )
-  end
-
-  it 'extracts a title from a slug' do
-    expect(helpers.title_from_slug('certificated-datasets')).to eq('Certificated Datasets')
-  end
 
   it 'gets a title from the params' do
     expect(helpers.title_from_slug_or_params({'title' => 'Here%20is%20my%20title'})).to eq('Here is my title')
@@ -138,24 +89,6 @@ describe Helpers do
     expect(helpers.title_from_slug_or_params({'title' => '%3Cscript%3Ealert(%22Pwopa%20nawty%22)%3C%2Fscript%3E', 'metric' => 'certificated-datasets'})).to eq('Certificated Datasets')
   end
 
-  describe '#extract_query_string' do
-    it 'chops-up a query string' do
-      expect(helpers.extract_query_string 'type=target&boxcolour=fa8100').to eq (
-        {
-          'type' => 'target',
-          'boxcolour' => 'fa8100'
-        }
-      )
-    end
-
-    it 'can exclude a param' do
-      expect(helpers.extract_query_string 'type=target&boxcolour=fa8100', exclude: 'type').to eq (
-        {
-          'boxcolour' => 'fa8100'
-        }
-      )
-    end
-  end
 
   describe '#sanitise_params' do
     it 'keeps only the keys we care about' do
@@ -175,33 +108,6 @@ describe Helpers do
   #      'type=chart&boxcolour=fa8100'
   #    )
     end
-  end
-
-  it 'gets a image url for a creative commons license' do
-    image = helpers.license_image('https://creativecommons.org/licenses/cc-by/4.0/')
-    expect(image).to eq('https://licensebuttons.net/l/cc-by/4.0/88x31.png')
-  end
-
-  it 'returns nil for a non cc license' do
-    image = helpers.license_image('http://www.opendefinition.org/licenses/against-drm')
-    expect(image).to eq(nil)
-  end
-
-  it 'gets a start-date' do
-    params = {
-      from: 'P2D',
-      to: '2013-12-25T12:00:00+00:00'
-    }
-    expect(helpers.get_start_date params).to eq 'Mon, 23 Dec 2013 12:00:00 +0000'
-  end
-
-  it 'gets an end-date' do
-    params = {
-      from: '2013-12-22T12:00:00+00:00',
-      to: 'PT24H'
-    }
-
-    expect(helpers.get_end_date params).to eq 'Mon, 23 Dec 2013 12:00:00 +0000'
   end
 
   context 'gets visualisation type' do
@@ -351,45 +257,6 @@ describe Helpers do
       }
 
       expect(helpers.guess_type data).to eq('map')
-    end
-
-  end
-
-  context 'with a request' do
-
-    before(:each) do
-      # Monkey patch `request` method here - in the context of the app, it would be available
-      class TestHelper
-        def request
-        end
-      end
-
-      allow(helpers).to receive(:request) {
-        double = instance_double(Rack::Request)
-        allow(double).to receive(:scheme) { 'http' }
-        allow(double).to receive(:host_with_port) { 'example.org' }
-        allow(double).to receive(:path) { '/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00' }
-        allow(double).to receive(:params) { {foo: 'bar', baz: 'foo'} }
-        double
-      }
-    end
-
-    let(:url) { 'http://example.org/metrics/my-awesome-metric/2016-02-02T09:27:29+00:00/2016-03-03T09:27:29+00:00?baz=foo&foo=bar&layout=bare' }
-
-    it 'generates an embed url' do
-      expect(helpers.embed_url).to eq(url)
-    end
-
-    it 'generates an embed iframe' do
-      expect(helpers.embed_iframe).to eq("<iframe src='#{url}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
-    end
-
-    it 'allows additional params' do
-      expect(helpers.embed_url(parma: 'ham')).to eq(url + "&parma=ham")
-    end
-
-    it 'adds additional params to an embed iframe' do
-      expect(helpers.embed_iframe(parma: 'ham')).to eq("<iframe src='#{url + "&parma=ham"}' width='100%' height='100%' frameBorder='0' scrolling='no'></iframe>")
     end
 
   end
@@ -574,25 +441,6 @@ describe Helpers do
 
   it 'is fine with no pie colours' do
     expect(helpers.fix_pie_colours '').to eq '[]'
-  end
-
-  it 'builds a dashboard url' do
-    metric = {
-      name: 'foo-bar',
-      date: 'my-date'
-    }
-
-    params = {
-      layout: 'bare',
-      boxcolour: 'abc123',
-      textcolour: 'def345',
-      title: 'my title',
-      type: 'foo'
-    }
-
-    url = helpers.dashboard_url(metric[:name], metric[:date], params)
-
-    expect(url).to eq('/metrics/foo-bar/my-date?boxcolour=abc123&layout=bare&textcolour=def345&title=my+title&type=foo')
   end
 
 end

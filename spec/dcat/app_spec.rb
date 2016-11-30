@@ -1,4 +1,4 @@
-describe MetricsApi do
+describe Bothan::App do
   before :all do
     create_data
 

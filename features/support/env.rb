@@ -10,7 +10,7 @@ ENV['RACK_ENV'] = 'test'
 ENV['METRICS_API_USERNAME'] = 'foo'
 ENV['METRICS_API_PASSWORD'] = 'bar'
 
-require File.join(File.dirname(__FILE__), '..', '..', 'lib/metrics-api.rb')
+require File.join(File.dirname(__FILE__), '..', '..', 'lib/bothan.rb')
 
 require 'capybara'
 require 'capybara/cucumber'
@@ -23,18 +23,18 @@ require 'timecop'
 
 DatabaseCleaner.strategy = :truncation
 
-Capybara.app = MetricsApi
+Capybara.app = Bothan::App
 
-class MetricsApiWorld
+class Bothan::AppWorld
   include Capybara::DSL
   include RSpec::Expectations
   include RSpec::Matchers
 
   def app
-    MetricsApi
+    Bothan::App
   end
 end
 
 World do
-  MetricsApiWorld.new
+  Bothan::AppWorld.new
 end

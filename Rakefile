@@ -1,4 +1,4 @@
-require './lib/metrics-api'
+require './lib/bothan'
 
 class Random
   def location(lat, lng, max_dist_meters)

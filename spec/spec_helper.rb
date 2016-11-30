@@ -3,7 +3,7 @@ Coveralls.wear_merged!
 
 ENV['RACK_ENV'] = 'test'
 
-require 'metrics-api'
+require 'bothan'
 require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
@@ -13,14 +13,10 @@ require 'nokogiri'
 require 'dotenv'
 Dotenv.load
 
-class TestHelper
-  include Helpers
-end
-
 module RSpecMixin
   include Rack::Test::Methods
   def app
-    MetricsApi
+    Bothan::App
   end
 end
 
