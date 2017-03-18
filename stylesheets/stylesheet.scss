@@ -84,4 +84,12 @@ footer  {
   border: 1px solid #eee;
   padding: 5px;
   margin: 0 0 5px 20px;
+
+  &.no-float {
+    float: none;
+  }
+  &.full-width {
+    max-width: 900px;
+    width: auto;
+  }
 }
