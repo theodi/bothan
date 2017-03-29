@@ -145,8 +145,7 @@ GEM
     gherkin (2.12.2)
       multi_json (~> 1.3)
     git (1.2.9.1)
-    github-markup (1.5.0)
-      rinku
+    github-markdown (0.6.9)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     glorify (0.5.0)
@@ -343,12 +342,10 @@ GEM
     rdoc-rouge (0.1.0)
       rdoc (~> 4.0)
       rouge (~> 0.3.0)
-    redcarpet (3.4.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rinku (2.0.2)
     rouge (0.3.10)
       thor
     rspec (3.2.0)
@@ -437,7 +434,7 @@ DEPENDENCIES
   dotenv
   exception_notification
   foreman
-  github-markup
+  github-markdown
   glorify
   guard
   guard-cucumber
@@ -454,8 +451,6 @@ DEPENDENCIES
   rack-cors
   rack-test
   rake
-  redcarpet
-  rinku
   rspec
   sinatra
   terminal-notifier-guard
