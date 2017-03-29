@@ -1,7 +1,6 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'action_view'
-require 'glorify'
 require 'github/markdown'
 
 require 'extensions/string'
@@ -59,7 +58,6 @@ class Bothan::App < Sinatra::Base
   register Bothan::Api
   register Bothan::Metrics
   register Bothan::Dashboards
-  register Sinatra::Glorify
 
   get '/' do
     redirect to "#{request.scheme}://#{request.host_with_port}/metrics"

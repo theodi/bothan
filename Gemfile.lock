@@ -148,10 +148,6 @@ GEM
     github-markdown (0.6.9)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
-    glorify (0.5.0)
-      nokogiri
-      rdoc-rouge
-      sinatra
     guard (2.12.6)
       formatador (>= 0.2.4)
       listen (~> 2.7)
@@ -338,16 +334,10 @@ GEM
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.99.0)
       rdf (~> 1.99)
-    rdoc (4.2.1)
-    rdoc-rouge (0.1.0)
-      rdoc (~> 4.0)
-      rouge (~> 0.3.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rouge (0.3.10)
-      thor
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -435,7 +425,6 @@ DEPENDENCIES
   exception_notification
   foreman
   github-markdown
-  glorify
   guard
   guard-cucumber
   guard-jasmine
