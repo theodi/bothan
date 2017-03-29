@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'sinatra'
+gem 'glorify'
 gem 'dotenv'
 gem 'thin'
 gem 'haml'

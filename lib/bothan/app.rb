@@ -1,6 +1,7 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'action_view'
+require 'glorify'
 
 require 'extensions/string'
 
