@@ -60,7 +60,7 @@ class Bothan::App < Sinatra::Base
   register Bothan::Metrics
   register Bothan::Dashboards
   register Sinatra::Glorify
-
+  register GitHub::Markup
 
   get '/' do
     redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
