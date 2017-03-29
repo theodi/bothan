@@ -76,7 +76,7 @@ class Bothan::App < Sinatra::Base
 
       wants.html do
         @title = 'Metrics API'
-        @markup = GitHub::Markdown.render_gfm(File.read('docs/api.md'))
+        @markup = GitHub::Markdown.render_gfm(File.read('docs/api.md').gsub(/---.+---/m,' '))
         erb :index, layout: 'layouts/default'.to_sym
       end
 
