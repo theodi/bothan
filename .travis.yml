@@ -4,22 +4,10 @@ sudo: false
 rvm:
   - 2.3.0
 services: mongodb
-#after_success:
-#- ! '[ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] &&
-#  curl -v -X DELETE -u $GITHUB_USER:$GITHUB_PASSWORD "https://api.github.com/repos/$TRAVIS_REPO_SLUG/git/refs/tags/CURRENT"'
-#- ! '[ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] &&
-#  curl -v -X POST -d ''{"ref":"refs/tags/CURRENT","sha":"''$TRAVIS_COMMIT''"}''  --header
-#  "Content-Type:application/json" -u $GITHUB_USER:$GITHUB_PASSWORD "https://api.github.com/repos/$TRAVIS_REPO_SLUG/git/refs"'
-branches:
-  except:
-    - CURRENT
 env:
   global:
-    - secure: ka+NvS4u2oaNcEN/pJMbSWXPVcrN2ExK936q2juVbOg4CTNjpbVhleU8LhpM8+f8Ly7Ur6WFEIrEM8XzLXKlmlslQqYFnKVB0zaXvyUcRgtWygO3YFhkTwjl+g8FOpkzyo42rk4SBFrDHtOTbYIpbTbUmifn5BGJ8Y7fS4Y3cGg=
-    - secure: F+fege2pIIjVdDO68hewDlE6SBfxa04SbEXce1aBUretitOMN3mTXKwb3VJBxzGIN454GtxMGghTs+xAIdM33bzr4QUGPmu08MnSruypupf42OPa1I8kLP3JQ6QvN0gx9n9mpztK+IK4mP0CQVfch+F+zFm9RmDzSkhpB0EC2Y0=
-    - secure: pl5TWg1MBYYwn0U6bvpcIzs0XoXjrEkn8YmkwKHu4XMXJ0LDHjzQp5/6NVROa5BKntHXLzi+rFRO1csZVuDcEOqE/cKKwEJzZ/k68XURod3gWDYS+m6n9JosAH8h43BHE4H+8oe7I/HCsSfakE0s+dN131VuZvAUlYlU3gGxn9Y=
-    - secure: ccMcTlK/AXhp4t1rxZdZ/UomAt5uaJ6AERitrQRbNijeS7HxMCjAe/XM99NJX98/Vp55chWq0M1SJwjb9RnGSJ0zuhTzIzYZ/eHaPzMiKA3ntvKBbJCuqcSeGTkOBieBa6xICqlvAepPLrw5/c9mWa1ILvr9oeHQeHnBkh5LWdM=
-    - secure: pcWqFi7kfMGvC9OcVeMtAlFqSYak9pvLuihxCm3gxJ8sEvnt6FEO7NsJYq/bdcqol6aAON89P1t+oPDoGEr5VZgHiDksb57HtunOA51veMTncMm/EnY1sHWgIVr/DV9kNBtWAu12NDxR8nFm6wENXCPKR1vXZLIrVhNnpQjo4Tw=
+    - METRICS_API_USERNAME="username"
+    - METRICS_API_PASSWORD="password"
     - METRICS_API_TITLE='ODI Metrics'
     - METRICS_API_DESCRIPTION='This API contains a list of all metrics collected by the Open Data Institute since 2013'
     - METRICS_API_LICENSE_NAME='Creative Commons Attribution-ShareAlike'
@@ -27,16 +15,3 @@ env:
     - METRICS_API_PUBLISHER_NAME='Open Data Institute'
     - METRICS_API_PUBLISHER_URL='http://theodi.org'
     - METRICS_API_CERTIFICATE_URL='https://certificates.theodi.org/en/datasets/213482/certificate'
-deploy:
-  - provider: heroku
-    api_key:
-      secure: c0jvFyae1BScGhmu8B2/T+mXPZf7PXEt3yytDHTuO7Y91zSQQvaG2CK16gTPrCBeQJ8L6KdPaxZVWeFyEWswZ6F1n5Zf6eqHdCIiR4qEuSPJfciWRgX6sYcrrVIXKFeMKhEo6+KfknurlZ/LkN0ihB0isj7GEv654WTaWeD6Zv4=
-    app: odi-metrics-api
-    on:
-      repo: theodi/bothan
-  - provider: heroku
-    api_key:
-      secure: O+PX1JfDHC7h0RE5y9l21y0digLpn8d45NDQym+GuU23Ua3naRe9gg2ZlsU+gTfoeUPtNv4xicL3MtFw4SH0yjJbgXVa+fvRBU7xtbpFv7fszmQFpSLT5gYGb3AT989MEMZ/2IRcfb72c0mXarEsh6wemhG3nH+lReAkJaYKyaI=
-    app: oa-metrics-api
-    on:
-      repo: OpenAddressesUK/metrics-api
