@@ -2,6 +2,9 @@
   <a href="/" class="navbar-brand"><img src='/images/logo.png'/> Bothan</a>
   <ul class="nav navbar-nav">
     {% for node in site.pages %}
+    {% if node.hide_in_nav == true %}
+      {% continue %}
+    {% endif %}
     {% if node.title %}
       {% if page.url == node.url %}
         <li class="nav-item active">
