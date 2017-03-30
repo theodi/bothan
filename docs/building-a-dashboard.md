@@ -73,3 +73,33 @@ Finally, click ‘Submit’ and you will be redirected to your new, shiny dashbo
 If you want to make any changes, you can do so by navigating back to your
 Bothan instance, going to the dashboards page, and then clicking ‘edit’ by
 your dashboard.
+
+Any changes you make to your metrics - such as new titles - in a dashboard are only saved for *that* dashboard. 
+The underlying metrics end-points will keep their original title, which defaults to the endpoint created. 
+You can edit a metrics title more permanently by Editing the Metadata.
+
+![](/images/metrics-metadata/step-01-endpoints){: .screenshot.no-float}
+
+Go back to the homepage of your Bothan instance and ensure you are still logged in. 
+Click into the metric whose metadata you wish to edit, like widgets-sold
+
+![](/images/metrics-metadata/step-02-edit-tab){: .screenshot.no-float}
+
+On this screen you can amend several aspects of a metrics metadata by clicking the Edit Metadata tab. 
+We’re going to edit just two for now.
+
+![](/images/metric-metadata/step-03-edit-fields){: .screenshot.no-float}
+
+If you amend `The Title` then the metrics title will permanently reflect whatever you enter when you visit that metrics URL
+
+The second box `Metric Description` also provides data that will update on any dashboard you create. 
+In this field you can provide a description of the metric which display to all users when they mouseover the tooltip 
+portion of the graphic located at the top of the graphic. 
+
+![](/images/metric-metadata/step-04-edit-fields-description){: .screenshot.no-float}
+
+If you add a description for Widgets Made then the tooltip bar in the dashboard will reflect whatever you type. 
+Type your description and click submit. This descriptuon will be updated for the metric endpoint **and** any 
+dashbaords that include that metric. If you go back to your dashboard you should this updated.
+
+![](/images/metric-metadata/step-05-dashboard-with-edited-mouseover-tooltip){: .screenshot.no-float}
