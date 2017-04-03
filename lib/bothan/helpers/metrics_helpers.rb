@@ -3,9 +3,10 @@ module Bothan
     module Metrics
 
       def update_metric(name, time, value)
+
         @metric = Metric.new({
           "name" => name.parameterize,
-          "time" => time,
+          "time" => time.nil? ? Time.now.iso8601 : time,
           "value" => value
         })
 
