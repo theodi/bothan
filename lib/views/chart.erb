@@ -44,7 +44,11 @@
 <script>
 function loadMetric() {
   $.getJSON(document.URL, function(json) {
-    graph('<%= @title["en"] %>', json, '<%= @textcolour %>', '<%= @boxcolour %>', '<%= @plotly_modebar %>', '<%= @datatype %>', '<%= @date_format %>')
+      if (json.count === 0) {
+          $("#last-updated").append("No data detected for selected range, please customise date range via the Dates tab below")
+      } else {
+          graph('<%= @title["en"] %>', json, '<%= @textcolour %>', '<%= @boxcolour %>', '<%= @plotly_modebar %>', '<%= @datatype %>', '<%= @date_format %>')
+      }
   })
 }
 
