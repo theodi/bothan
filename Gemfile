@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'sinatra'
+gem 'grape'
 gem 'github-pages'
 gem 'jekyll'
 gem 'github-markdown'
