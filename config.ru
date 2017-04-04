@@ -16,4 +16,4 @@ end
 use Rack::MethodOverride
 
 # run Bothan::App
-run Rack::Cascade.new [App]
+run Rack::Cascade.new [Bothan::App]

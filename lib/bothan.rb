@@ -37,15 +37,15 @@ Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['R
 
 Metric.create_indexes
 
-# module Bothan - doesn't matter if this is done or not
+module Bothan # - doesn't appear to matter if this is done or not
 class App < Sinatra::Base
   helpers Bothan::Helpers::App, Bothan::Helpers::Auth, Bothan::Helpers::Metrics, Bothan::Helpers::Views
 
   # Disable JSON CSRF protection - this is a JSON API goddammit.
   set :protection, :except => [:json_csrf, :frame_options]
 
-  set :views, Proc.new { File.join(root, "..", "views") }
-  set :public_folder, Proc.new { File.join(root, "..", "public") }
+  set :views, Proc.new { File.join(root, "views") }
+  set :public_folder, Proc.new { File.join(root, "public") }
 
   use ExceptionNotification::Rack,
       :email => {
@@ -113,4 +113,4 @@ class App < Sinatra::Base
   # start the server if ruby file executed directly
   # run! if app_file == $0
 end
-# end
+end
