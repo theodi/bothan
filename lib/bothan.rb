@@ -10,12 +10,10 @@ require 'iso8601'
 require 'dotenv'
 require 'kramdown'
 require 'exception_notification'
-require 'pusher'
+
 module Bothan
 end
-require 'models/metrics'
-require 'models/metadata'
-require 'models/dashboard'
+
 
 # require 'bothan/api'
 require 'bothan/metrics'
@@ -80,7 +78,7 @@ class App < Sinatra::Base
     end
   end
 
-  # register Bothan::Api
+  # register Bothan::Api # API is no longer an extension to sinatra
   register Bothan::Metrics
   register Bothan::Dashboards
 
