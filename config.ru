@@ -5,6 +5,7 @@ Bundler.setup
 ENV['RACK_ENV'] ||= 'development'
 
 require File.join(File.dirname(__FILE__), 'lib/bothan.rb')
+require File.join(File.dirname(__FILE__), 'lib/api.rb')
 
 use(Rack::Cors) do
   allow do
@@ -16,4 +17,4 @@ end
 use Rack::MethodOverride
 
 # run Bothan::App
-run Rack::Cascade.new [Bothan::App]
+run Rack::Cascade.new [Bothan::Api, Bothan::App]
