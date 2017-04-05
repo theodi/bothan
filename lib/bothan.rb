@@ -20,7 +20,6 @@ require 'models/dashboard'
 require 'bothan/api'
 require 'bothan/metrics'
 require 'bothan/dashboards'
-# require 'bothan/app'
 require 'action_view'
 require 'github/markdown'
 
@@ -83,7 +82,7 @@ class App < Sinatra::Base
     end
   end
 
-  register Bothan::Api
+  # register Bothan::Api
   register Bothan::Metrics
   register Bothan::Dashboards
 
