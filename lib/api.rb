@@ -31,6 +31,20 @@ module Bothan
 
     namespace :metrics do
 
+      desc 'list all available metrics'
+      # /metrics[.json]
+      get do
+        @metrics = {
+          metrics: Metric.all.distinct(:name).sort.map do |name|
+            {
+              name: name,
+              url: "#{request.base_url}/metrics/#{name}.json"
+            }
+          end
+        }
+        @metrics.to_json
+      end
+
       desc 'create a single metric'
       route_param :metric do
         params do
@@ -45,6 +59,13 @@ module Bothan
 
         end
       end # end route_param
+
+      desc 'show latest value for given metric'
+
+      desc 'show value for given metric at a given time (defaults to current time)'
+
+      desc 'list values for given metric between given range'
+
     end
 
     # Api.post '/metrics/:metric' do
