@@ -56,11 +56,19 @@ module Bothan
           # binding.pry
           # above will retrive metric as a parameter within the params hash along with params passed by body
           update_metric(params[:metric], params[:time], params[:value])
-
         end
       end # end route_param
 
       desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
+      route_param :metric do
+        params do
+          requires :metric, type: String, desc: 'metric names'
+        end
+        get do
+          @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
+          @metric.to_json
+        end
+      end
 
       desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
 
