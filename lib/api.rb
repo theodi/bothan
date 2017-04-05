@@ -60,11 +60,11 @@ module Bothan
         end
       end # end route_param
 
-      desc 'show latest value for given metric'
+      desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
 
-      desc 'show value for given metric at a given time (defaults to current time)'
+      desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
 
-      desc 'list values for given metric between given range'
+      desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
 
     end
 
