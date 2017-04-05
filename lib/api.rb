@@ -8,6 +8,16 @@ Metric.create_indexes
 module Bothan
   class Api < Grape::API
 
+    helpers do
+      def update_metric(name, time, value)
+        @metric = Metric.new({
+            "name" => name.parameterize,
+            "time" => time,
+            "value" => value
+        })
+      end
+    end
+
     Api.post '/metrics/:metric' do
       protected!
 
