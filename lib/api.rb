@@ -1,6 +1,9 @@
 $:.unshift File.dirname(__FILE__)
 
-
+require 'mongoid'
+require 'grape'
+Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
+Metric.create_indexes
 
 module Bothan
   class Api < Grape::API

@@ -4,7 +4,7 @@ require 'sinatra'
 require 'rack/cors'
 require 'tilt/erubis'
 require 'tilt/kramdown'
-require 'mongoid'
+
 require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
@@ -17,7 +17,7 @@ require 'models/metrics'
 require 'models/metadata'
 require 'models/dashboard'
 
-require 'bothan/api'
+# require 'bothan/api'
 require 'bothan/metrics'
 require 'bothan/dashboards'
 require 'action_view'
@@ -32,9 +32,7 @@ require 'bothan/helpers/views_helpers'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
 
-Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 
-Metric.create_indexes
 
 module Bothan # - doesn't appear to matter if this is done or not
 class App < Sinatra::Base
