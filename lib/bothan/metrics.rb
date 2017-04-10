@@ -14,7 +14,7 @@ module Bothan
         }
 
         respond_to do |wants|
-          wants.json { @metrics.to_json }
+          wants.json { @metrics.to_json } #TODO needs to go to Grape, Sinatra needs to consume endpoint
 
           wants.html do
             @title = 'Metrics API'
@@ -27,15 +27,14 @@ module Bothan
         end
       end
 
-      app.get '/metrics/:metric/metadata' do
+      app.get '/metrics/:metric/metadata' do #TODO will require Grape serving refactor
         protected!
-
+        # Instance Variables Set by Mongo Models Methods, utilised in Sinatra Views
         @metric = Metric.find_by(name: params[:metric].parameterize)
         @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter)
 
         @alternatives = get_alternatives(@metric.value)
-
         respond_to do |wants|
 
           wants.html do
@@ -50,7 +49,7 @@ module Bothan
       app.get '/metrics/:metric/?' do
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
         respond_to do |wants|
-          wants.json { @metric.to_json }
+          wants.json { @metric.to_json } # needs to go to Grape
 
           wants.html do
             url = generate_url(@metric, keep_params(request.params))

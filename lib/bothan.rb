@@ -58,7 +58,7 @@ class App < Sinatra::Base
           }
       }
 
-  use Rack::Conneg do |conneg|
+  use Rack::Conneg do |conneg| #TODO may need to change to avoid conflict
     conneg.set :accept_all_extensions, false
     conneg.set :fallback, :html
     conneg.ignore_contents_of 'lib/public'
@@ -74,7 +74,7 @@ class App < Sinatra::Base
     headers 'Vary' => 'Accept'
 
     if negotiated?
-      content_type negotiated_type
+      content_type negotiated_type #TODO may need to change to avoid conflict
     end
   end
 
@@ -83,6 +83,7 @@ class App < Sinatra::Base
   register Bothan::Dashboards
 
   get '/' do
+
     redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
   end
 
@@ -105,7 +106,7 @@ class App < Sinatra::Base
     end
   end
 
-  # start the server if ruby file executed directly
+  # start the server if ruby file executed directly - now loaded by RACK CASCADE
   # run! if app_file == $0
 end
 end
