@@ -198,19 +198,12 @@ module Bothan
         @date = time.to_s
         @earliest_date = metrics.first.time rescue nil
 
-        respond_to do |wants|
-          wants.json { @metric }
+        metric = JSON.parse(@metric, {:symbolize_names => true})
+        @alternatives = get_alternatives(metric[:value])
 
-          wants.html do
-            metric = JSON.parse(@metric, {:symbolize_names => true})
-            @alternatives = get_alternatives(metric[:value])
+        get_settings(params, metric)
+        erb :metric, layout: "layouts/#{@layout}".to_sym
 
-            get_settings(params, metric)
-            erb :metric, layout: "layouts/#{@layout}".to_sym
-          end
-
-          wants.other { error_406 }
-        end
       end
 
       def get_metric_range(params)
@@ -248,20 +241,14 @@ module Bothan
           }
         end
 
-        respond_to do |wants|
-          wants.json { data.to_json }
 
-          wants.html do
-            value = data[:values].first || { value: '' }
-            @alternatives = get_alternatives(value[:value])
+        value = data[:values].first || { value: '' }
+        @alternatives = get_alternatives(value[:value])
 
-            get_settings(params, value)
+        get_settings(params, value)
 
-            erb :metric, layout: "layouts/#{@layout}".to_sym
-          end
+        erb :metric, layout: "layouts/#{@layout}".to_sym
 
-          wants.other { error_406 }
-        end
       end
 
     end
