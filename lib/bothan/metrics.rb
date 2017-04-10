@@ -13,18 +13,11 @@ module Bothan
           end
         }
 
-        respond_to do |wants|
-          wants.json { @metrics.to_json }
+        @title = 'Metrics API'
+        @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
+        @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
+        erb :metrics, layout: 'layouts/default'.to_sym
 
-          wants.html do
-            @title = 'Metrics API'
-            @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
-            @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
-            erb :metrics, layout: 'layouts/default'.to_sym
-          end
-
-          wants.other { error_406 }
-        end
       end
 
       app.get '/metrics/:metric/metadata' do
@@ -36,30 +29,18 @@ module Bothan
 
         @alternatives = get_alternatives(@metric.value)
 
-        respond_to do |wants|
+        @title = {
+          'en' => 'Metadata'
+        }
+        erb :metadata, layout: 'layouts/default'.to_sym
 
-          wants.html do
-            @title = {
-              'en' => 'Metadata'
-            }
-            erb :metadata, layout: 'layouts/default'.to_sym
-          end
-        end
       end
 
       app.get '/metrics/:metric/?' do
+        # intended functionality is for a redirect to a chart display last N days of data
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
-        respond_to do |wants|
-          wants.json { @metric.to_json }
-
-          wants.html do
-            url = generate_url(@metric, keep_params(request.params))
-
-            redirect to url
-          end
-
-          wants.other { error_406 }
-        end
+        url = generate_url(@metric, keep_params(request.params))
+        redirect to url
       end
 
       app.get '/metrics/:metric/all' do
