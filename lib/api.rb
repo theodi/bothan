@@ -52,7 +52,7 @@ module Bothan
             }
           end
         }
-        @metrics.to_json
+        @metrics
       end
 
       desc 'create a single metric'
@@ -88,7 +88,7 @@ module Bothan
       end
       get do
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
-        @metric.to_json
+        @metric
       end
 
       desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
@@ -138,7 +138,6 @@ module Bothan
         requires :end_date, type: DateTime
       end
       get do
-        binding.pry
         {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
       end
     end
@@ -148,7 +147,7 @@ module Bothan
         @metric = Metric.find_by(name: params[:metric].parameterize)
         @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         # @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter) # TODO methods in metrics_helpers.rb, N2K if this is to be retained
-        @metadata.to_json
+        @metadata
       end
 
       params do
