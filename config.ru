@@ -15,6 +15,5 @@ use(Rack::Cors) do
 end
 
 use Rack::MethodOverride
-
-# run Bothan::App
-run Rack::Cascade.new [Bothan::Api, Bothan::App]
+use Rack::Session::Cookie
+run Rack::Cascade.new [Bothan::Api, Bothan::App] # changed order "fixes" sinatra app not rendering
