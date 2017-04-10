@@ -241,20 +241,14 @@ module Bothan
           }
         end
 
-        respond_to do |wants|
-          wants.json { data.to_json }
 
-          wants.html do
-            value = data[:values].first || { value: '' }
-            @alternatives = get_alternatives(value[:value])
+        value = data[:values].first || { value: '' }
+        @alternatives = get_alternatives(value[:value])
 
-            get_settings(params, value)
+        get_settings(params, value)
 
-            erb :metric, layout: "layouts/#{@layout}".to_sym
-          end
+        erb :metric, layout: "layouts/#{@layout}".to_sym
 
-          wants.other { error_406 }
-        end
       end
 
     end
