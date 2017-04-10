@@ -58,24 +58,12 @@ class App < Sinatra::Base
           }
       }
 
-  use Rack::Conneg do |conneg| #TODO may need to change to avoid conflict
-    conneg.set :accept_all_extensions, false
-    conneg.set :fallback, :html
-    conneg.ignore_contents_of 'lib/public'
-    conneg.provide [
-      :json,
-      :html
-     ]
-  end
-
   before do
     @config = config
 
-    headers 'Vary' => 'Accept'
+    content_type 'text/html'
+    headers 'Content-Type' => "text/html;charset=utf-8"
 
-    if negotiated?
-      content_type negotiated_type #TODO may need to change to avoid conflict
-    end
   end
 
   # register Bothan::Api # API is no longer an extension to sinatra
@@ -85,25 +73,23 @@ class App < Sinatra::Base
   get '/' do
 
     redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
+    # TODO - JSON from metrics endpoint to be captured and included via ERB
+    # this function is a redirect to metric.rb lines 6-21
   end
 
   get '/login' do
     protected!
 
     redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
+    # TODO keep up to date with above per DRY
   end
 
   get '/documentation' do
-    respond_to do |wants|
 
-      wants.html do
-        @title = 'Metrics API'
-        @markup = GitHub::Markdown.render_gfm(File.read('docs/api.md').gsub(/---.+---/m,' '))
-        erb :index, layout: 'layouts/default'.to_sym
-      end
+      @title = 'Metrics API'
+      @markup = GitHub::Markdown.render_gfm(File.read('docs/api.md').gsub(/---.+---/m,' '))
+      erb :index, layout: 'layouts/default'.to_sym
 
-      wants.other { error_406 }
-    end
   end
 
   # start the server if ruby file executed directly - now loaded by RACK CASCADE
