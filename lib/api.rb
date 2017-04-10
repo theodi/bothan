@@ -70,89 +70,111 @@ module Bothan
 
     namespace 'metrics/:metric' do # required because nested namespace or something
 
-      desc 'create a single metric'
-
-      params do
-        requires :metric, type: String, desc: 'new metric'
-        requires :time, type: String, desc: 'metric timestamp'
-        requires :value, type: Integer, desc: 'metric value'
-      end
-      post do
-        # above will retrive metric as a parameter within the params hash along with params passed by body
-        update_metric(params[:metric], params[:time], params[:value])
-      end
+      # desc 'create a single metric' #TODO repetition with above - decide which namespace this should exist under
+      #
+      # params do
+      #   requires :metric, type: String, desc: 'new metric'
+      #   requires :time, type: String, desc: 'metric timestamp'
+      #   requires :value, type: Integer, desc: 'metric value'
+      # end
+      # post do
+      #   # above will retrive metric as a parameter within the params hash along with params passed by body
+      #   update_metric(params[:metric], params[:time], params[:value])
+      # end
 
       desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
       params do
         requires :metric, type: String, desc: 'metric names'
       end
       get do
-
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
         @metric.to_json
       end
 
       desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
 
-    end
+      desc 'increment a metric' # home/metrics/:metric/increment/375"
+      # namespace :increment do
+      #   params do
+      #     requires :amount, coerce: Integer
+      #   end
+      #   get do
+      #     binding.pry
+      #   end
+      #   post :amount do
+      #     #TODO - change logic below, still in original API form
+      #     last_metric = Metric.where(name: params[:metric].parameterize).last
+      #     last_amount = last_metric.try(:[], 'value') || 0
+      #
+      #     # Return 400 if the metric type is anything other than a single metric
+      #     return 400 if last_amount.class == BSON::Document
+      #
+      #     increment = (params[:amount] || 1).to_i
+      #     value = last_amount + increment
+      #
+      #     update_metric(params[:metric], DateTime.now, value)
+      #   end
+      # end
+      ## TODO the above two conflict with one another - no straightforward resolution
+      ## TODO both below + above may need to abide by https://github.com/ruby-grape/grape#include-parent-namespaces
+      desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
+      # namespace :start_date, type: DateTime do
+      #   params do
+      #     requires :end_date, type: DateTime
+      #   end
+      #   get do
+      #     # binding.pry
+      #     {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
+      #   end
+      # end
+
+    end # end metrics/:metric namespace
 
     namespace 'metrics/:metric/:start_date/:end_date' do
+    # this is outside of the above namespace ONLY because of Sinatra conflicts BUT it hogs all route params after :metric
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
-
       params do
         requires :start_date, type: DateTime
         requires :end_date, type: DateTime
       end
       get do
         binding.pry
-        {searchstring: "will return vals from "+params[:start_date]+" until "+params[:end_date]}
+        {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
+      end
+    end
+
+    namespace 'metrics/:metric/metadata' do
+      get do
+        @metric = Metric.find_by(name: params[:metric].parameterize)
+        @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
+        # @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter) # TODO methods in metrics_helpers.rb, N2K if this is to be retained
+        @metadata.to_json
       end
 
+      params do
+        requires :metric, type: String, desc: 'metric to be meta-dated and fed to mongo'
+        requires :type, type: String, desc: 'default metric visualisation', values: ['chart', 'tasklist', 'target', 'pie', 'number']
+        requires :datatype, type: String, desc: 'type of metrics, e.g. currency or percentage', values: ['percentage', 'currency']
+        optional :title, type: Hash, desc: 'metric title'
+        optional :description, type: Hash, desc: 'metric description'
+        # optional :title, type: String, desc: 'metric title'
+        # optional :description, type: String, desc: 'metric description'
+      end
+      post do
+
+        @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
+        @meta.type = params[:type].presence
+        @meta.datatype = params[:datatype].presence
+        @meta.title.merge!(params[:title] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
+        @meta.description.merge!(params[:description] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
+        if @meta.save # TODO - this endpoint exits here
+          status 201
+        else
+          status 400
+          # maybe superfluous given Grape automatically returns this on POST success
+        end
+      end
     end
-    
-    # OLD API CODE
-
-    # Api.post '/metrics/:metric' do
-    #   protected!
-    #
-    #   body = JSON.parse request.body.read
-    #
-    #   update_metric(params[:metric], body["time"], body["value"])
-    # end
-
-    # Api.post '/metrics/:metric/increment/?:amount?' do
-    #   protected!
-    #
-    #   last_metric = Metric.where(name: params[:metric].parameterize).last
-    #   last_amount = last_metric.try(:[], 'value') || 0
-    #
-    #   # Return 400 if the metric type is anything other than a single metric
-    #   return 400 if last_amount.class == BSON::Document
-    #
-    #   increment = (params[:amount] || 1).to_i
-    #   value = last_amount + increment
-    #
-    #   update_metric(params[:metric], DateTime.now, value)
-    # end
-    #
-    # Api.post '/metrics/:metric/metadata' do
-    #   protected!
-    #   begin
-    #     data = JSON.parse request.body.read
-    #     @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
-    #     @meta.type = data["type"].presence
-    #     @meta.datatype = data["datatype"].presence
-    #     @meta.title.merge!(data["title"] || {})
-    #     @meta.description.merge!(data["description"] || {})
-    #     if @meta.save
-    #       return 201
-    #     else
-    #       return 400
-    #     end
-    #   rescue
-    #     return 500
-    #   end
-    # end
 
   end
 end
