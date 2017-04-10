@@ -12,7 +12,7 @@ Metric.create_indexes
 
 module Bothan
   class Api < Grape::API
-    format :json
+    content_type :json, 'application/json; charset=UTF-8'
     helpers do
       def update_metric(name, time, value)
         @metric = Metric.new({
@@ -63,6 +63,7 @@ module Bothan
           requires :value, type: Integer, desc: 'metric value'
         end
         post do
+          # format :json #TODO - when refactoring into classes make this explicit at top of class
           update_metric(params[:metric], params[:time], params[:value])
         end
       end # end route_param
@@ -160,7 +161,7 @@ module Bothan
         # optional :description, type: String, desc: 'metric description'
       end
       post do
-
+        # format :json #TODO - when refactoring into classes make this explicit at top of class
         @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
         @meta.type = params[:type].presence
         @meta.datatype = params[:datatype].presence
