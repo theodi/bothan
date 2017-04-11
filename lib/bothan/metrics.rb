@@ -43,6 +43,13 @@ module Bothan
         redirect to url
       end
 
+      app.get '/metrics/:metric/:from/:to' do
+        date_redirect(params)
+        get_metric_range(params)
+      end
+
+      # aliases
+
       app.get '/metrics/:metric/all' do
         params[:from] = '*'
         params[:to] = '*'
@@ -88,11 +95,6 @@ module Bothan
           error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
         get_single_metric(params, time)
-      end
-
-      app.get '/metrics/:metric/:from/:to' do
-        date_redirect(params)
-        get_metric_range(params)
       end
 
     end
