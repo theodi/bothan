@@ -60,31 +60,24 @@ class App < Sinatra::Base
     conneg.set :fallback, :html
     conneg.ignore_contents_of 'lib/public'
     conneg.provide [
-         :html
-     ]
+      :html
+    ]
   end
 
   before do
     @config = config
     
-    # If the client doesn't want HTML, throw a 406
-    formats = ["text/html", "application/json"]
-
-    puts request.negotiated_type
-    puts request.accept
-    puts File.extname(request.path_info)
-    puts request.path_info
-
-    # if negotiated_type.eql?()
-    # 
-    # end
-
-
-    # error_406 unless request.preferred_type(formats) == "text/html"
-    # error_406 unless ["", ".html"].include?(File.extname(request.path_info))
-    error_406 if request.preferred_type(formats) == "application/json"
-    error_406 if File.extname(request.path_info).eql?(".json")
-
+    # If the client wants something we can't provide (i.e. JSON) then throw a 406
+    if request.negotiated?
+      unless [nil, "", ".html"].include?(request.negotiated_ext)
+        error_406
+      end
+      accept = request.accept.map(&:to_s)
+      if accept!=["*/*"] && !accept.include?(request.negotiated_type)
+        error_406
+      end
+    end    
+    
     content_type 'text/html'
     headers 'Content-Type' => "text/html;charset=utf-8"
 
