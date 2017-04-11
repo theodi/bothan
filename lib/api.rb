@@ -39,6 +39,10 @@ module Bothan
       end
     end
 
+    get '/' do
+      redirect "#{request.scheme}://#{request.host_with_port}/metrics"
+    end
+
     namespace :metrics do
 
       desc 'list all available metrics' # conflicts with sinatra
