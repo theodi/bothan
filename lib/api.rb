@@ -62,18 +62,33 @@ module Bothan
 
       desc 'create a single metric'
 
-      post '/:metric' do
-        params do
-          requires :metric, type: String, desc: 'new metric'
-          requires :time, type: String, desc: 'metric timestamp'
-          requires :value, type: Integer, desc: 'metric value'
-        end
-        # format :json #TODO - when refactoring into classes make this explicit at top of class
-        update_metric(params[:metric], params[:time], params[:value])
-      end
+      # post '/:metric' do
+      #   binding.pry
+      #   params do
+      #     # requires :metric, type: String, desc: 'new metric'
+      #     requires :time, type: String, desc: 'metric timestamp'
+      #     requires :value, type: Integer, desc: 'metric value'
+      #   end
+      #
+      #   # format :json #TODO - when refactoring into classes make this explicit at top of class
+      #   update_metric(params[:metric], params[:time], params[:value])
+      # end
     end
 
     namespace 'metrics/:metric' do # required because nested namespace or something
+
+      desc 'create a single metric' #TODO repetition with above - decide which namespace this should exist under
+
+      params do
+        requires :metric, type: String, desc: 'new metric'
+        requires :time, type: String, desc: 'metric timestamp'
+        requires :value, type: Integer, desc: 'metric value'
+      end
+      post do
+
+        # above will retrive metric as a parameter within the params hash along with params passed by body
+        update_metric(params[:metric], params[:time], params[:value])
+      end
 
       desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
       params do
@@ -85,6 +100,23 @@ module Bothan
       end
 
       desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
+
+      # Mangled Solution that uses existing API code
+
+      desc 'additional parameter operations'
+
+      params do
+        requires :starting_param, type: String
+        optional :final_param, type: DateTime
+        optional :increment_param, type: Integer
+      end
+      get :final_param do
+
+      end
+      post :increment_param do
+
+      end
+
 
       desc 'increment a metric' # home/metrics/:metric/increment/375"
       # TODO this is a nested resource that has same number of route params as a daterange query
