@@ -55,12 +55,35 @@ class App < Sinatra::Base
           }
       }
 
+  use Rack::Conneg do |conneg|
+    conneg.set :accept_all_extensions, false
+    conneg.set :fallback, :html
+    conneg.ignore_contents_of 'lib/public'
+    conneg.provide [
+         :html
+     ]
+  end
+
   before do
     @config = config
     
     # If the client doesn't want HTML, throw a 406
     formats = ["text/html", "application/json"]
-    halt 406 unless request.preferred_type(formats) == "text/html"
+
+    puts request.negotiated_type
+    puts request.accept
+    puts File.extname(request.path_info)
+    puts request.path_info
+
+    # if negotiated_type.eql?()
+    # 
+    # end
+
+
+    # error_406 unless request.preferred_type(formats) == "text/html"
+    # error_406 unless ["", ".html"].include?(File.extname(request.path_info))
+    error_406 if request.preferred_type(formats) == "application/json"
+    error_406 if File.extname(request.path_info).eql?(".json")
 
     content_type 'text/html'
     headers 'Content-Type' => "text/html;charset=utf-8"
