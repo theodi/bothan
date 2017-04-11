@@ -57,32 +57,19 @@ module Bothan
       end
 
       desc 'create a single metric'
-      route_param :metric do
+
+      post '/:metric' do
         params do
           requires :metric, type: String, desc: 'new metric'
           requires :time, type: String, desc: 'metric timestamp'
           requires :value, type: Integer, desc: 'metric value'
         end
-        post do
-          # format :json #TODO - when refactoring into classes make this explicit at top of class
-          update_metric(params[:metric], params[:time], params[:value])
-        end
-      end # end route_param
+        # format :json #TODO - when refactoring into classes make this explicit at top of class
+        update_metric(params[:metric], params[:time], params[:value])
+      end
     end
 
     namespace 'metrics/:metric' do # required because nested namespace or something
-
-      # desc 'create a single metric' #TODO repetition with above - decide which namespace this should exist under
-      #
-      # params do
-      #   requires :metric, type: String, desc: 'new metric'
-      #   requires :time, type: String, desc: 'metric timestamp'
-      #   requires :value, type: Integer, desc: 'metric value'
-      # end
-      # post do
-      #   # above will retrive metric as a parameter within the params hash along with params passed by body
-      #   update_metric(params[:metric], params[:time], params[:value])
-      # end
 
       desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
       params do
@@ -133,6 +120,7 @@ module Bothan
     end # end metrics/:metric namespace
 
     namespace 'metrics/:metric/:start_date/:end_date' do
+      #TODO - utilise date wrangler for this
     # this is outside of the above namespace ONLY because of Sinatra conflicts BUT it hogs all route params after :metric
       # this is because https://github.com/ruby-grape/grape#parameters -
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
