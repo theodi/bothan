@@ -62,33 +62,20 @@ module Bothan
 
       desc 'create a single metric'
 
-      # post '/:metric' do
-      #   binding.pry
-      #   params do
-      #     # requires :metric, type: String, desc: 'new metric'
-      #     requires :time, type: String, desc: 'metric timestamp'
-      #     requires :value, type: Integer, desc: 'metric value'
-      #   end
-      #
-      #   # format :json #TODO - when refactoring into classes make this explicit at top of class
-      #   update_metric(params[:metric], params[:time], params[:value])
-      # end
+      post '/:metric' do
+        binding.pry
+        params do
+          # requires :metric, type: String, desc: 'new metric'
+          requires :time, type: String, desc: 'metric timestamp'
+          requires :value, type: Integer, desc: 'metric value'
+        end
+
+        # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
+        update_metric(params[:metric], params[:time], params[:value])
+      end
     end
 
     namespace 'metrics/:metric' do # required because nested namespace or something
-
-      desc 'create a single metric' #TODO repetition with above - decide which namespace this should exist under
-
-      params do
-        requires :metric, type: String, desc: 'new metric'
-        requires :time, type: String, desc: 'metric timestamp'
-        requires :value, type: Integer, desc: 'metric value'
-      end
-      post do
-
-        # above will retrive metric as a parameter within the params hash along with params passed by body
-        update_metric(params[:metric], params[:time], params[:value])
-      end
 
       desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
       params do

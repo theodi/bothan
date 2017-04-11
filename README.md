@@ -73,6 +73,10 @@ using a JSON content type, and with the following JSON in the body:
 
 `value` is any valid JSON structure or number.
 
+Bothan uses a Grape API - an example curl command for the above should include the following headers
+
+`curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d '{"time": "{iso8601-date-time}","value": 500}' "host:port/metrics/$metric_name"`
+
 ## HTML
 
 While this is primarily a JSON API, some of our endpoints will also serve HTML. Primarily:
