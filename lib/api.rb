@@ -95,6 +95,7 @@ module Bothan
       desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
 
       desc 'increment a metric' # home/metrics/:metric/increment/375"
+      # TODO this is a nested resource that has same number of route params as a daterange query
       # namespace :increment do
       #   params do
       #     requires :amount, coerce: Integer
@@ -117,7 +118,6 @@ module Bothan
       #   end
       # end
       ## TODO the above two conflict with one another - no straightforward resolution
-      ## TODO both below + above may need to abide by https://github.com/ruby-grape/grape#include-parent-namespaces
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
       # namespace :start_date, type: DateTime do
       #   params do
@@ -133,12 +133,15 @@ module Bothan
 
     namespace 'metrics/:metric/:start_date/:end_date' do
     # this is outside of the above namespace ONLY because of Sinatra conflicts BUT it hogs all route params after :metric
+      # this is because https://github.com/ruby-grape/grape#parameters -
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
       params do
+        # TODO some way of accommodating wildcard char for both params
         requires :start_date, type: DateTime
         requires :end_date, type: DateTime
       end
       get do
+        #TODO - correct logic
         {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
       end
     end
