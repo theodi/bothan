@@ -2,6 +2,7 @@ $:.unshift File.dirname(__FILE__)
 
 require 'mongoid'
 require 'pusher'
+require 'bothan/extensions/date_wrangler'
 require 'grape'
 require 'models/metrics'
 require 'models/metadata'

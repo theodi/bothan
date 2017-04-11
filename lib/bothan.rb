@@ -14,14 +14,11 @@ require 'exception_notification'
 module Bothan
 end
 
-
 # require 'bothan/api'
 require 'bothan/metrics'
 require 'bothan/dashboards'
 require 'action_view'
 require 'github/markdown'
-
-require 'bothan/extensions/string'
 
 require 'bothan/helpers/app_helpers'
 require 'bothan/helpers/auth_helpers'
