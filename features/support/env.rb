@@ -24,7 +24,7 @@ require 'timecop'
 
 DatabaseCleaner.strategy = :truncation
 
-Capybara.app = Rack::Cascade.new [ Bothan::App, Bothan::Api]
+Capybara.app = Rack::Cascade.new [ Bothan::App, Bothan::Api], [404, 405, 406]
 
 class Bothan::AppWorld
   include Capybara::DSL
@@ -32,7 +32,7 @@ class Bothan::AppWorld
   include RSpec::Matchers
 
   def app
-    Bothan::App
+    Rack::Cascade.new [ Bothan::App, Bothan::Api], [404, 405, 406]
   end
 end
 

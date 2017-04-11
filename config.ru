@@ -17,4 +17,4 @@ end
 
 use Rack::MethodOverride
 use Rack::Session::Cookie
-run Rack::Cascade.new [ Bothan::App, Bothan::Api] # changed order "fixes" sinatra app not rendering
+run Rack::Cascade.new [ Bothan::App, Bothan::Api], [404, 405, 406]

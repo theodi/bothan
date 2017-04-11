@@ -57,6 +57,10 @@ class App < Sinatra::Base
 
   before do
     @config = config
+    
+    # If the client doesn't want HTML, throw a 406
+    formats = ["text/html", "application/json"]
+    halt 406 unless request.preferred_type(formats) == "text/html"
 
     content_type 'text/html'
     headers 'Content-Type' => "text/html;charset=utf-8"
