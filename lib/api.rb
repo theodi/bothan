@@ -63,11 +63,10 @@ module Bothan
       desc 'create a single metric'
 
       post '/:metric' do
-        binding.pry
         params do
           # requires :metric, type: String, desc: 'new metric'
           requires :time, type: String, desc: 'metric timestamp'
-          requires :value, type: Integer, desc: 'metric value'
+          requires :value, type: [Integer, Hash], desc: 'metric value or values'
         end
 
         # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
