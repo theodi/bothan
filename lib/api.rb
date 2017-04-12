@@ -40,6 +40,97 @@ module Bothan
       end
     end
 
+    #TODO - 5 methods from the Sinatra helper added to here - decide what to do RE this functionality
+    def get_single_metric(params, time)
+      time ||= DateTime.now
+      metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
+      metric = metrics.last
+
+      if params['default-dates'].present?
+        url = generate_url(metric, keep_params(params))
+        redirect to url
+      end
+
+      @metric = (metric.nil? ? {} : metric).to_json
+
+      @date = time.to_s
+      @earliest_date = metrics.first.time rescue nil
+
+      metric = JSON.parse(@metric, {:symbolize_names => true})
+      @alternatives = get_alternatives(metric[:value])
+
+      get_settings(params, metric)
+      erb :metric, layout: "layouts/#{@layout}".to_sym
+
+    end
+
+    def get_metric_range(params)
+      @from = params[:from]
+      @to = params[:to]
+
+      dates = DateWrangler.new @from, @to
+
+      error_400 dates.errors.join ' ' if dates.errors
+
+      metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+
+      if params['default-dates'].present?
+        url = generate_url(metrics.first, keep_params(params))
+        redirect to url
+      end
+
+      @earliest_date = metrics.first.time
+      @latest_date = metrics.last.time
+
+      metrics = metrics.where(:time.gte => dates.from) if dates.from
+      metrics = metrics.where(:time.lte => dates.to) if dates.to
+
+      metrics = metrics.order_by(:time.asc)
+
+      data = {
+          :count => metrics.count,
+          :values => []
+      }
+
+      metrics.each do |metric|
+        data[:values] << {
+            :time => metric.time,
+            :value => metric.value
+        }
+      end
+
+
+      value = data[:values].first || { value: '' }
+      @alternatives = get_alternatives(value[:value])
+
+      binding.pry
+
+      get_settings(params, value)
+
+      erb :metric, layout: "layouts/#{@layout}".to_sym
+
+    end
+
+    def date_redirect params
+      if params['oldest'].present? && params['newest'].present?
+        params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
+        redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+      end
+
+      if params['oldest'].present?
+        redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
+      end
+    end
+
+    def sanitise_params qs
+      a = []
+      keep_params(qs).each_pair do |k, v|
+        a.push "#{k}=#{v}"
+      end
+
+      a.join '&'
+    end
+
     get '/' do
       redirect "#{request.scheme}://#{request.host_with_port}/metrics"
     end
