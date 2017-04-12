@@ -2,11 +2,12 @@ $:.unshift File.dirname(__FILE__)
 
 require 'mongoid'
 require 'pusher'
-require 'bothan/extensions/date_wrangler'
 require 'grape'
 require 'models/metrics'
 require 'models/metadata'
 require 'models/dashboard'
+
+require 'bothan/extensions/date_wrangler'
 require 'bothan/helpers/metrics_helpers'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
@@ -38,99 +39,98 @@ module Bothan
           return 500
         end
       end
-    end
 
-    #TODO - 5 methods from the Sinatra helper added to here - decide what to do RE this functionality
-    def get_single_metric(params, time)
-      time ||= DateTime.now
-      metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
-      metric = metrics.last
+      #TODO - 5 methods from the Sinatra helper added to here - decide what to do RE this functionality
+      def get_single_metric(params, time)
 
-      if params['default-dates'].present?
-        url = generate_url(metric, keep_params(params))
-        redirect to url
+        time ||= DateTime.now # TODO - this is the default to now behaviour indicated in the endpoint
+        metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
+        metric = metrics.last # retrieve last value added to Mongo
+        if params['default-dates'].present?
+          url = generate_url(metric, keep_params(params))
+          # redirect to url
+        end
+
+        @metric = (metric.nil? ? {} : metric).to_json
+
+        @date = time.to_s
+        @earliest_date = metrics.first.time rescue nil
+
+        metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
+        metric
+
+        # @alternatives = get_alternatives(metric[:value])  # commented out because confusion over purpose for now
+        # get_settings(params, metric) # commented out see remarks on this method in the metrics_helpers file
+        # erb :metric, layout: "layouts/#{@layout}".to_sym
+
       end
 
-      @metric = (metric.nil? ? {} : metric).to_json
+      def get_metric_range(params)
 
-      @date = time.to_s
-      @earliest_date = metrics.first.time rescue nil
+        @from = params[:from]
+        @to = params[:to]
+        # binding.pry
+        dates = DateWrangler.new @from, @to #DateWrangler works fine
 
-      metric = JSON.parse(@metric, {:symbolize_names => true})
-      @alternatives = get_alternatives(metric[:value])
+        error_400 dates.errors.join ' ' if dates.errors
 
-      get_settings(params, metric)
-      erb :metric, layout: "layouts/#{@layout}".to_sym
+        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
-    end
+        if params['default-dates'].present? #default dates set WHERE?
+          url = generate_url(metrics.first, keep_params(params))
+          redirect to url
+        end
 
-    def get_metric_range(params)
-      @from = params[:from]
-      @to = params[:to]
+        @earliest_date = metrics.first.time # this sets the calendar GUI in the endpoint visualisation - think these should remain in sinatra because of use principally to Gui interaction
+        @latest_date = metrics.last.time
 
-      dates = DateWrangler.new @from, @to
+        metrics = metrics.where(:time.gte => dates.from) if dates.from
+        metrics = metrics.where(:time.lte => dates.to) if dates.to
 
-      error_400 dates.errors.join ' ' if dates.errors
+        metrics = metrics.order_by(:time.asc)
 
-      metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
-
-      if params['default-dates'].present?
-        url = generate_url(metrics.first, keep_params(params))
-        redirect to url
-      end
-
-      @earliest_date = metrics.first.time
-      @latest_date = metrics.last.time
-
-      metrics = metrics.where(:time.gte => dates.from) if dates.from
-      metrics = metrics.where(:time.lte => dates.to) if dates.to
-
-      metrics = metrics.order_by(:time.asc)
-
-      data = {
-          :count => metrics.count,
-          :values => []
-      }
-
-      metrics.each do |metric|
-        data[:values] << {
-            :time => metric.time,
-            :value => metric.value
+        data = {
+            :count => metrics.count,
+            :values => []
         }
+        # binding.pry
+        metrics.each do |metric|
+          data[:values] << {
+              :time => metric.time,
+              :value => metric.value
+          }
+        end
+
+
+        value = data[:values].first || { value: '' }
+        @alternatives = get_alternatives(value[:value])
+
+        get_settings(params, value)
+
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+
       end
 
+      def date_redirect params
+        if params['oldest'].present? && params['newest'].present?
+          params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
+          redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+        end
 
-      value = data[:values].first || { value: '' }
-      @alternatives = get_alternatives(value[:value])
+        if params['oldest'].present?
+          redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
+        end
+      end
 
-      binding.pry
+      def sanitise_params qs
+        a = []
+        keep_params(qs).each_pair do |k, v|
+          a.push "#{k}=#{v}"
+        end
 
-      get_settings(params, value)
-
-      erb :metric, layout: "layouts/#{@layout}".to_sym
-
+        a.join '&'
+      end
     end
-
-    def date_redirect params
-      if params['oldest'].present? && params['newest'].present?
-        params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
-        redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
-      end
-
-      if params['oldest'].present?
-        redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
-      end
-    end
-
-    def sanitise_params qs
-      a = []
-      keep_params(qs).each_pair do |k, v|
-        a.push "#{k}=#{v}"
-      end
-
-      a.join '&'
-    end
-
     get '/' do
       redirect "#{request.scheme}://#{request.host_with_port}/metrics"
     end
@@ -178,14 +178,16 @@ module Bothan
       end
 
       desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
+      # TODO given default should the default for this route to above get endpoint?
       params do
         requires :time, type: DateTime
       end
       get '/:time' do
-        binding.pry
-        # format params[:time]
+        # format params[:time] like below
+          #   time = params[:time].to_datetime rescue
+          #   error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
         # date_redirect(params)
-        # get_single_metric(params, time)
+        get_single_metric(params, params[:time])
       end
 
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
@@ -195,9 +197,10 @@ module Bothan
         requires :to, types: [DateTime, String]
       end
       get '/:from/:to' do
+        # TODO - not functional ergo some tests should be failing
         {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
         #   date_redirect(params)
-        #   get_metric_range(params)
+        #   get_metric_range(params) # TODO - breaking due to behaviour of datawrangler and String override class
       end
 
       desc 'increment a metric' # home/metrics/:metric/increment"
