@@ -3,6 +3,8 @@ module Bothan
 
     def self.registered(app)
 
+      # shared with Grape
+
       app.get '/metrics' do
         @metrics = {
           metrics: Metric.all.distinct(:name).sort.map do |name|

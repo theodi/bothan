@@ -2,27 +2,105 @@ module Bothan
   module Helpers
     module Metrics
 
-      def update_metric(name, time, value)
-        @metric = Metric.new({
-          "name" => name.parameterize,
-          "time" => time,
-          "value" => value
-        })
+      # Shared With Grape
 
-        metadata = MetricMetadata.find_or_create_by(name: name.parameterize)
+      def get_single_metric(params, time)
+        # TODO DRY candidate
+        time ||= DateTime.now
+        metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
+        metric = metrics.last
 
-        if metadata.title.blank?
-          metadata.title[:en] = name
-          metadata.save
+        if params['default-dates'].present? # TODO - can't tell if this is being used at all
+          url = generate_url(metric, keep_params(params))
+          redirect to url
         end
 
-        if @metric.save
-          Pusher.trigger(name.parameterize, 'updated', {})
-          return 201
-        else
-          return 500
+        @metric = (metric.nil? ? {} : metric).to_json
+
+        @date = time.to_s
+        @earliest_date = metrics.first.time rescue nil
+
+        metric = JSON.parse(@metric, {:symbolize_names => true})
+        @alternatives = get_alternatives(metric[:value])
+
+        get_settings(params, metric)
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+
+      end
+
+      def get_metric_range(params)
+        # TODO DRY candidate
+        @from = params[:from]
+        @to = params[:to]
+
+        dates = DateWrangler.new @from, @to
+
+        error_400 dates.errors.join ' ' if dates.errors
+
+        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+
+        if params['default-dates'].present? # TODO - can't tell if this is being used at all
+          url = generate_url(metrics.first, keep_params(params))
+          redirect to url
+        end
+
+        @earliest_date = metrics.first.time
+        @latest_date = metrics.last.time
+
+        metrics = metrics.where(:time.gte => dates.from) if dates.from
+        metrics = metrics.where(:time.lte => dates.to) if dates.to
+
+        metrics = metrics.order_by(:time.asc)
+
+        data = {
+            :count => metrics.count,
+            :values => []
+        }
+
+        metrics.each do |metric|
+          data[:values] << {
+              :time => metric.time,
+              :value => metric.value
+          }
+        end
+
+
+        value = data[:values].first || { value: '' }
+        @alternatives = get_alternatives(value[:value])
+
+        get_settings(params, value)
+
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+
+      end
+
+      def date_redirect params
+        # TODO DRY candidate
+        if params['oldest'].present? && params['newest'].present?
+          params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
+          redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
+        end
+
+        if params['oldest'].present?
+          redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
         end
       end
+
+      def get_alternatives(value)
+        # TODO - not sure what this is doing
+        alt = ['chart', 'number']
+        if value.class == Array
+          alt = ['tasklist']
+        elsif single?(value, "")
+          v = ActiveSupport::HashWithIndifferentAccess.new(value)
+          alt << 'target' if v['annual_target']
+          alt << 'pie' if v['total']
+          alt = ['map'] if v['features']
+        end
+        alt
+      end
+
+      # View Helpers
 
       def title_from_slug_or_params(params)
         title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
@@ -77,32 +155,6 @@ module Bothan
           before = (Time.now - (60 * 60 * 24 * days)).iso8601
           "#{request.scheme}://#{request.host_with_port}/metrics/#{metric.name}/#{before}/#{now}"
         end
-      end
-
-      def date_redirect params
-        # TODO DRY candidate
-        if params['oldest'].present? && params['newest'].present?
-          params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
-          redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
-        end
-
-        if params['oldest'].present?
-          redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}?#{sanitise_params params}"
-        end
-      end
-
-      def get_alternatives(value)
-        # TODO - not sure what this is doing
-        alt = ['chart', 'number']
-        if value.class == Array
-          alt = ['tasklist']
-        elsif single?(value, "")
-          v = ActiveSupport::HashWithIndifferentAccess.new(value)
-          alt << 'target' if v['annual_target']
-          alt << 'pie' if v['total']
-          alt = ['map'] if v['features']
-        end
-        alt
       end
 
       def keep_params qs
@@ -187,75 +239,7 @@ module Bothan
         @tiles = params.fetch('tiles', 'OpenStreetMap.Mapnik')
       end
 
-      def get_single_metric(params, time)
-        # TODO DRY candidate
-        time ||= DateTime.now
-        metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
-        metric = metrics.last
 
-        if params['default-dates'].present?
-          url = generate_url(metric, keep_params(params))
-          redirect to url
-        end
-
-        @metric = (metric.nil? ? {} : metric).to_json
-
-        @date = time.to_s
-        @earliest_date = metrics.first.time rescue nil
-
-        metric = JSON.parse(@metric, {:symbolize_names => true})
-        @alternatives = get_alternatives(metric[:value])
-
-        get_settings(params, metric)
-        erb :metric, layout: "layouts/#{@layout}".to_sym
-
-      end
-
-      def get_metric_range(params)
-        # TODO DRY candidate
-        @from = params[:from]
-        @to = params[:to]
-
-        dates = DateWrangler.new @from, @to
-
-        error_400 dates.errors.join ' ' if dates.errors
-
-        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
-
-        if params['default-dates'].present? # TODO - can't tell if this is being used at all
-          url = generate_url(metrics.first, keep_params(params))
-          redirect to url
-        end
-
-        @earliest_date = metrics.first.time
-        @latest_date = metrics.last.time
-
-        metrics = metrics.where(:time.gte => dates.from) if dates.from
-        metrics = metrics.where(:time.lte => dates.to) if dates.to
-
-        metrics = metrics.order_by(:time.asc)
-
-        data = {
-          :count => metrics.count,
-          :values => []
-        }
-
-        metrics.each do |metric|
-          data[:values] << {
-            :time => metric.time,
-            :value => metric.value
-          }
-        end
-
-
-        value = data[:values].first || { value: '' }
-        @alternatives = get_alternatives(value[:value])
-
-        get_settings(params, value)
-
-        erb :metric, layout: "layouts/#{@layout}".to_sym
-
-      end
 
     end
   end

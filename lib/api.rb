@@ -8,7 +8,6 @@ require 'models/metadata'
 require 'models/dashboard'
 
 require 'bothan/extensions/date_wrangler'
-require 'bothan/helpers/metrics_helpers'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 Metric.create_indexes
@@ -40,21 +39,21 @@ module Bothan
         end
       end
 
-      #TODO - 5 methods from the Sinatra helper added to here - decide what to do RE this functionality
+      #TODO - 4 methods from the Sinatra helper added to here - decide what to do RE this functionality
       def get_single_metric(params, time)
 
         time ||= DateTime.now # TODO - this is the default to now behaviour indicated in the endpoint
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last # retrieve last value added to Mongo
-        if params['default-dates'].present? # uncertain what this feature was to begin with
-          url = generate_url(metric, keep_params(params))
-          # redirect to url
-        end
+        # if params['default-dates'].present? # uncertain what this feature was to begin with
+        #   url = generate_url(metric, keep_params(params))
+        #   # redirect to url
+        # end
 
         @metric = (metric.nil? ? {} : metric).to_json
 
-        @date = time.to_s
-        @earliest_date = metrics.first.time rescue nil
+        # @date = time.to_s # TODO separate concerns
+        # @earliest_date = metrics.first.time rescue nil # TODO separate concerns
 
         metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
         metric
