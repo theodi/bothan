@@ -69,22 +69,19 @@ module Bothan
 
         @from = params[:from]
         @to = params[:to]
-        # binding.pry
-        # dates = DateWrangler.new @from, @to #DateWrangler works fine, String not
+        dates = DateWrangler.new @from, @to
 
-        # error_400 dates.errors.join ' ' if dates.errors
+        error_400 dates.errors.join ' ' if dates.errors
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
-        if params['default-dates'].present? #default dates set WHERE?
-          url = generate_url(metrics.first, keep_params(params))
-          redirect to url
-        end
+        # if params['default-dates'].present? #default dates set WHERE? nowhere, never triggered
+        #   url = generate_url(metrics.first, keep_params(params))
+        #   redirect to url
+        # end
 
-        @earliest_date = metrics.first.time # this sets the calendar GUI in the endpoint visualisation - think these should remain in sinatra because of use principally to Gui interaction
-        @latest_date = metrics.last.time
-
-        binding.pry
+        # @earliest_date = metrics.first.time # this sets the calendar GUI in the endpoint visualisation - think these should remain in sinatra because of use principally to Gui interaction
+        # @latest_date = metrics.last.time # # TODO separate concerns
 
         metrics = metrics.where(:time.gte => dates.from) if dates.from
         metrics = metrics.where(:time.lte => dates.to) if dates.to
@@ -95,7 +92,7 @@ module Bothan
             :count => metrics.count,
             :values => []
         }
-        # binding.pry
+
         metrics.each do |metric|
           data[:values] << {
               :time => metric.time,
@@ -103,13 +100,12 @@ module Bothan
           }
         end
 
+        data
 
-        value = data[:values].first || { value: '' }
-        @alternatives = get_alternatives(value[:value])
-
-        get_settings(params, value)
-
-        erb :metric, layout: "layouts/#{@layout}".to_sym
+        # value = data[:values].first || { value: '' } # TODO separate concerns
+        # @alternatives = get_alternatives(value[:value]) # TODO separate concerns
+        # get_settings(params, value) # TODO separate concerns
+        # erb :metric, layout: "layouts/#{@layout}".to_sym # TODO separate concerns
 
       end
 
@@ -198,14 +194,12 @@ module Bothan
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
 
       params do
-        requires :from, types: [DateTime, String]
-        requires :to, types: [DateTime, String]
+        requires :from, type: String
+        requires :to, types: String
       end
       get '/:from/:to' do
-        # TODO - not functional ergo some tests should be failing
-        {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
         #   date_redirect(params)
-          get_metric_range(params) # TODO - breaking due to behaviour of datawrangler and String override class
+          get_metric_range(params)
       end
 
       desc 'increment a metric' # home/metrics/:metric/increment"
