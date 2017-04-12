@@ -7,6 +7,7 @@ require 'grape'
 require 'models/metrics'
 require 'models/metadata'
 require 'models/dashboard'
+require 'bothan/helpers/metrics_helpers'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 Metric.create_indexes
@@ -83,6 +84,19 @@ module Bothan
       get do
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
         @metric
+      end
+
+      desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
+
+      params do
+        requires :from, types: [DateTime, String]
+        requires :to, types: [DateTime, String]
+      end
+      get '/:from/:to' do
+        binding.pry
+        {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
+        #   date_redirect(params)
+        #   get_metric_range(params)
       end
 
       desc 'increment a metric' # home/metrics/:metric/increment"
