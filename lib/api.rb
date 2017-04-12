@@ -86,6 +86,17 @@ module Bothan
         @metric
       end
 
+      desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
+      params do
+        requires :time, type: DateTime
+      end
+      get '/:time' do
+        binding.pry
+        # format params[:time]
+        # date_redirect(params)
+        # get_single_metric(params, time)
+      end
+
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
 
       params do
@@ -93,7 +104,6 @@ module Bothan
         requires :to, types: [DateTime, String]
       end
       get '/:from/:to' do
-        binding.pry
         {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
         #   date_redirect(params)
         #   get_metric_range(params)
