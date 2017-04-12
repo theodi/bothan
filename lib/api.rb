@@ -46,7 +46,7 @@ module Bothan
         time ||= DateTime.now # TODO - this is the default to now behaviour indicated in the endpoint
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last # retrieve last value added to Mongo
-        if params['default-dates'].present?
+        if params['default-dates'].present? # uncertain what this feature was to begin with
           url = generate_url(metric, keep_params(params))
           # redirect to url
         end
@@ -61,18 +61,18 @@ module Bothan
 
         # @alternatives = get_alternatives(metric[:value])  # commented out because confusion over purpose for now
         # get_settings(params, metric) # commented out see remarks on this method in the metrics_helpers file
-        # erb :metric, layout: "layouts/#{@layout}".to_sym
+        # erb :metric, layout: "layouts/#{@layout}".to_sym # View related call
 
       end
 
-      def get_metric_range(params)
+      def get_metric_range(params) # TODO breaks because DateWrangler and String not working
 
         @from = params[:from]
         @to = params[:to]
         # binding.pry
-        dates = DateWrangler.new @from, @to #DateWrangler works fine
+        # dates = DateWrangler.new @from, @to #DateWrangler works fine, String not
 
-        error_400 dates.errors.join ' ' if dates.errors
+        # error_400 dates.errors.join ' ' if dates.errors
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
@@ -83,6 +83,8 @@ module Bothan
 
         @earliest_date = metrics.first.time # this sets the calendar GUI in the endpoint visualisation - think these should remain in sinatra because of use principally to Gui interaction
         @latest_date = metrics.last.time
+
+        binding.pry
 
         metrics = metrics.where(:time.gte => dates.from) if dates.from
         metrics = metrics.where(:time.lte => dates.to) if dates.to
@@ -131,6 +133,9 @@ module Bothan
         a.join '&'
       end
     end
+
+    # API
+
     get '/' do
       redirect "#{request.scheme}://#{request.host_with_port}/metrics"
     end
@@ -200,7 +205,7 @@ module Bothan
         # TODO - not functional ergo some tests should be failing
         {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
         #   date_redirect(params)
-        #   get_metric_range(params) # TODO - breaking due to behaviour of datawrangler and String override class
+          get_metric_range(params) # TODO - breaking due to behaviour of datawrangler and String override class
       end
 
       desc 'increment a metric' # home/metrics/:metric/increment"
