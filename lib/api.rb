@@ -66,7 +66,7 @@ module Bothan
         params do
           # requires :metric, type: String, desc: 'new metric'
           requires :time, type: String, desc: 'metric timestamp'
-          requires :value, type: [Integer, Hash], desc: 'metric value or values'
+          requires :value, types: [Integer, Hash], desc: 'metric value or values'
         end
 
         # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
@@ -85,77 +85,21 @@ module Bothan
         @metric
       end
 
-      desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
-
-      # Mangled Solution that uses existing API code
-
-      desc 'additional parameter operations'
-
+      desc 'increment a metric' # home/metrics/:metric/increment"
       params do
-        requires :starting_param, type: String
-        optional :final_param, type: DateTime
-        optional :increment_param, type: Integer
+        requires :amount, type: Integer, desc: 'amount to increase by'
+        # requires :amount, coerce: Integer
       end
-      get :final_param do
-
+      post '/:increment' do
+        last_metric = Metric.where(name: params[:metric].parameterize).last
+        last_amount = last_metric.try(:[], 'value') || 0
+        return 400 if last_amount.class == BSON::Document
+        increment = (params[:amount] || 1).to_i
+        value = last_amount + increment
+        update_metric(params[:metric], DateTime.now, value)
       end
-      post :increment_param do
-
-      end
-
-
-      desc 'increment a metric' # home/metrics/:metric/increment/375"
-      # TODO this is a nested resource that has same number of route params as a daterange query
-      # namespace :increment do
-      #   params do
-      #     requires :amount, coerce: Integer
-      #   end
-      #   get do
-      #     binding.pry
-      #   end
-      #   post :amount do
-      #     #TODO - change logic below, still in original API form
-      #     last_metric = Metric.where(name: params[:metric].parameterize).last
-      #     last_amount = last_metric.try(:[], 'value') || 0
-      #
-      #     # Return 400 if the metric type is anything other than a single metric
-      #     return 400 if last_amount.class == BSON::Document
-      #
-      #     increment = (params[:amount] || 1).to_i
-      #     value = last_amount + increment
-      #
-      #     update_metric(params[:metric], DateTime.now, value)
-      #   end
-      # end
-      ## TODO the above two conflict with one another - no straightforward resolution
-      desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
-      # namespace :start_date, type: DateTime do
-      #   params do
-      #     requires :end_date, type: DateTime
-      #   end
-      #   get do
-      #     # binding.pry
-      #     {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
-      #   end
-      # end
 
     end # end metrics/:metric namespace
-
-    namespace 'metrics/:metric/:start_date/:end_date' do
-      #TODO - utilise date wrangler for this
-    # this is outside of the above namespace ONLY because of Sinatra conflicts BUT it hogs all route params after :metric
-      # this is because https://github.com/ruby-grape/grape#parameters -
-      desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
-      params do
-        # TODO some way of accommodating wildcard char for both params
-        requires :start_date, type: DateTime
-        requires :end_date, type: DateTime
-      end
-      get do
-        #TODO - correct logic
-        {searchstring: "will return vals from "+params[:start_date].to_s+" until "+params[:end_date].to_s}
-      end
-    end
 
     namespace 'metrics/:metric/metadata' do
       get do
