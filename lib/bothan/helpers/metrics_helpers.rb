@@ -92,6 +92,7 @@ module Bothan
       end
 
       def get_alternatives(value)
+        # TODO - not sure what this is doing
         alt = ['chart', 'number']
         if value.class == Array
           alt = ['tasklist']
@@ -167,6 +168,7 @@ module Bothan
       end
 
       def get_settings(params, data)
+        # sets a BUNCH of instance variables for use in view / query strings sent to endpoint that renders view
         metadata = metadata(params['metric'])
 
         @layout = params.fetch('layout', 'rich')
@@ -220,7 +222,7 @@ module Bothan
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
-        if params['default-dates'].present?
+        if params['default-dates'].present? # TODO - can't tell if this is being used at all
           url = generate_url(metrics.first, keep_params(params))
           redirect to url
         end

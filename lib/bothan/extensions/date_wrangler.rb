@@ -14,6 +14,8 @@ class DateWrangler
     @start ||= @left.to_seconds
   end
 
+  # TODO - to and from handling the * or nil fields for a default view
+
   def to
     @to ||= if @right.is_duration?
       from + finish
