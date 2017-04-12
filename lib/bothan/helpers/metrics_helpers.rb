@@ -80,6 +80,7 @@ module Bothan
       end
 
       def date_redirect params
+        # TODO DRY candidate
         if params['oldest'].present? && params['newest'].present?
           params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
           redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
@@ -128,6 +129,7 @@ module Bothan
       end
 
       def sanitise_params qs
+        # TODO DRY candidate
         a = []
         keep_params(qs).each_pair do |k, v|
           a.push "#{k}=#{v}"
@@ -184,6 +186,7 @@ module Bothan
       end
 
       def get_single_metric(params, time)
+        # TODO DRY candidate
         time ||= DateTime.now
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last
@@ -207,6 +210,7 @@ module Bothan
       end
 
       def get_metric_range(params)
+        # TODO DRY candidate
         @from = params[:from]
         @to = params[:to]
 
