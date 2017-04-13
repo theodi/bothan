@@ -65,7 +65,7 @@ module Bothan
       end
 
       def get_metric_range(params) # TODO breaks because DateWrangler and String not working
-
+        # binding.pry
         @from = params[:from]
         @to = params[:to]
         dates = DateWrangler.new @from, @to
@@ -130,23 +130,36 @@ module Bothan
       end
 
       def range_alias(endpoint)
-
         case endpoint
-          when 'all'
-            then {trigger: "get_metric_range(*/*)"}
           when 'latest'
-            then {trigger: "get_single_metric"}
+            get_single_metric(params, DateTime.now)
+          when 'all'
+            params[:from] = '*'
+            params[:to] = '*'
           when 'today'
-            then {trigger: "since midnight logic"}
-          when /\w+-(.*)/
-            then
-            # binding.pry
-              if $1.include? "-"
-                new_param = $1.gsub(/-/, '_')
-                {trigger: new_param.to_s}
-              else
-                {trigger: "redirect to today"}
-              end
+            # then
+            params[:from] = DateTime.now.beginning_of_day.to_s
+            params[:to] = DateTime.now.to_s
+
+            # then {trigger: "since midnight logic"}
+          # when /\w+-(.*)/
+          #   # then
+          #   # binding.pry
+          #     if $1.include? "-"
+          #       new_param = $1.gsub(/-/, '_')
+          #       {trigger: new_param.to_s}
+          #       binding.pry
+          #       @parameters[:from] = DateTime.now.new_param.to_s
+          #       @parameters[:to] = DateTime.now.to_s
+          #       DateTime.now.beginning_of_month
+          #       # get_metric_range(params)
+          #     else
+          #       {trigger: "redirect to today"}
+          #     end
+        end
+
+        if params[:from].present?
+          get_metric_range(params)
         end
       end
 
