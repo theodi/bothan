@@ -26,7 +26,6 @@ module Bothan
         metadata = MetricMetadata.find_or_create_by(name: name.parameterize)
 
         if metadata.title.blank?
-          # binding.pry
           metadata.title[:en] = name
           metadata.save
         end
@@ -56,7 +55,7 @@ module Bothan
 
         metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
         metric
-        # binding.pry
+
         # @alternatives = get_alternatives(metric[:value])  # commented out because confusion over purpose for now
         # get_settings(params, metric) # commented out see remarks on this method in the metrics_helpers file
         # erb :metric, layout: "layouts/#{@layout}".to_sym # View related call
@@ -64,7 +63,7 @@ module Bothan
       end
 
       def get_metric_range(params) # TODO breaks because DateWrangler and String not working
-        # binding.pry
+
         @from = params[:from]
         @to = params[:to]
         dates = DateWrangler.new @from, @to
@@ -129,45 +128,31 @@ module Bothan
       end
 
       def range_alias(endpoint)
-        puts "range alias method called"
-        binding.pry
 
-        case endpoint
-          when 'latest'
-            @latest = get_single_metric(params)
-          when 'all'
-            params[:from] = '*'
-            params[:to] = '*'
-          when 'today'
-            # then
-            params[:from] = DateTime.now.beginning_of_day.to_s
-            params[:to] = DateTime.now.to_s
-
-            # then {trigger: "since midnight logic"}
-          when /\w+-(.*)/ # move this to start to accommodate midnight
-            # then
-            # binding.pry
-              if $1.include? "-" # exclude the midnight param,
-                new_param = $1.gsub(/-/, '_') # format endpoint to Date and Time Calculation alias
-                # {trigger: new_param.to_s}
-                # binding.pry
-                params[:from] = DateTime.now.send(new_param.to_sym).to_s
-                params[:to] = DateTime.now.to_s
-                # get_metric_range(params)
-              else
-                {trigger: "redirect to today"}
-              end
-
+        if /\w+-(.*)/.match(endpoint)
+          # catch hypenathed endpoints, convert them to the supported ranges in DateAndTime::Calculations
+          endpoint = $1.gsub(/-/, '_') # discard since preface
+          params[:from] = DateTime.now.send(endpoint.to_sym).to_s
+          params[:to] = DateTime.now.to_s
+        else
+          case endpoint
+            when 'latest'
+              @latest = get_single_metric(params)
+            when 'all'
+              params[:from] = '*'
+              params[:to] = '*'
+            when 'today' || 'midnight'
+              # then
+              params[:from] = DateTime.now.beginning_of_day.to_s
+              params[:to] = DateTime.now.to_s
+          end
         end
-        # binding.pry
         if params[:from].present?
-
           get_metric_range(params)
         else
-          @latest
+          @latest # return single metric
         end
       end
-
     end
 
     # API
@@ -224,10 +209,6 @@ module Bothan
       #   requires :time, type: DateTime
       # end
       # get '/:time' do
-      #   # format params[:time] like below
-      #     #   time = params[:time].to_datetime rescue
-      #     #   error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
-      #   # date_redirect(params)
       #   get_single_metric(params, params[:time])
       # end
 
@@ -238,33 +219,31 @@ module Bothan
       #   requires :alias, type: String, default: 'latest', values: ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year']
       # end
       # get '/:alias' do
-      #   # binding.pry
-      #   {'count': 'you have requested '+params[:alias].to_s}
+      #   range_alias(params[:alias])
       # end
 
-      desc 'time or alias '
+      desc 'time and date range endpoints'
       params do
-        # this line and below not behaving as hoped - where string values could be limited
-        requires :endpoint, types: [DateTime, String]
+        # requires :endpoint, types: [DateTime, String]
+        requires :endpoint, types: String
 
       end
       get '/:endpoint' do
-
-        @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'] # instance because helper maybe needs it too  - BUT NOT SURE HOW TO!!!
-        case params[:endpoint]
-        when DateTime
-          then
-          # binding.pry # confirmed that beginning-month = glaring Ruby bug
-          get_single_metric(params, params[:endpoint])
-        when String
-          if @supported_aliases.include?(params[:endpoint])
-            range_alias(params[:endpoint])
-          else
-            {error: 'alias not supported'}
-          end
+        @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year']
+        # case params[:endpoint]
+        # when DateTime
+        #   then
+          #   get_single_metric(params, params[:endpoint])
+        # when String
+        # end
+        if @supported_aliases.include?(params[:endpoint])
+          range_alias(params[:endpoint])
+        elsif params[:endpoint].to_datetime.instance_of? DateTime
+          get_single_metric(params, params[:endpoint].to_datetime)
+        else
+          {error: 'endpoint not supported'} # TODO recuperate the Time rescue from original endpoint, no longer possible to use Grape validation for this because bug above
         end
       end
-
 
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
 
