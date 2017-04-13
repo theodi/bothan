@@ -108,6 +108,7 @@ module Bothan
 
       end
 
+
       def date_redirect params
         if params['oldest'].present? && params['newest'].present?
           params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
@@ -127,6 +128,28 @@ module Bothan
 
         a.join '&'
       end
+
+      def range_alias(endpoint)
+
+        case endpoint
+          when 'all'
+            then {trigger: "get_metric_range(*/*)"}
+          when 'latest'
+            then {trigger: "get_single_metric"}
+          when 'today'
+            then {trigger: "since midnight logic"}
+          when /\w+-(.*)/
+            then
+            # binding.pry
+              if $1.include? "-"
+                new_param = $1.gsub(/-/, '_')
+                {trigger: new_param.to_s}
+              else
+                {trigger: "redirect to today"}
+              end
+        end
+      end
+
     end
 
     # API
@@ -177,24 +200,57 @@ module Bothan
         @metric
       end
 
-      desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
-      # TODO given default should the default for this route to above get endpoint?
+      # desc 'show value for given metric at a given time (defaults to current time)' # /metrics/{metric_name}/{time}
+      # # TODO given default should the default for this route to above get endpoint?
+      # params do
+      #   requires :time, type: DateTime
+      # end
+      # get '/:time' do
+      #   # format params[:time] like below
+      #     #   time = params[:time].to_datetime rescue
+      #     #   error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
+      #   # date_redirect(params)
+      #   get_single_metric(params, params[:time])
+      # end
+
+      # desc 'list values from selection of daterange aliases' #TODO conflicts with above
+      # # TODO enhance with https://github.com/ruby-grape/grape#with-lambdas
+      # params do
+      #   # requires :alias, type: String, default: 'time'
+      #   requires :alias, type: String, default: 'latest', values: ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year']
+      # end
+      # get '/:alias' do
+      #   # binding.pry
+      #   {'count': 'you have requested '+params[:alias].to_s}
+      # end
+
+      desc 'time or alias '
       params do
-        requires :time, type: DateTime
+        # this line and below not behaving as hoped - where string values could be limited
+        requires :endpoint, types: [DateTime, String]
+
       end
-      get '/:time' do
-        # format params[:time] like below
-          #   time = params[:time].to_datetime rescue
-          #   error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
-        # date_redirect(params)
-        get_single_metric(params, params[:time])
+      get '/:endpoint' do
+        # binding.pry
+        @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'] # instance because helper maybe needs it too  - BUT NOT SURE HOW TO!!!
+        case params[:endpoint]
+        when DateTime
+          then get_single_metric(params, params[:endpoint])
+        when String
+          if @supported_aliases.include?(params[:endpoint])
+            range_alias(params[:endpoint])
+          else
+            {error: 'alias not supported'}
+          end
+        end
       end
+
 
       desc 'list values for given metric between given range' # /metrics/{metric_name}/{from}/{to}
 
       params do
         requires :from, type: String
-        requires :to, types: String
+        requires :to, type: String
       end
       get '/:from/:to' do
         #   date_redirect(params)
