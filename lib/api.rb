@@ -56,7 +56,7 @@ module Bothan
 
         metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
         metric
-
+        # binding.pry
         # @alternatives = get_alternatives(metric[:value])  # commented out because confusion over purpose for now
         # get_settings(params, metric) # commented out see remarks on this method in the metrics_helpers file
         # erb :metric, layout: "layouts/#{@layout}".to_sym # View related call
@@ -129,9 +129,12 @@ module Bothan
       end
 
       def range_alias(endpoint)
+        puts "range alias method called"
+        binding.pry
+
         case endpoint
           when 'latest'
-            get_single_metric(params, DateTime.now)
+            @latest = get_single_metric(params)
           when 'all'
             params[:from] = '*'
             params[:to] = '*'
@@ -141,24 +144,27 @@ module Bothan
             params[:to] = DateTime.now.to_s
 
             # then {trigger: "since midnight logic"}
-          # when /\w+-(.*)/
-          #   # then
-          #   # binding.pry
-          #     if $1.include? "-"
-          #       new_param = $1.gsub(/-/, '_')
-          #       {trigger: new_param.to_s}
-          #       binding.pry
-          #       @parameters[:from] = DateTime.now.new_param.to_s
-          #       @parameters[:to] = DateTime.now.to_s
-          #       DateTime.now.beginning_of_month
-          #       # get_metric_range(params)
-          #     else
-          #       {trigger: "redirect to today"}
-          #     end
-        end
+          when /\w+-(.*)/ # move this to start to accommodate midnight
+            # then
+            # binding.pry
+              if $1.include? "-" # exclude the midnight param,
+                new_param = $1.gsub(/-/, '_') # format endpoint to Date and Time Calculation alias
+                # {trigger: new_param.to_s}
+                # binding.pry
+                params[:from] = DateTime.now.send(new_param.to_sym).to_s
+                params[:to] = DateTime.now.to_s
+                # get_metric_range(params)
+              else
+                {trigger: "redirect to today"}
+              end
 
+        end
+        # binding.pry
         if params[:from].present?
+
           get_metric_range(params)
+        else
+          @latest
         end
       end
 
@@ -243,11 +249,13 @@ module Bothan
 
       end
       get '/:endpoint' do
-        # binding.pry
+
         @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'] # instance because helper maybe needs it too  - BUT NOT SURE HOW TO!!!
         case params[:endpoint]
         when DateTime
-          then get_single_metric(params, params[:endpoint])
+          then
+          # binding.pry # confirmed that beginning-month = glaring Ruby bug
+          get_single_metric(params, params[:endpoint])
         when String
           if @supported_aliases.include?(params[:endpoint])
             range_alias(params[:endpoint])
