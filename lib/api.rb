@@ -40,9 +40,8 @@ module Bothan
       end
 
       #TODO - 4 methods from the Sinatra helper added to here - decide what to do RE this functionality
-      def get_single_metric(params, time)
+      def get_single_metric(params, time = DateTime.now)
 
-        time ||= DateTime.now # TODO - this is the default to now behaviour indicated in the endpoint
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last # retrieve last value added to Mongo
         # if params['default-dates'].present? # uncertain what this feature was to begin with
