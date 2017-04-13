@@ -4,9 +4,9 @@ module Bothan
 
       # Shared With Grape
 
-      def get_single_metric(params, time)
+      def get_single_metric(params, time = DateTime.now)
         # TODO DRY candidate
-        time ||= DateTime.now
+        # time ||= DateTime.now
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last
 
