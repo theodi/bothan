@@ -45,8 +45,8 @@ namespace :demo do
         time: DateTime.now - i,
         value: {
           actual: rand(0..100),
-          annual_target: rand(100..500),
-          ytd_target: rand(500..1000)
+          ytd_target: rand(100..500),
+          annual_target: rand(500..1000)
         }
       )
 
