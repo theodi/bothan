@@ -23,7 +23,42 @@ Follow the [public feature roadmap for Bothan](https://trello.com/b/2xc7Q0kd/lab
 ## Development
 
 ### Requirements
-ruby version
+ruby version ?
+
+The application uses mongodb for data persistence
+
+### Environment variables
+
+### Database Configuration
+
+Install mongo:  
+    `brew install mongo redis` (if using brew)
+
+make a data directory for mongo databases  
+`sudo mkdir -p /data/db`
+
+change directory ownership so that mongodb can operate    
+`sudo chown -R $USERNAME /data/`
+
+### Development: Running the full application locally
+
+Checkout the repository and run ```bundle``` in the checked out directory.
+
+The app is loaded via Rack Middleware.  
+execute `bundle exec rackup config.ru` to start the application
+
+### Tests
+
+A MongoDB instance must be running prior to executing test suites (see steps above from Running the full application locally) 
+
+The entire suite of unit tests (`rspec`) and user features (`cucumber`) can be executed with the `rake` command
+
+### Rake Tasks
+
+## Deployment
+
+### Deployment on Heroku
+
 
 # OLD API DOCS
 
