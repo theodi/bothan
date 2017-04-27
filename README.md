@@ -6,11 +6,26 @@
 
 # Bothan
 
-## Brings you information
+A simple platform for publishing metrics, both as JSON, and as embeddable visualisations and dashboards.
 
-A simple wrapper around MongoDB to allow storage of time series metrics.
+[Bothan's live instance](https://bothan.io/) contains [API documentation](https://bothan.io/api.html) and tutorials on deploying your [personal instance of Bothan to Heroku](https://bothan.io/get-started.html) and intergrating with [Zapier](https://bothan.io/tutorials.html)
+
+
+## Summary of features
+
+Bothan is a Sinatra web app that provides a simple wrapper around MongoDB to allow storage of time series metrics.
+Bothan provides a REST API for storing and retrieving time-series data, as well as human-readable views which can be customised and embedded in other sites, allowing it to be used for building dashboards. It is designed for open publication of metrics data and includes licensing metadata for simple generation of an [Open Data Certificate](https://trello.com/c/ELxxqSeT/24-open-data-certificate)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+Follow the [public feature roadmap for Bothan](https://trello.com/b/2xc7Q0kd/labs-public-toolbox-roadmap?menu=filter&filter=label:Bothan)
+
+## Development
+
+### Requirements
+ruby version
+
+# OLD API DOCS
 
 ## Content negotiation
 
