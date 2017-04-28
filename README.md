@@ -30,6 +30,34 @@ The application uses mongodb for data persistence
 
 ### Environment variables
 
+METRICS_API_USERNAME=foo
+METRICS_API_PASSWORD=bar
+METRICS_API_TITLE='ODI Metrics'
+METRICS_API_DESCRIPTION='This API contains a list of all metrics collected by the Open Data Institute since 2013'
+METRICS_API_LICENSE_NAME='Creative Commons Attribution-ShareAlike'
+METRICS_API_LICENSE_URL='https://creativecommons.org/licenses/by-sa/4.0/'
+METRICS_API_PUBLISHER_NAME='Open Data Institute'
+METRICS_API_PUBLISHER_URL='http://theodi.org'
+METRICS_API_CERTIFICATE_URL='https://certificates.theodi.org/en/datasets/213482/certificate'
+PUSHER_URL=
+
+See below for Pusher configuration instructions
+
+##### Pusher setup
+
+1. Log in to https://pusher.com
+2. Create a new application and call it something sensible
+3. Select the ```App Keys``` tab and note the following values
+
+```
+PUSHER_APP_ID=
+PUSHER_KEY=
+PUSHER_SECRET=
+```
+
+You can create the `PUSHER_URL` variable required for your `.env` file by concatenating the above variables as follows:
+`PUSHER_KEY`:`PUSHER_SECRET`@api-eu.pusher.com/apps/`PUSHER_APP_ID`
+
 ### Database Configuration
 
 Install mongo:  
