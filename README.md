@@ -62,7 +62,15 @@ alternatively execute each suite separately with
 
 ## Deployment
 
-### Deployment on Heroku
+### Deployment On Heroku
+
+Bothan can deploy a personal instance to Heroku.
+
+You can employ this as an alternative to running a full local dev instance if you couple your heroku instance with the heroku toolbelt.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+### Deployment To Heroku
 
 
 # OLD API DOCS
