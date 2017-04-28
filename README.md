@@ -28,6 +28,8 @@ ruby version 2.3.0p0
 
 The application uses mongodb for data persistence
 
+The application requires capybara-webkit for testing (for install instuctions see below)
+
 ### Environment variables
 
 METRICS_API_USERNAME=foo
@@ -43,6 +45,8 @@ PUSHER_URL=
 
 See below for Pusher configuration instructions
 
+### Specific Development Instructions
+
 ##### Pusher setup
 
 1. Log in to https://pusher.com
@@ -57,6 +61,14 @@ PUSHER_SECRET=
 
 You can create the `PUSHER_URL` variable required for your `.env` file by concatenating the above variables as follows:
 `PUSHER_KEY`:`PUSHER_SECRET`@api-eu.pusher.com/apps/`PUSHER_APP_ID`
+
+#### Capybara
+
+To run bothan locally requires capybara-webkit. Specific instructions to get this running is as follows
+
+https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit#homebrew
+
+At present Capybara depends on Qt 5. This requires the full `Xcode`, rather than `xcode developer tools`, to be installed
 
 ### Database Configuration
 
