@@ -10,7 +10,7 @@ hide_in_nav: true
 
 Follow along with our video tutorial or via the steps below
 
-## Step by Step: Building Your Dasjboard
+## Step by Step: Building Your Dashboard
 
 One of Bothan's most powerful features is the ability to build your own dashboards
 from your data. This guide will show you how to build a data-driven dasboard using
