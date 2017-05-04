@@ -4,6 +4,14 @@ title: Setting up your own Bothan
 hide_in_nav: true
 ---
 
+{% raw %}
+<div class='embed-container'><iframe src='https://player.vimeo.com/video/215668663?title=0&portrait=0' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div><br>
+{% endraw %}
+
+Follow along with our video tutorial or via the steps below
+
+## Step by Step
+
 Getting started with Bothan is really easy, even if you're not a developer. Each
 Bothan instance is hosted separately on the [Heroku](heroku.com) platform. It's free, but you
 will need a verified Heroku account.
