@@ -4,6 +4,14 @@ title: Adding data to Bothan
 hide_in_nav: true
 ---
 
+{% raw %}
+<div class='embed-container'><iframe src='https://player.vimeo.com/video/215669175?portrait=0' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div><br>
+{% endraw %}
+
+Follow along with our video tutorial or via the steps below
+
+## Step by Step: Adding your Data
+
 Bothan has a fully functional [API](/api.html) for developers to add data to their
 own Bothan instance, but if you're not a developer, it's still easy to add data
 to your Bothan without writing a single line of code!

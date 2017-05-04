@@ -4,6 +4,14 @@ title: Building a dashboard
 hide_in_nav: true
 ---
 
+{% raw %}
+<div class='embed-container'><iframe src='https://player.vimeo.com/video/215669413?portrait=0' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div><br>
+{% endraw %}
+
+Follow along with our video tutorial or via the steps below
+
+## Step by Step: Building Your Dashboard
+
 One of Bothan's most powerful features is the ability to build your own dashboards
 from your data. This guide will show you how to build a data-driven dasboard using
 the data you've set up in the [adding data tutorial](/adding-data.html).
