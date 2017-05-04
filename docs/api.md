@@ -3,7 +3,7 @@ layout: default
 title: API
 ---
 
-The API is the heart of Bothan, where you submit the data you want to store and visualise. There is also a read portion of the API that allows you to list metrics for a given time period.
+The API is the heart of Bothan, where you submit the data you want to **store** and **visualise**. There is also a read portion of the API that allows you to list metrics for a given time period.
 
 ## Software Libraries
 
@@ -165,3 +165,118 @@ Fetch all values of the metric between the specified times. `from` and `to` can 
  * An ISO8601 date/time
  * An ISO8601 duration
  * `*`, meaning unspecified
+
+## Setting metadata
+
+You can also set a limited amount of metadata via the API:
+
+```
+POST https://demo.bothan.io/metrics/{metric-name}/metadata
+```
+
+Currently accepted attributes are:
+
+* type: One of `chart`, `tasklist`, `target` or `pie`<br><br>By default, the app will attempt to guess a sensible visualisation type for your metric. If you'd rather override this, you can set a default type
+
+* name:
+`name` A JSON object in the form:<br>
+```JSON
+{
+    "language-code": "Title goes here"
+}
+```
+<br>
+Where `language-code` is the ISO language code of your title. You can specify as many or as few languages as you like.
+<br><br >If this is not specified, the app will attempt to titleize your metric name (so `my-cool-metric` becomes `My Cool Metric`)
+
+* description: A JSON object in the same format as `title`.<br><br>A description of what your metric shows - This will be revealed to the user when they hover over the title
+
+#### Sample request
+
+```JSON
+{
+  "type": "chart",
+  "name": {
+    "en": "My cool chart",
+    "fr": "Mon tableau fraîche"
+  },
+  "description": {
+    "en": "A chart showing some great data",
+    "fr": "Un tableau montrant un grand données"
+  }
+}
+
+```
+
+## Visualising data
+
+While this is primarily a JSON API, some of our endpoints will also serve HTML. Primarily:
+
+```
+GET https://demo.bothan.io/metrics/{metric_name}/{from}/{to}
+```
+
+(or `GET https://demo.bothan.io/metrics/{metric_name}` which will redirect to a default time-range of the last 30 days)
+
+### query-string options
+
+The rendering can be manipulated by the following query-string options:
+
+#### layout
+
+One of:
+
+  * `rich`, with a nav-bar and other controls, or
+  * `bare`, a minimal layout designed for inclusion elsewhere as an iframe
+
+Default: `rich`
+
+#### type
+
+One of:
+
+  * `chart`, which renders a [Plotly](https://plot.ly/javascript/) line chart of the data, as best it can (it attempts to extract reasonable y-axis-values from the metric, but some metrics simply do not make sense in this form. Caveat Graphor)
+  * `number`, which displays the latest value from the metric (if it can find such a thing)
+  * `pie`, which renders a [Plotly](https://plot.ly/javascript/) pie chart of the data, as best it can
+  * `target`, which renders a meter style chart with an actual value, an annual target value and a year to date target value. For this to work, the data should be in the following format:
+
+  ```
+  {
+    "actual": value,
+    "annual_target": value,
+    "ytd_target": value,
+  }
+  ```
+  * `tasklist`, which renders a list of tasks and their progress. This is highly specialised to ODI, and may not be relevant to anyone else's needs, but if you want to use this visualisation, the data should be in this format:
+  ```
+  [
+    {
+      "title": "Task name",
+      "due": "Due date in ISO8601 format",
+      "progress": A float value between 0 and 1,
+    },
+    ...
+  ]
+  ```
+
+Default: `chart`
+
+#### boxcolour
+
+Background colour for the chart or number, in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
+
+Default: `ddd`
+
+#### textcolour
+
+Text colour (and line colour for the chart), in hex. Note that you should _not_ pass the leading _#_. Also note the English spelling
+
+Default: `222`
+
+#### autorefresh
+
+`meta-refresh` interval for the page
+
+Default: `none`
+
+Example: https://demo.bothan.io/metrics/github-open-issue-count?boxcolour=fa8100&textcolour=00ffff&layout=bare
