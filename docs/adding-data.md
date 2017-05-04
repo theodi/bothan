@@ -5,7 +5,7 @@ hide_in_nav: true
 ---
 
 {% raw %}
-<div class='embed-container'><iframe src='https://player.vimeo.com/video/215669175?title=0&portrait=0' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div><br>
+<div class='embed-container'><iframe src='https://player.vimeo.com/video/215669175?portrait=0' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div><br>
 {% endraw %}
 
 Follow along with our video tutorial or via the steps below
