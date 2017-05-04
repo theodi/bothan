@@ -32,6 +32,7 @@ The application requires capybara-webkit for testing (for install instuctions se
 
 ### Environment variables
 
+```
 METRICS_API_USERNAME=foo
 METRICS_API_PASSWORD=bar
 METRICS_API_TITLE='ODI Metrics'
@@ -42,7 +43,7 @@ METRICS_API_PUBLISHER_NAME='Open Data Institute'
 METRICS_API_PUBLISHER_URL='http://theodi.org'
 METRICS_API_CERTIFICATE_URL='https://certificates.theodi.org/en/datasets/213482/certificate'
 PUSHER_URL=
-
+```
 See below for Pusher configuration instructions
 
 ### Specific Development Instructions
