@@ -4,6 +4,7 @@ Coveralls.wear_merged!
 ENV['RACK_ENV'] = 'test'
 
 require 'bothan'
+require 'api'
 require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
@@ -16,7 +17,7 @@ Dotenv.load
 module RSpecMixin
   include Rack::Test::Methods
   def app
-    Bothan::App
+    Rack::Cascade.new [ Bothan::App, Bothan::Api], [406]
   end
 end
 

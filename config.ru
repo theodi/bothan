@@ -1,10 +1,12 @@
 require 'rubygems'
 require 'bundler'
+require 'pry'
 Bundler.setup
 
 ENV['RACK_ENV'] ||= 'development'
 
 require File.join(File.dirname(__FILE__), 'lib/bothan.rb')
+require File.join(File.dirname(__FILE__), 'lib/api.rb')
 
 use(Rack::Cors) do
   allow do
@@ -14,5 +16,5 @@ use(Rack::Cors) do
 end
 
 use Rack::MethodOverride
-
-run Bothan::App
+use Rack::Session::Cookie
+run Rack::Cascade.new [ Bothan::App, Bothan::Api], [406]

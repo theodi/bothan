@@ -24,11 +24,8 @@ module Bothan
         @dashboard = Dashboard.find_by(slug: params[:dashboard])
         @title = @dashboard.name
 
-        respond_to do |wants|
-          wants.html do
-            erb :'dashboards/show', layout: :"layouts/dashboard"
-          end
-        end
+        erb :'dashboards/show', layout: :"layouts/dashboard"
+
       end
 
       app.put '/dashboards/:slug' do

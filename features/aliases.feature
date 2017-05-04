@@ -87,4 +87,4 @@ Feature: Time aliases
 
     Scenario: Using `today` alias
       When I send a GET request to "metrics/membership-coverage/today"
-      Then the response status should be "302"
+      Then the response status should be "200"
