@@ -10,7 +10,7 @@ hide_in_nav: true
 
 Follow along with our video tutorial or via the steps below
 
-## Step by Step
+## Step by Step: Creating your Bothan
 
 Getting started with Bothan is really easy, even if you're not a developer. Each
 Bothan instance is hosted separately on the [Heroku](heroku.com) platform. It's free, but you
@@ -21,7 +21,7 @@ Once you're signed up, you'll need to verify your account by going to [your acco
 and adding a credit card. Heroku only need this to verify your contact details,
 and hosting a standard 'out of the box' Bothan is free for all users.
 
-## Creating your Bothan
+## Deploy your Bothan Instance
 
 Once you've signed up for a Heroku account you can go to the [Get started](https://bothan.io/get-started.html)
 page on our website and click the 'Deploy to Heroku' button
