@@ -20,7 +20,7 @@ gem 'pusher'
 
 group :test do
   gem 'capybara-webkit'
-  gem 'cucumber', "~> 1.3"
+  gem 'cucumber', "~> 2.4"
   gem 'cucumber-sinatra'
   gem 'rspec'
   gem 'rack-test'
