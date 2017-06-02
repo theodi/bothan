@@ -53,12 +53,11 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    autoprefixer-rails (6.3.3)
+    autoprefixer-rails (7.1.1)
       execjs
-      json
     bcp47 (0.3.3)
       i18n
-    bootstrap-sass (3.3.6)
+    bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     bson (4.2.1)
@@ -150,7 +149,7 @@ GEM
     exception_notification (4.2.1)
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
-    execjs (2.6.0)
+    execjs (2.7.0)
     extlib (0.9.16)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
@@ -445,7 +444,7 @@ GEM
       rspec-support (~> 3.2.0)
     rspec-support (3.2.2)
     safe_yaml (1.0.4)
-    sass (3.4.22)
+    sass (3.4.24)
     sawyer (0.8.1)
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
