@@ -126,7 +126,7 @@ GEM
       nokogiri
       rake
       rest-client
-    database_cleaner (1.5.3)
+    database_cleaner (1.6.1)
     datapackage (0.0.4)
       colorize
       json
