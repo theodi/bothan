@@ -10,6 +10,10 @@ A simple platform for publishing metrics, both as JSON, and as embeddable visual
 
 [Bothan's live instance](https://bothan.io/) contains [API documentation](https://bothan.io/api.html) and tutorials on deploying your [personal instance of Bothan to Heroku](https://bothan.io/get-started.html) and intergrating with [Zapier](https://bothan.io/tutorials.html)
 
+There are also two software libraries that make interfacing with Bothan super easy:
+
+* [Ruby](https://github.com/theodi/bothan.rb)
+* [Node.js](https://github.com/theodi/bothan.js)
 
 ## Summary of features
 
@@ -111,6 +115,4 @@ Bothan can deploy a personal instance to Heroku.
 You can employ this as an alternative to running a full local dev instance if you couple your heroku instance with the heroku toolbelt.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-### Deployment To Heroku
 
