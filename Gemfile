@@ -9,7 +9,7 @@ gem 'dotenv'
 gem 'thin'
 gem 'haml'
 gem 'foreman'
-gem 'mongoid', '~> 5.0'
+gem 'mongoid', '~> 5.2'
 gem 'rack-conneg'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
@@ -20,7 +20,7 @@ gem 'pusher'
 
 group :test do
   gem 'capybara-webkit'
-  gem 'cucumber', "~> 1.3"
+  gem 'cucumber', "~> 2.4"
   gem 'cucumber-sinatra'
   gem 'rspec'
   gem 'rack-test'
