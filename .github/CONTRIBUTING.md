@@ -7,7 +7,7 @@ Before you start coding, please reach out to us either on our [gitter channel](h
 
 If this is your first time contributing to the ODI’s codebase you will need to [create a fork of this repository](https://help.github.com/articles/fork-a-repo/).
 
-Follow the [readme instructions](https://github.com/theodi/bothan/blob/master/README.md#development) to get your Development environment running locally
+Consult our [Getting Started Guide](https://github.com/theodi/toolbox/wiki/Developers-Guide:-Getting-Started) (if necessary) and then follow the [readme instructions](https://github.com/theodi/bothan/blob/master/README.md#development) to get your Development environment running locally
 
 Ensure that the [tests](https://github.com/theodi/bothan/blob/master/README.md#tests) pass before working on your contribution
 
