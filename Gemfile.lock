@@ -214,7 +214,7 @@ GEM
       rspec (>= 2.99.0, < 4.0)
     haml (4.0.7)
       tilt
-    hashdiff (0.2.3)
+    hashdiff (0.3.4)
     highline (1.7.2)
     html-pipeline (2.6.0)
       activesupport (>= 2)
@@ -490,7 +490,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.4)
     unicode-display_width (1.2.1)
-    webmock (1.22.6)
+    webmock (3.0.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -536,6 +536,9 @@ DEPENDENCIES
   thin
   timecop
   webmock
+
+RUBY VERSION
+   ruby 2.4.1p111
 
 BUNDLED WITH
    1.14.6
