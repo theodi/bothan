@@ -47,6 +47,7 @@ $gray:                      #55595c !default;
 $gray-light:                #818a91 !default;
 $gray-lighter:              #eceeef !default;
 $gray-lightest:             #f7f7f9 !default;
+$white: #fff !default;
 
 $brand-primary:             #0275d8 !default;
 $brand-success:             #5cb85c !default;
@@ -54,6 +55,28 @@ $brand-info:                #5bc0de !default;
 $brand-warning:             #f0ad4e !default;
 $brand-danger:              #d9534f !default;
 $brand-inverse:             $gray-dark !default;
+
+$brand-alpha:               #dc3a85 !default;
+$brand-beta:                #ef7933 !default;
+$brand-live:                #879653 !default;
+
+// Badges
+
+$badge-alpha-bg:              $brand-alpha !default;
+$badge-beta-bg:               $brand-beta !default;
+$badge-live-bg:               $brand-live !default;
+
+$service-badge-color:                 $white !default;
+$service-badge-link-hover-color:      $white !default;
+$service-badge-font-size:             35% !default;
+$service-badge-font-weight:           bold !default;
+$service-badge-padding-x:             .4em !default;
+$service-badge-padding-y:             .25em !default;
+
+$service-badge-pill-padding-x:        .6em !default;
+// Use a higher than normal value to ensure completely rounded edges when
+// customizing padding or font-size on labels.
+$service-badge-pill-border-radius:    10rem !default;
 
 
 // Options
