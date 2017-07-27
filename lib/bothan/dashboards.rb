@@ -66,7 +66,10 @@ module Bothan
       app.post '/dashboards' do
         protected!
 
+
         dashboard = params[:dashboard]
+        dashboard[:metrics].delete_if {|k,v| !v.has_key?("name")}
+        # delete any entry without name, catches empty form submissions
         dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
                                                  .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
 
