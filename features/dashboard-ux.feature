@@ -10,10 +10,13 @@ Feature: Dashboard UX
 
     Scenario: Create a Dashboard With Name
       Given I authenticate as the user "foo" with the password "bar"
-      And I send a GET request to "dashboards/new"
-#      And I go to "dashboards/new" #doesn't work - uncertain if anything in web_steps works
+#      And I send a GET request to "dashboards/new"
+      And I go to "dashboards"
+      #doesn't work - uncertain if anything in web_steps works
       Then I should see a form
       And the form should have a field "dashboard[name]"
+      And I fill in "testing" for "title" within "title"
+      And I press "Submit" within "form-group"
       # AND I should see Dashboard Name
       # AND I INPUT @NAME // necessary for redirect
       # THEN I click submit
