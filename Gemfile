@@ -19,6 +19,7 @@ gem 'exception_notification'
 gem 'compass'
 gem 'bootstrap-sass'
 gem 'pusher'
+gem 'launchy'
 
 group :test do
   gem 'capybara-webkit'
