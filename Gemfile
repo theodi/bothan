@@ -18,6 +18,7 @@ gem 'iso8601'
 gem 'compass'
 gem 'bootstrap-sass'
 gem 'pusher'
+gem 'actionview'
 
 group :test do
   gem 'capybara-webkit'
