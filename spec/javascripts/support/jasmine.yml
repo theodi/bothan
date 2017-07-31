@@ -118,12 +118,8 @@ boot_files:
 # Extra options to be passed to the rack server
 # by default, Port and AccessLog are passed.
 #
-# This is an advanced options, and left empty by default
-#
-# EXAMPLE
-#
-# rack_options:
-#   server: 'thin'
+rack_options:
+  server: 'thin'
 
 # random
 #
