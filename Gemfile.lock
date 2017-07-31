@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/theodi/cucumber-api-steps.git
-  revision: f8f9254614c64adb76fac3b6065cc9a10dc4f51b
-  branch: feature-test-content-type
-  specs:
-    cucumber-api-steps (0.13)
-      cucumber (>= 1.2.1)
-      jsonpath (>= 0.1.2)
-      rspec (>= 2.12.0)
-
-GIT
   remote: https://github.com/rchampourlier/guard-shotgun.git
   revision: 9ee25ed2ae9f3d9cb249229ee35d41d6329a7f25
   specs:
@@ -16,6 +6,16 @@ GIT
       ffi
       guard (~> 2.0)
       spoon
+
+GIT
+  remote: https://github.com/theodi/cucumber-api-steps.git
+  revision: f8f9254614c64adb76fac3b6065cc9a10dc4f51b
+  branch: feature-test-content-type
+  specs:
+    cucumber-api-steps (0.13)
+      cucumber (>= 1.2.1)
+      jsonpath (>= 0.1.2)
+      rspec (>= 2.12.0)
 
 GEM
   remote: https://rubygems.org/
@@ -250,7 +250,7 @@ GEM
       rdf (~> 1.99)
     json-schema (2.6.0)
       addressable (~> 2.3.8)
-    jsonpath (0.5.6)
+    jsonpath (0.8.5)
       multi_json
     kramdown (1.11.1)
     link_header (0.0.8)
@@ -483,7 +483,7 @@ DEPENDENCIES
   capybara-webkit
   compass
   coveralls
-  cucumber (~> 2.4)
+  cucumber
   cucumber-api-steps!
   cucumber-sinatra
   data_kitten
@@ -501,7 +501,7 @@ DEPENDENCIES
   iso8601
   jasmine
   jekyll
-  mongoid (~> 5.2)
+  mongoid
   pusher
   rack-conneg
   rack-cors
