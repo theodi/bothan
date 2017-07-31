@@ -11,7 +11,7 @@ gem 'dotenv'
 gem 'thin'
 gem 'haml'
 gem 'foreman'
-gem 'mongoid', '~> 5.2'
+gem 'mongoid'
 gem 'rack-conneg'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
@@ -22,7 +22,7 @@ gem 'actionview'
 
 group :test do
   gem 'capybara-webkit'
-  gem 'cucumber', "~> 2.4"
+  gem 'cucumber'
   gem 'cucumber-sinatra'
   gem 'rspec'
   gem 'rack-test'
@@ -32,7 +32,7 @@ group :test do
   gem 'guard-cucumber'
   gem 'terminal-notifier-guard'
   gem 'coveralls', require: false
-  gem 'cucumber-api-steps', require: false, github: 'theodi/cucumber-api-steps', branch: 'feature-test-content-type'
+  gem 'cucumber-api-steps', require: false, git: 'https://github.com/theodi/cucumber-api-steps.git', branch: 'feature-test-content-type'
   gem 'database_cleaner'
   gem 'guard-shotgun', :git => 'https://github.com/rchampourlier/guard-shotgun.git'
   gem 'jasmine'
