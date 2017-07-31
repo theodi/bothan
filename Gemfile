@@ -15,10 +15,10 @@ gem 'mongoid', '~> 5.2'
 gem 'rack-conneg'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
-gem 'exception_notification'
 gem 'compass'
 gem 'bootstrap-sass'
 gem 'pusher'
+gem 'actionview'
 
 group :test do
   gem 'capybara-webkit'
