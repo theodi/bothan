@@ -19,22 +19,6 @@ class Bothan::App < Sinatra::Base
   set :views, Proc.new { File.join(root, "..", "views") }
   set :public_folder, Proc.new { File.join(root, "..", "public") }
 
-  use ExceptionNotification::Rack,
-    :email => {
-      :email_prefix => "[Metrics API] ",
-      :sender_address => %{"errors" <errors@metrics.theodi.org>},
-      :exception_recipients => %w{ops@theodi.org},
-      :smtp_settings => {
-        :user_name => ENV["MANDRILL_USERNAME"],
-        :password => ENV["MANDRILL_PASSWORD"],
-        :domain => "theodi.org",
-        :address => "smtp.mandrillapp.com",
-        :port => 587,
-        :authentication => :plain,
-        :enable_starttls_auto => true
-      }
-    }
-
   use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
     conneg.set :fallback, :html
