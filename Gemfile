@@ -11,7 +11,7 @@ gem 'dotenv'
 gem 'thin'
 gem 'haml'
 gem 'foreman'
-gem 'mongoid', '~> 5.2'
+gem 'mongoid'
 gem 'rack-conneg'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'iso8601'
@@ -22,7 +22,7 @@ gem 'actionview'
 
 group :test do
   gem 'capybara-webkit'
-  gem 'cucumber', "~> 2.4"
+  gem 'cucumber'
   gem 'cucumber-sinatra'
   gem 'rspec'
   gem 'rack-test'
