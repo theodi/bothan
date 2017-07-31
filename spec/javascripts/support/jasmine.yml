@@ -126,8 +126,4 @@ rack_options:
 # Run specs in semi-random order.
 # Default: false
 #
-# EXAMPLE:
-#
-# random: true
-#
-random:
+random: true
