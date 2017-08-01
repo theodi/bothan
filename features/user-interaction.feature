@@ -7,7 +7,12 @@ Feature:
 
 
   Scenario: un-authenticated user
-    pending
+    Given I send and accept HTML
+    And I authenticate as the user "foo" with the password "bar"
+    # re-using code that metadata.feature uses to check if API auth will suffice for HTML interactions
+    When I go to "login"
+    Then I should see "Authentication Required" within "body"
+#    Then show me the page
 
   Scenario: basic authenticated user
     pending
