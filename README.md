@@ -92,6 +92,8 @@ Checkout the repository
 
 run `mongod` to establish a database for persistence
 
+run `brew install cmake` or `sudo apt-get install cmake`
+
 run ```bundle``` in the checked out directory.
 
 The app is loaded via Rack Middleware.  
