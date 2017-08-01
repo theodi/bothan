@@ -28,3 +28,6 @@ Feature:
     When I go to "create dashboard"
     Then I should see "Create Dashboard" within "row"
 #    Then show me the page
+
+  Scenario: edit existing dashboard
+    pending
