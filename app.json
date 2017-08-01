@@ -59,12 +59,5 @@
     "mongolab:sandbox",
     "pusher:sandbox"
   ],
-  "buildpacks": [
-    {
-      "url": "heroku/ruby"
-    },
-    {
-      "url": "https://github.com/Munett/heroku-buildpack-cmake.git"
-    }
-  ]
+  "stack": "heroku-16"
 }

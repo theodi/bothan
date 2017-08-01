@@ -1,12 +1,9 @@
 language: ruby
 cache: bundler
 sudo: false
+dist: trusty
 rvm:
   - 2.4.1
-addons:
-  apt:
-    packages:
-    - cmake
 services: mongodb
 env:
   global:
