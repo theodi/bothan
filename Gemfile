@@ -39,5 +39,6 @@ group :test do
   gem 'jasmine'
   gem 'timecop'
   gem 'data_kitten'
+  gem 'linkeddata', '< 2.0' #pinned for datakitten compatibility
   gem 'webmock'
 end
