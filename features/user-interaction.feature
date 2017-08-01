@@ -15,7 +15,12 @@ Feature:
 #    Then show me the page
 
   Scenario: basic authenticated user
-    pending
+    Given I send and accept HTML
+#    And I authenticate as the user "foo" with the password "bar"
+    When I am logged in as "foo" with "bar"
+    When I go to "login"
+    Then I should not see "Authentication Required" within "body"
+    Then I should see "Current Metrics" within "col-md-6"
 
   Scenario: dashboard HTML access
     pending
