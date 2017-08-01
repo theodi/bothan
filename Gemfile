@@ -38,5 +38,6 @@ group :test do
   gem 'jasmine'
   gem 'timecop'
   gem 'data_kitten'
+  gem 'linkeddata', '~> 1.99' # pinned for data_kitten
   gem 'webmock'
 end
