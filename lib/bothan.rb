@@ -2,7 +2,7 @@ $:.unshift File.dirname(__FILE__)
 
 require 'sinatra'
 require 'rack/cors'
-require 'tilt/erubis'
+require 'tilt/erb'
 require 'tilt/kramdown'
 require 'mongoid'
 require 'rack/conneg'
