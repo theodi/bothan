@@ -10,8 +10,19 @@
 #   - lib/source2.js
 #   - dist/**/*.js
 #
+
+# NOTE: We include everything explicitly here because including webcomponents.js
+# breaks jasmine:ci
 src_files:
-  - lib/public/javascripts/**/*.js
+  - lib/public/javascripts/chart.js
+  - lib/public/javascripts/countup.js
+  - lib/public/javascripts/dashboard.js
+  - lib/public/javascripts/defiant.js
+  - lib/public/javascripts/metrics.js
+  - lib/public/javascripts/number.js
+  - lib/public/javascripts/target.js
+  - lib/public/javascripts/tasklist.js
+  - lib/public/javascripts/tooltip.js
 
 # stylesheets
 #
@@ -40,8 +51,6 @@ stylesheets:
 helpers:
   - 'helpers/jquery-1.12.0.min.js' # Need to load jQuery first
   - 'helpers/**/*.js'
-  - 'https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.17.1/URI.min.js'
-  - 'https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js'
 
 # spec_files
 #
@@ -118,20 +127,12 @@ boot_files:
 # Extra options to be passed to the rack server
 # by default, Port and AccessLog are passed.
 #
-# This is an advanced options, and left empty by default
-#
-# EXAMPLE
-#
-# rack_options:
-#   server: 'thin'
+rack_options:
+  server: 'thin'
 
 # random
 #
 # Run specs in semi-random order.
 # Default: false
 #
-# EXAMPLE:
-#
-# random: true
-#
-random:
+random: true
