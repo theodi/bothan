@@ -20,6 +20,7 @@ gem 'compass'
 gem 'bootstrap-sass'
 gem 'pusher'
 gem 'actionview'
+gem 'launchy'
 
 group :test do
   gem 'capybara-webkit'
