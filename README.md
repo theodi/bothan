@@ -88,14 +88,20 @@ change directory ownership so that mongodb can operate
 
 ### Development: Running the full application locally
 
-Checkout the repository and run ```bundle``` in the checked out directory.
+Checkout the repository 
+
+run `mongod` to establish a database for persistence
+
+run ```bundle``` in the checked out directory.
 
 The app is loaded via Rack Middleware.  
 execute `bundle exec rackup config.ru` to start the application
 
 ### Tests
 
-A MongoDB instance must be running prior to executing test suites (see steps above from Running the full application locally) 
+A MongoDB instance must be running prior to executing test suites (see steps above from Running the full application locally for installation)
+
+Execute `mongod`
 
 The entire suite of unit tests (`rspec`) and user features (`cucumber`) can be executed with the `rake` command
 

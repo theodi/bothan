@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/theodi/cucumber-api-steps.git
-  revision: f8f9254614c64adb76fac3b6065cc9a10dc4f51b
-  branch: feature-test-content-type
-  specs:
-    cucumber-api-steps (0.13)
-      cucumber (>= 1.2.1)
-      jsonpath (>= 0.1.2)
-      rspec (>= 2.12.0)
-
-GIT
   remote: https://github.com/rchampourlier/guard-shotgun.git
   revision: 9ee25ed2ae9f3d9cb249229ee35d41d6329a7f25
   specs:
@@ -17,31 +7,25 @@ GIT
       guard (~> 2.0)
       spoon
 
+GIT
+  remote: https://github.com/theodi/cucumber-api-steps.git
+  revision: f8f9254614c64adb76fac3b6065cc9a10dc4f51b
+  branch: feature-test-content-type
+  specs:
+    cucumber-api-steps (0.13)
+      cucumber (>= 1.2.1)
+      jsonpath (>= 0.1.2)
+      rspec (>= 2.12.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    actionmailer (4.2.1)
-      actionpack (= 4.2.1)
-      actionview (= 4.2.1)
-      activejob (= 4.2.1)
-      mail (~> 2.5, >= 2.5.4)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
-    actionpack (4.2.1)
-      actionview (= 4.2.1)
-      activesupport (= 4.2.1)
-      rack (~> 1.6)
-      rack-test (~> 0.6.2)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
-      rails-html-sanitizer (~> 1.0, >= 1.0.1)
     actionview (4.2.1)
       activesupport (= 4.2.1)
       builder (~> 3.1)
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
-    activejob (4.2.1)
-      activesupport (= 4.2.1)
-      globalid (>= 0.3.0)
     activemodel (4.2.1)
       activesupport (= 4.2.1)
       builder (~> 3.1)
@@ -149,9 +133,6 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     eventmachine (1.2.3)
-    exception_notification (4.2.1)
-      actionmailer (>= 4.0, < 6)
-      activesupport (>= 4.0, < 6)
     execjs (2.7.0)
     extlib (0.9.16)
     faraday (0.12.1)
@@ -190,8 +171,6 @@ GEM
       octokit (~> 4.0)
       public_suffix (~> 1.4)
       typhoeus (~> 0.7)
-    globalid (0.4.0)
-      activesupport (>= 4.2.0)
     guard (2.14.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -280,7 +259,7 @@ GEM
       rdf (~> 2.2)
     json-schema (2.6.2)
       addressable (~> 2.3.8)
-    jsonpath (0.5.6)
+    jsonpath (0.8.5)
       multi_json
     jsontableschema (0.2.0)
       currencies (~> 0.4.2)
@@ -326,8 +305,6 @@ GEM
     lumberjack (1.0.12)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.5)
-      mime-types (>= 1.16, < 4)
     mercenary (0.3.6)
     method_source (0.8.2)
     mime-types (3.1)
@@ -532,17 +509,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionview
   bootstrap-sass
   capybara-webkit
   compass
   coveralls
-  cucumber (~> 2.4)
+  cucumber
   cucumber-api-steps!
   cucumber-sinatra
   data_kitten
   database_cleaner
   dotenv
-  exception_notification
   foreman
   github-markdown
   github-pages
@@ -555,7 +532,7 @@ DEPENDENCIES
   iso8601
   jasmine
   jekyll
-  mongoid (~> 5.2)
+  mongoid
   pusher
   rack-conneg
   rack-cors
@@ -568,5 +545,8 @@ DEPENDENCIES
   timecop
   webmock
 
+RUBY VERSION
+   ruby 2.3.4p301
+
 BUNDLED WITH
-   1.14.6
+   1.15.3
