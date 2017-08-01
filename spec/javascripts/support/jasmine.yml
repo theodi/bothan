@@ -10,8 +10,19 @@
 #   - lib/source2.js
 #   - dist/**/*.js
 #
+
+# NOTE: We include everything explicitly here because including webcomponents.js
+# breaks jasmine:ci
 src_files:
-  - lib/public/javascripts/**/*.js
+  - lib/public/javascripts/chart.js
+  - lib/public/javascripts/countup.js
+  - lib/public/javascripts/dashboard.js
+  - lib/public/javascripts/defiant.js
+  - lib/public/javascripts/metrics.js
+  - lib/public/javascripts/number.js
+  - lib/public/javascripts/target.js
+  - lib/public/javascripts/tasklist.js
+  - lib/public/javascripts/tooltip.js
 
 # stylesheets
 #
