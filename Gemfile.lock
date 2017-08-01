@@ -54,6 +54,8 @@ GEM
     coffee-script-source (1.12.2)
     colorator (0.1)
     colorize (0.7.7)
+    commonmarker (0.16.8)
+      ruby-enum (~> 0.5)
     compass (1.0.3)
       chunky_png (~> 1.2)
       compass-core (~> 1.0.2)
@@ -128,7 +130,7 @@ GEM
     gemoji (2.1.0)
     gherkin (4.1.3)
     git (1.2.9.1)
-    github-markdown (0.6.9)
+    github-markup (1.6.1)
     github-pages (87)
       github-pages-health-check (= 1.1.0)
       jekyll (= 3.1.6)
@@ -400,6 +402,8 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
+    ruby-enum (0.7.1)
+      i18n
     safe_yaml (1.0.4)
     sass (3.4.24)
     sawyer (0.8.1)
@@ -471,6 +475,7 @@ DEPENDENCIES
   actionview
   bootstrap-sass
   capybara-webkit
+  commonmarker
   compass
   coveralls
   cucumber
@@ -480,7 +485,7 @@ DEPENDENCIES
   database_cleaner
   dotenv
   foreman
-  github-markdown
+  github-markup
   github-pages
   guard
   guard-cucumber
