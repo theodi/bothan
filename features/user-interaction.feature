@@ -25,6 +25,6 @@ Feature:
   Scenario: dashboard HTML access
     Given I send and accept HTML
     And I am logged in as "foo" with "bar"
-    When I go to "dashboard"
+    When I go to "create dashboard"
     Then I should see "Create Dashboard" within "row"
 #    Then show me the page

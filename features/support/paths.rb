@@ -12,7 +12,7 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
-    when /dashboard/
+    when /create dashboard/
       '/dashboards/new'
 
     when /login/
