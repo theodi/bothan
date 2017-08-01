@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/rchampourlier/guard-shotgun.git
-  revision: 9ee25ed2ae9f3d9cb249229ee35d41d6329a7f25
-  specs:
-    guard-shotgun (0.4.0)
-      ffi
-      guard (~> 2.0)
-      spoon
-
-GIT
   remote: https://github.com/theodi/cucumber-api-steps.git
   revision: f8f9254614c64adb76fac3b6065cc9a10dc4f51b
   branch: feature-test-content-type
@@ -191,6 +182,10 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    guard-shotgun (0.4.0)
+      ffi
+      guard (~> 2.0)
+      spoon
     haml (4.0.7)
       tilt
     hashdiff (0.3.4)
@@ -498,7 +493,7 @@ DEPENDENCIES
   guard-cucumber
   guard-jasmine
   guard-rspec
-  guard-shotgun!
+  guard-shotgun
   haml
   iso8601
   jasmine

@@ -34,7 +34,7 @@ group :test do
   gem 'coveralls', require: false
   gem 'cucumber-api-steps', require: false, git: 'https://github.com/theodi/cucumber-api-steps.git', branch: 'feature-test-content-type'
   gem 'database_cleaner'
-  gem 'guard-shotgun', :git => 'https://github.com/rchampourlier/guard-shotgun.git'
+  gem 'guard-shotgun'
   gem 'jasmine'
   gem 'timecop'
   gem 'data_kitten'
