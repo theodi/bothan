@@ -3,6 +3,10 @@ cache: bundler
 sudo: false
 rvm:
   - 2.4.1
+addons:
+  apt:
+    packages:
+    - cmake
 services: mongodb
 env:
   global:
