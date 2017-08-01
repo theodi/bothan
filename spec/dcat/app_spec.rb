@@ -22,7 +22,7 @@ describe Bothan::App do
   end
 
   it 'has the correct last-modified date' do
-    expect(@dataset.modified).to eq DateTime.parse '2015-01-01T00:00:00.000+00:00'
+    expect(@dataset.modified).to eq DateTime.parse '2017-01-01T00:00:00.000+00:00'
   end
 
   it 'has a good description' do
@@ -54,6 +54,6 @@ def create_data
   earliest = {name: 'metrique', time: '2015-01-01T00:00:00.000+00:00', value: '194321'}
   Metric.create(earliest)
 
-  latest = {name: 'metrique', time: '2016-01-01T00:00:00.000+00:00', value: '194321'}
+  latest = {name: 'metrique', time: '2017-01-01T00:00:00.000+00:00', value: '194321'}
   Metric.create(latest)
 end
