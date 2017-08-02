@@ -205,6 +205,10 @@ Then /^the form should contain a field "([^\"]*)"/ do |field|
   expect(find_field(field)).to_not be(nil)
 end
 
+Then /^the form field "([^\"]*)" should contain a value "([^\"]*)"/ do |field_id, contents|
+  expect(find_field(field_id).value).eql?(contents)
+end
+
 Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
