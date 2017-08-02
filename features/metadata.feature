@@ -98,3 +98,11 @@ Feature: Metrics API
     And the form should have a field "description[en]"
     And the form should have a field "type"
     And the form should have a field "datatype"
+
+  Scenario: ACTUALLY editing metadata in a form
+    Given I am logged in as "foo" with "bar"
+    And there is a metric in the database with the name "membership-count"
+#    And metadata already exists for the metric type "membership-count"
+    And I go to "metrics/membership-count/metadata"
+#    Then show me the page
+    Then the page should contain a form
