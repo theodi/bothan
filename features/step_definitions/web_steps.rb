@@ -201,6 +201,10 @@ Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should not be checked$/ do
   end
 end
 
+Then /^the form should contain a field ([^\"]*)/ do |field|
+  find_field(field).present?
+end
+
 Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
