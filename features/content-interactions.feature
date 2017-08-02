@@ -1,4 +1,4 @@
-Feature:
+Feature: Authenticated HTML User Interactions
 
 Scenario: un-authenticated user
     Given I authenticate as the user "foo" with the password "bar"
