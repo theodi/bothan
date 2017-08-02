@@ -109,7 +109,7 @@ Then /^(?:|I )should see JSON:$/ do |expected_json|
   expected.should == actual
 end
 
-Then /^the page should contain a ([^\"]*)/ do | element |
+Then /^the page should contain an element "([^\"]*)"/ do | element |
   expect(page.find(element)).to_not be(nil)
 end
 
@@ -201,7 +201,7 @@ Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should not be checked$/ do
   end
 end
 
-Then /^the form should contain a field ([^\"]*)/ do |field|
+Then /^the form should contain a field "([^\"]*)"/ do |field|
   expect(find_field(field)).to_not be(nil)
 end
 
