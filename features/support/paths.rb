@@ -20,6 +20,9 @@ module NavigationHelpers
 
     when /metrics\/membership-count\/metadata/
       'metrics/membership-count/metadata'
+
+    when /edit dashboard\/(.*)/
+      '/dashboards/$1/edit'
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
