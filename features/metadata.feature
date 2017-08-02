@@ -111,3 +111,5 @@ Feature: Metrics API
     And the form should contain a field "description[en]"
     And the form should contain a field "type"
     And the form should contain a field "datatype"
+    And the form field "title[en]" should contain a value "Member Count"
+    And the form field "description[en]" should contain a value "How many members there are"
