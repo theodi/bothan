@@ -21,8 +21,6 @@ require 'cucumber/rspec/doubles'
 require 'database_cleaner'
 require 'database_cleaner/cucumber'
 require 'timecop'
-require 'launchy'
-require 'byebug'
 
 DatabaseCleaner.strategy = :truncation
 
