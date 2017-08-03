@@ -34,7 +34,6 @@ Feature: Dashboard Interactions
     And I select "dashboard-0" from field "dashboard[metrics][7][name]" in the table "dashboard"
     And I select "dashboard-0" from field "dashboard[metrics][8][name]" in the table "dashboard"
     And I click the button "post-dashboard"
-    Then show me the page
     Then the current URL path is /dashboards/test
 
   Scenario: Create a 2 * 2 grid dashboard

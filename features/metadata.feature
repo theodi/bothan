@@ -93,7 +93,6 @@ Feature: Metrics API
     And there is a metric in the database with the name "membership-count"
     And metadata already exists for the metric type "membership-count"
     And I go to "metrics/membership-count/metadata"
-    Then show me the page
     Then the page should contain an element "form"
     And the form should contain a field "title[en]"
     And the form should contain a field "description[en]"
