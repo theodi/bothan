@@ -14,6 +14,7 @@ require File.join(File.dirname(__FILE__), '..', '..', 'lib/bothan.rb')
 
 require 'capybara'
 require 'capybara/cucumber'
+require 'capybara-webkit'
 require 'rspec'
 require 'cucumber/api_steps'
 require 'cucumber/rspec/doubles'
@@ -21,10 +22,18 @@ require 'database_cleaner'
 require 'database_cleaner/cucumber'
 require 'timecop'
 require 'launchy'
+require 'byebug'
 
 DatabaseCleaner.strategy = :truncation
 
+Capybara.javascript_driver = :webkit # not sure why this isn't enabled, doesnt impede existing features
+Capybara::Webkit.configure do |config|
+  config.allow_url("0.0.0.0")
+end
+
 Capybara.app = Bothan::App
+Capybara.app_host = "http://0.0.0.0:3000"
+Capybara.server_port = 3000
 
 class Bothan::AppWorld
   include Capybara::DSL
