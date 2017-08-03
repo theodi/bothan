@@ -29,6 +29,16 @@ DatabaseCleaner.strategy = :truncation
 Capybara.javascript_driver = :webkit # not sure why this isn't enabled, doesnt impede existing features
 Capybara::Webkit.configure do |config|
   config.allow_url("0.0.0.0")
+  # used for pathing for dashboard tests (see below .app_host)
+  config.allow_url("stats.pusher.com")
+  config.allow_url("js.pusher.com")
+  config.allow_url("cdn.plot.ly")
+  config.allow_url("unpkg.com")
+  config.allow_url("cdnjs.cloudflare.com")
+  config.allow_url("maxcdn.bootstrapcdn.com")
+  config.allow_url("fonts.googleapis.com")
+  config.allow_url("ajax.googleapis.com")
+  # used to ensure that all JS loads for the dashboard
 end
 
 Capybara.app = Bothan::App
