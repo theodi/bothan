@@ -68,13 +68,6 @@ When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |val
   end
 end
 
-When /^I select "([^\"]*)" from field "([^\"]*)" in the table "([^\"]*)"/ do |value, field, table|
-  byebug
-  within_table(table) do
-    select(value, :from => field)
-  end
-end
-
 # Use this to fill in an entire form with data from a table. Example:
 #
 #   When I fill in the following:
