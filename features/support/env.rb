@@ -40,8 +40,6 @@ Capybara::Webkit.configure do |config|
 end
 
 Capybara.app = Bothan::App
-Capybara.app_host = "http://0.0.0.0:3000"
-Capybara.server_port = 3000
 
 class Bothan::AppWorld
   include Capybara::DSL

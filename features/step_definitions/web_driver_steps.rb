@@ -1,5 +1,5 @@
 Given /^I login with user: "([^\"]*)" and pwd: "([^\"]*)" and visit dashboards/ do |username, password |
-  page.visit("http://#{username}:#{password}@0.0.0.0:3000/dashboards/new")
+  page.visit("http://#{username}:#{password}@#{Capybara.current_session.server.host}:#{Capybara.current_session.server.port}/dashboards/new")
 end
 
 When /^I select "([^\"]*)" from field "([^\"]*)" in the table "([^\"]*)"/ do |value, field, table|
