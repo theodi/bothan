@@ -15,6 +15,8 @@ module WithinHelpers
     locator ? within(locator) { yield } : yield
   end
 end
+
+
 World(WithinHelpers)
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
@@ -29,10 +31,23 @@ When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
+When /^I click the button "([^\"]*)"/ do |id|
+  # debug purposes
+  click_button(id)
+end
+
+When /I populate a field "([^\"]*)" with "([^\"]*)"/ do |field, content|
+  fill_in(field, with: content)
+end
+
+
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-  with_scope(selector) do
-    click_button(button)
-  end
+  # byebug
+  click_button(button);
+  # with_scope(selector) do
+  # DUD function
+  #   click_button(button)
+  # end
 end
 
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
@@ -50,6 +65,13 @@ end
 When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
     fill_in(field, :with => value)
+  end
+end
+
+When /^I select "([^\"]*)" from field "([^\"]*)" in the table "([^\"]*)"/ do |value, field, table|
+  byebug
+  within_table(table) do
+    select(value, :from => field)
   end
 end
 

@@ -10,6 +10,7 @@ require 'iso8601'
 require 'dotenv'
 require 'kramdown'
 require 'pusher'
+require 'byebug'
 
 module Bothan
 end

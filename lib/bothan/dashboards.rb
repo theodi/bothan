@@ -65,6 +65,7 @@ module Bothan
 
       app.post '/dashboards' do
         protected!
+        byebug
 
         dashboard = params[:dashboard]
         dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
