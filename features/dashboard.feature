@@ -23,7 +23,6 @@ Feature: Dashboard Interactions
     Then I should see "Create Dashboard" within "row"
     When I populate a field "dashboard-title" with "test"
     When I populate a field "slug" with "test"
-    Then show me the page
     And I select "dashboard-0" from field "dashboard[metrics][0][name]" in the table "dashboard"
     And I select "dashboard-0" from field "dashboard[metrics][1][name]" in the table "dashboard"
     And I select "dashboard-0" from field "dashboard[metrics][2][name]" in the table "dashboard"
