@@ -22,9 +22,6 @@ gem 'pusher'
 gem 'actionview'
 
 group :test do
-  gem 'chromedriver-helper'
-  gem 'capybara-selenium'
-  gem 'geckodriver-helper'
   gem 'capybara-webkit'
   gem 'cucumber'
   gem 'cucumber-sinatra'
