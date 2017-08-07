@@ -1,7 +1,7 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'action_view'
-require 'github/markdown'
+require 'github/markup'
 
 require 'extensions/string'
 
@@ -18,22 +18,6 @@ class Bothan::App < Sinatra::Base
 
   set :views, Proc.new { File.join(root, "..", "views") }
   set :public_folder, Proc.new { File.join(root, "..", "public") }
-
-  use ExceptionNotification::Rack,
-    :email => {
-      :email_prefix => "[Metrics API] ",
-      :sender_address => %{"errors" <errors@metrics.theodi.org>},
-      :exception_recipients => %w{ops@theodi.org},
-      :smtp_settings => {
-        :user_name => ENV["MANDRILL_USERNAME"],
-        :password => ENV["MANDRILL_PASSWORD"],
-        :domain => "theodi.org",
-        :address => "smtp.mandrillapp.com",
-        :port => 587,
-        :authentication => :plain,
-        :enable_starttls_auto => true
-      }
-    }
 
   use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
@@ -74,7 +58,7 @@ class Bothan::App < Sinatra::Base
 
       wants.html do
         @title = 'Metrics API'
-        @markup = GitHub::Markdown.render_gfm(File.read('docs/api.md').gsub(/---.+---/m,' '))
+        @markup = GitHub::Markup.render('api.md', File.read('docs/api.md').gsub(/---.+---/m,' ')).html_safe
         erb :index, layout: 'layouts/default'.to_sym
       end
 

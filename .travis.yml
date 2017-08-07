@@ -1,8 +1,9 @@
 language: ruby
 cache: bundler
 sudo: false
+dist: trusty
 rvm:
-  - 2.3.4
+  - 2.4.1
 services: mongodb
 env:
   global:
