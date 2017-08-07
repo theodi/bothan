@@ -3,7 +3,7 @@ cache: bundler
 sudo: false
 dist: trusty
 rvm:
-  - 2.4.1
+  - 2.4.0
 services: mongodb
 language: objective-c
 addons:
