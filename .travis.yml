@@ -1,10 +1,18 @@
 language: ruby
 cache: bundler
-sudo: false
+sudo: required
 dist: trusty
 rvm:
   - 2.4.1
 services: mongodb
+addons:
+  apt:
+    sources:
+      - ubuntu-sdk-team
+    packages:
+      - libqt5webkit5-dev
+      - qtdeclarative5-dev
+script: xvfb-run bundle exec rake
 env:
   global:
     - METRICS_API_USERNAME="username"
