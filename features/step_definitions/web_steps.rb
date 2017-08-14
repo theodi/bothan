@@ -23,31 +23,16 @@ Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-Given /^I am logged in as "([^\"]*)" with "([^\"]*)"/ do |user,pwd|
-  page.driver.browser.basic_authorize user, pwd
-end
-
 When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^I click the button "([^\"]*)"/ do |id|
-  # debug purposes
-  click_button(id)
-end
-
-When /I populate a field "([^\"]*)" with "([^\"]*)"/ do |field, content|
-  fill_in(field, with: content)
-end
-
-
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-  # byebug
   click_button(button);
-  # with_scope(selector) do
+  with_scope(selector) do
   # DUD function
-  #   click_button(button)
-  # end
+    click_button(button)
+  end
 end
 
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
@@ -122,10 +107,6 @@ Then /^(?:|I )should see JSON:$/ do |expected_json|
   expected = JSON.pretty_generate(JSON.parse(expected_json))
   actual   = JSON.pretty_generate(JSON.parse(response.body))
   expected.should == actual
-end
-
-Then /^the page should contain an element "([^\"]*)"/ do | element |
-  expect(page.find(element)).to_not be(nil)
 end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
@@ -214,14 +195,6 @@ Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should not be checked$/ do
       assert_not_equal 'checked', field_checked
     end
   end
-end
-
-Then /^the form should contain a field "([^\"]*)"/ do |field|
-  expect(find_field(field)).to_not be(nil)
-end
-
-Then /^the form field "([^\"]*)" should contain a value "([^\"]*)"/ do |field_id, contents|
-  expect(find_field(field_id).value).eql?(contents)
 end
 
 Then /^(?:|I )should be on (.+)$/ do |page_name|
