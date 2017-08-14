@@ -12,6 +12,7 @@ addons:
     packages:
       - libqt5webkit5-dev
       - qtdeclarative5-dev
+      - cmake
 script: xvfb-run bundle exec rake
 env:
   global:
