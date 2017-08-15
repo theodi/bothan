@@ -49,6 +49,7 @@ Capybara::Webkit.configure do |config|
   config.allow_url("0.0.0.0")
   # used for pathing for dashboard tests (see below .app_host)
   config.allow_url("stats.pusher.com")
+  config.allow_url("http://timeline33-clientstats1.pusher.com/")
   config.allow_url("js.pusher.com")
   config.allow_url("cdn.plot.ly")
   config.allow_url("unpkg.com")
