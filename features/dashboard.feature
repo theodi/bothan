@@ -3,7 +3,7 @@ Feature: Dashboard Interactions
   @javascript
   Scenario: create a named dashboard with default row*column dimensions
 
-    Given I login with user: "foo" and pwd: "bar" and visit "dashboards"
+    Given I login with user: "foo" and pwd: "bar" and visit "dashboards/new"
     Then I should see "Create Dashboard" within "row"
     And I populate a field "dashboard-title" with "test"
     And I populate a field "slug" with "test"
@@ -22,7 +22,7 @@ Feature: Dashboard Interactions
 
   @javascript
   Scenario: do not create empty dashboards
-    Given I login with user: "foo" and pwd: "bar" and visit "dashboards"
+    Given I login with user: "foo" and pwd: "bar" and visit "dashboards/new"
     Then I should see "Create Dashboard" within "row"
     When I populate a field "dashboard-title" with "test"
     When I populate a field "slug" with "test"
@@ -31,7 +31,7 @@ Feature: Dashboard Interactions
 
   @javascript
   Scenario: Create a 2 * 2 grid dashboard
-    Given I login with user: "foo" and pwd: "bar" and visit "dashboards"
+    Given I login with user: "foo" and pwd: "bar" and visit "dashboards/new"
     And I populate a field "dashboard-title" with "test"
     And I populate a field "slug" with "test"
     Then I populate a field "rows" with "2"
