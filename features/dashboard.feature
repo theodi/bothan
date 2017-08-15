@@ -5,8 +5,8 @@ Feature: Dashboard Interactions
 
     Given I login with user: "foo" and pwd: "bar" and visit "dashboards"
     Then I should see "Create Dashboard" within "row"
-    When I populate a field "dashboard-title" with "test"
-    When I populate a field "slug" with "test"
+    And I populate a field "dashboard-title" with "test"
+    And I populate a field "slug" with "test"
     And I select "dashboard-0" from field "dashboard[metrics][0][name]" in the table "dashboard"
     And I select "dashboard-0" from field "dashboard[metrics][1][name]" in the table "dashboard"
     And I select "dashboard-0" from field "dashboard[metrics][2][name]" in the table "dashboard"
@@ -30,14 +30,15 @@ Feature: Dashboard Interactions
     Then I should see "metrics can't be blank" within "body"
 
   @javascript
-  Scenario: do not create empty dashboard iframes after edit
-    pending
-    # TODO - this is to capture the behaviour when a dashboard is created then edited and the POST sanitising is bypassed
-
   Scenario: Create a 2 * 2 grid dashboard
-    pending
-    #  AND I should see number of rows value 3
-    #  AND I should see number of cols value 3
-
-  Scenario: Ensure only chosen metrics populate dashboard
-  pending
+    Given I login with user: "foo" and pwd: "bar" and visit "dashboards"
+    And I populate a field "dashboard-title" with "test"
+    And I populate a field "slug" with "test"
+    Then I populate a field "rows" with "2"
+    Then I populate a field "columns" with "2"
+    And I select "dashboard-0" from field "dashboard[metrics][0][name]" in the table "dashboard"
+    And I select "dashboard-0" from field "dashboard[metrics][1][name]" in the table "dashboard"
+    And I select "dashboard-0" from field "dashboard[metrics][2][name]" in the table "dashboard"
+    And I select "dashboard-0" from field "dashboard[metrics][3][name]" in the table "dashboard"
+    And I click the button "post-dashboard"
+    Then the dashboard "test" has "4" panels
