@@ -9,3 +9,6 @@
 tmp
 _site
 .sass-cache
+
+# ignore byebug
+/.byebug_history
