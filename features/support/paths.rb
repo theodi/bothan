@@ -12,8 +12,18 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
-      when /dashboard/
-        '/dashboards/new'
+    when /create dashboard/
+      '/dashboards/new'
+
+    when /login/
+      '/login'
+
+    when /metrics\/membership-count\/metadata/
+      'metrics/membership-count/metadata'
+
+    when /edit dashboard\/(.*)/
+      '/dashboards/$1/edit'
+        
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

@@ -15,6 +15,8 @@ module WithinHelpers
     locator ? within(locator) { yield } : yield
   end
 end
+
+
 World(WithinHelpers)
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
@@ -26,7 +28,9 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  click_button(button);
   with_scope(selector) do
+  # DUD function
     click_button(button)
   end
 end
