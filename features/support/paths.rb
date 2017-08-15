@@ -23,7 +23,7 @@ module NavigationHelpers
 
     when /edit dashboard\/(.*)/
       '/dashboards/$1/edit'
-        
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
