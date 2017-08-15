@@ -18,10 +18,7 @@ Feature: Dashboard Interactions
     And I select "dashboard-0" from field "dashboard[metrics][8][name]" in the table "dashboard"
     And I click the button "post-dashboard"
     Then the current URL path is /dashboards/test
-    # then there is a dashboard with the name
-
-    # and there are 9 metric frames
-
+    And the dashboard "test" has "9" panels
 
   @javascript
   Scenario: do not create empty dashboards
@@ -30,7 +27,7 @@ Feature: Dashboard Interactions
     When I populate a field "dashboard-title" with "test"
     When I populate a field "slug" with "test"
     And I click the button "post-dashboard"
-    Then the current URL path is /dashboards/new
+    Then I should see "metrics can't be blank" within "body"
 
   @javascript
   Scenario: do not create empty dashboard iframes after edit
