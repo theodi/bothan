@@ -37,6 +37,7 @@ module Bothan
         @dashboard = Dashboard.find_by(slug: params[:slug])
 
         dashboard = params[:dashboard]
+        dashboard[:metrics].delete_if {|k,v| !v.has_key?("name")}
         dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
                                                  .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
 
@@ -65,7 +66,6 @@ module Bothan
 
       app.post '/dashboards' do
         protected!
-
 
         dashboard = params[:dashboard]
         dashboard[:metrics].delete_if {|k,v| !v.has_key?("name")}
