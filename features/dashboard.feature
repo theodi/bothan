@@ -18,6 +18,9 @@ Feature: Dashboard Interactions
     And I select "dashboard-0" from field "dashboard[metrics][8][name]" in the table "dashboard"
     And I click the button "post-dashboard"
     Then the current URL path is /dashboards/test
+    # then there is a dashboard with the name
+
+    # and there are 9 metric frames
 
 
   @javascript
@@ -28,6 +31,11 @@ Feature: Dashboard Interactions
     When I populate a field "slug" with "test"
     And I click the button "post-dashboard"
     Then the current URL path is /dashboards/new
+
+  @javascript
+  Scenario: do not create empty dashboard iframes after edit
+    pending
+    # TODO - this is to capture the behaviour when a dashboard is created then edited and the POST sanitising is bypassed
 
   Scenario: Create a 2 * 2 grid dashboard
     pending
