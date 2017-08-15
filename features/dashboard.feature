@@ -17,7 +17,7 @@ Feature: Dashboard Interactions
 #    And I click the button "post-dashboard"
 
   @javascript
-  Scenario: create a named dashboard, webkit
+  Scenario: create a named dashboard with default row*column
 
     Given I login with user: "foo" and pwd: "bar" and visit dashboards
     Then I should see "Create Dashboard" within "row"
@@ -39,3 +39,6 @@ Feature: Dashboard Interactions
     pending
     #  AND I should see number of rows value 3
     #  AND I should see number of cols value 3
+
+  Scenario: Ensure only chosen metrics populate dashboard
+  pending
