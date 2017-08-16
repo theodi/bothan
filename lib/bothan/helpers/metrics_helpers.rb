@@ -153,7 +153,7 @@ module Bothan
           'chart'
         elsif data[:value].class == String
           'chart'
-        elsif data[:value].class == Array && !data[:value].first[:progress].nil?
+        elsif data[:value].class == Array && !data[:value].empty? && data[:value].first[:progress].present?
           'tasklist'
         elsif [Hash, BSON::Document].include?(data[:value].class) && !data[:value][:annual_target].nil?
           'target'
