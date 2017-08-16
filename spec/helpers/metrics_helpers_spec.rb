@@ -216,6 +216,15 @@ describe Bothan::Helpers::Metrics do
       expect(helpers.guess_type data).to eq('chart')
     end
 
+    it 'when there is an empty array' do
+      data = {
+        time: "2016-03-01T09:52:36.000+00:00",
+        value: [
+        ]
+      }
+      expect(helpers.guess_type data).to eq('chart')
+    end
+
     it 'for geodata' do
       data = {
         time: "2016-02-02T00:27:38.000+00:00",
