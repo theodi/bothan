@@ -27,9 +27,7 @@ Follow the [public feature roadmap for Bothan](https://trello.com/b/2xc7Q0kd/lab
 
 ## Upgrading
 
-Bothan instances set up with [deploy.bothan.io](https://deploy.bothan.io) should deploy and update automatically, but manual steps are occasionally required. 
-
-If you are experiencing deployment problems, see [the upgrade guide](UPGRADING.md).
+Most updates should not require intervention, but manual steps are occasionally required. If you are experiencing deployment problems, see [the upgrade guide](UPGRADING.md).
 
 ## Development
 
