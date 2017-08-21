@@ -28,4 +28,4 @@ If your app is automatically deploying from a GitHub repository, to apply the up
 ![upgrade-stack](https://github.com/theodi/bothan/tree/master/docs/images/configuration/step5-manual-deploy-to-github.png)
 * your app should now be deployed successfully.
 
-If you are not deploying automatically, follow your normal manual deployment process, and the next deployment will use the new settings and should succeed.
+If you are not deploying automatically, follow your normal manual deployment process, and the next deployment will use the new settings and should succeed. File an issue or contact labs@theodi.org if you still encounter difficulties.
