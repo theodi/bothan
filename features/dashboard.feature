@@ -42,18 +42,3 @@ Feature: Dashboard Interactions
     And I select "dashboard-0" from field "dashboard[metrics][3][name]" in the table "dashboard"
     And I click the button "post-dashboard"
     Then the dashboard "test" has "4" panels
-
-  @javascript
-  Scenario: do not create empty dashboard iframes when editing existing dashboard
-    Given I login with user: "foo" and pwd: "bar" and visit "dashboards/new"
-    And I populate a field "dashboard-title" with "test"
-    And I populate a field "slug" with "test"
-    And I select "dashboard-0" from field "dashboard[metrics][0][name]" in the table "dashboard"
-    And I click the button "post-dashboard"
-    Then the dashboard "test" has "1" panels
-    And I'm logged in with user: "foo" and pwd: "bar" and visit "dashboards/test/edit"
-    Then the dashboard editor has "3" rows and "9" columns
-    And I select "dashboard-0" from field "dashboard[metrics][1][name]" in the table "dashboard"
-    And I click the button "post-dashboard"
-#    Then show me the page
-    Then the dashboard "test" has "2" panels
