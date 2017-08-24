@@ -34,6 +34,7 @@ GEM
       sass (>= 3.3.4)
     bson (4.2.2)
     builder (3.2.3)
+    byebug (9.0.6)
     capybara (2.13.0)
       addressable
       mime-types (>= 1.16)
@@ -474,6 +475,7 @@ PLATFORMS
 DEPENDENCIES
   actionview
   bootstrap-sass
+  byebug
   capybara-webkit
   commonmarker
   compass
