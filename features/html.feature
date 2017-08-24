@@ -4,6 +4,7 @@ Feature: Metrics API
     Given I send and accept HTML
 
   Scenario: GET list of all metrics
+    pending
     Given there is a metric in the database with the name "membership-coverage"
     And there is a metric in the database with the name "membership-count"
     When I send a GET request to "metrics"
