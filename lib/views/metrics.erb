@@ -26,15 +26,31 @@
 
     <h2>Current Metrics</h2>
 
-    <ul id='metrics'>
-      <% @metrics[:metrics].each do |metric| %>
-        <li property='dcat:distribution' typeof='dcat:Distribution'>
-          <a href='<%= metric[:url].gsub('.json', '') %>' property='dcat:accessURL'>
-            <span property='dct:title'><%= extract_title(metric[:url]) %></span>
-          </a>
-        </li>
-      <% end %>
-    </ul>
+    <div class="table-responsive">
+      <table class="table">
+        <!-- this change will require an amendment to features/html.feature:6-->
+        <tr>
+          <th>Metric</th>
+          <% if authorized? %>
+            <th colspan="2"><span align="right">admin</span></th>
+          <% end %>
+        </tr>
+        <% @metrics[:metrics].each do |metric| %>
+        <tr>
+          <td property='dcat:distribution' typeof='dcat:Distribution'>
+            <a href='<%= metric[:url].gsub('.json', '') %>' property='dcat:accessURL'>
+              <span property='dct:title'><%= extract_title(metric[:url]) %></span>
+            </a>
+          </td>
+          <% if authorized? %>
+              <td>edit metadata</td>
+              <td>delete?</td>
+          <% end %>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+
 
     <h2>About this dataset</h2>
     <dl class='dl-horizontal'>
