@@ -31,6 +31,7 @@ module Bothan
         protected!
 
         @metric = Metric.find_by(name: params[:metric].parameterize)
+        byebug
         @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter)
 
@@ -113,6 +114,16 @@ module Bothan
         date_redirect(params)
         get_metric_range(params)
       end
+
+      app.delete '/metrics/:metric' do
+        protected!
+        Metric.where(name: params[:metric]).each do |metric|
+          metric.delete
+          # not sure if this should be destroy to invoke callbacks
+        end
+        redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
+      end
+
 
     end
 
