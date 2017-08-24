@@ -44,12 +44,19 @@
           </td>
           <% if authorized? %>
               <td>edit metadata</td>
-              <td>delete?</td>
-          <% end %>
+              <td>
+                <form action='metrics/<%= metric[:name] %>' method='POST' class='pull-right'>
+                  <input type='hidden' name='_method' value='DELETE'/>
+                  <button type='submit' onclick="return confirm('Are you sure you want to delete all data stored in this metric?');">delete?</button>
+                </form>
+              </td>
+        <% end %>
         </tr>
         <% end %>
       </table>
     </div>
+
+
 
 
     <h2>About this dataset</h2>
