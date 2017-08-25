@@ -54,7 +54,7 @@ GEM
     coffee-script-source (1.12.2)
     colorator (0.1)
     colorize (0.8.1)
-    commonmarker (0.16.8)
+    commonmarker (0.17.0)
       ruby-enum (~> 0.5)
     compass (1.0.3)
       chunky_png (~> 1.2)
