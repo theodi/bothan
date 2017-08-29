@@ -1,3 +1,4 @@
+@dashboard
 Feature: Dashboard Interactions
 
   @javascript
