@@ -96,6 +96,8 @@ run `brew install cmake` or `sudo apt-get install cmake`
 
 run ```bundle``` in the checked out directory.
 
+optional: run `rake demo:setup` to establish some demo metrics for use locally
+
 The app is loaded via Rack Middleware.  
 execute `bundle exec rackup config.ru` to start the application
 
@@ -113,6 +115,8 @@ alternatively execute each suite separately with
 * for Cucumber features execute `bundle exec cucumber`
 
 ### Rake Tasks
+
+`rake demo:setup` will establish one metric of [each type](https://bothan.io/visualisations.html) that Bothan supports
 
 ## Deployment
 
