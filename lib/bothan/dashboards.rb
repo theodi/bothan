@@ -69,10 +69,8 @@ module Bothan
         @dashboard = Dashboard.create(dashboard)
 
         if @dashboard.valid?
-          # byebug
           redirect "#{request.scheme}://#{request.host_with_port}/dashboards/#{@dashboard.slug}"
         else
-          # byebug
           @title = 'Create Dashboard'
           @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
           @errors = @dashboard.errors
