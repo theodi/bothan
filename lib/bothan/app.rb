@@ -9,9 +9,10 @@ require 'helpers/app_helpers'
 require 'helpers/auth_helpers'
 require 'helpers/metrics_helpers'
 require 'helpers/views_helpers'
+require 'helpers/dashboard_helpers'
 
 class Bothan::App < Sinatra::Base
-  helpers Bothan::Helpers::App, Bothan::Helpers::Auth, Bothan::Helpers::Metrics, Bothan::Helpers::Views
+  helpers Bothan::Helpers::App, Bothan::Helpers::Auth, Bothan::Helpers::Metrics, Bothan::Helpers::Views, Bothan::Helpers::Dashboard
 
   # Disable JSON CSRF protection - this is a JSON API goddammit.
   set :protection, :except => [:json_csrf, :frame_options]

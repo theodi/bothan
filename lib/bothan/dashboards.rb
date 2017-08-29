@@ -36,10 +36,7 @@ module Bothan
 
         @dashboard = Dashboard.find_by(slug: params[:slug])
 
-        dashboard = params[:dashboard]
-        dashboard[:metrics].delete_if {|k,v| !v.has_key?("name")}
-        dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
-                                                 .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+        dashboard = sanitize_metrics(params[:dashboard])
 
         @dashboard.update_attributes(dashboard)
 
@@ -67,17 +64,15 @@ module Bothan
       app.post '/dashboards' do
         protected!
 
-        dashboard = params[:dashboard]
-        dashboard[:metrics].delete_if {|k,v| !v.has_key?("name")}
-        # delete any entry without name, catches empty form submissions
-        dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
-                                                 .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+        dashboard = sanitize_metrics(params[:dashboard])
 
         @dashboard = Dashboard.create(dashboard)
 
         if @dashboard.valid?
+          # byebug
           redirect "#{request.scheme}://#{request.host_with_port}/dashboards/#{@dashboard.slug}"
         else
+          # byebug
           @title = 'Create Dashboard'
           @metrics = Metric.all.distinct(:name).map { |m| Metric.find_by(name: m) }
           @errors = @dashboard.errors
