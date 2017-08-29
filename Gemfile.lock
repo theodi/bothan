@@ -34,6 +34,7 @@ GEM
       sass (>= 3.3.4)
     bson (4.2.2)
     builder (3.2.3)
+    byebug (9.0.6)
     capybara (2.13.0)
       addressable
       mime-types (>= 1.16)
@@ -249,6 +250,8 @@ GEM
     jsonpath (0.8.5)
       multi_json
     kramdown (1.11.1)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     link_header (0.0.8)
     linkeddata (1.99.0)
       equivalent-xml (~> 0.6)
@@ -474,6 +477,7 @@ PLATFORMS
 DEPENDENCIES
   actionview
   bootstrap-sass
+  byebug
   capybara-webkit
   commonmarker
   compass
@@ -496,6 +500,7 @@ DEPENDENCIES
   iso8601
   jasmine
   jekyll
+  launchy
   linkeddata (< 2.0)
   mongoid
   pusher

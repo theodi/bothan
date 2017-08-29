@@ -36,9 +36,7 @@ module Bothan
 
         @dashboard = Dashboard.find_by(slug: params[:slug])
 
-        dashboard = params[:dashboard]
-        dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
-                                                 .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+        dashboard = sanitize_metrics(params[:dashboard])
 
         @dashboard.update_attributes(dashboard)
 
@@ -66,9 +64,7 @@ module Bothan
       app.post '/dashboards' do
         protected!
 
-        dashboard = params[:dashboard]
-        dashboard[:metrics] = dashboard[:metrics].map { |m| m.last }
-                                                 .each { |m| m.delete('visualisation') if m['visualisation'] == 'default' }
+        dashboard = sanitize_metrics(params[:dashboard])
 
         @dashboard = Dashboard.create(dashboard)
 
