@@ -24,6 +24,10 @@ Then /^the page should contain an element "([^\"]*)"$/ do | element |
   expect(page.find(element)).to_not be(nil)
 end
 
+Then /^the page should contain an element with id "([^\"]*)"$/ do | id |
+  expect(page.find("##{id}")).to_not be(nil)
+end
+
 Then /^the form should contain a field "([^\"]*)"$/ do |field|
   expect(find_field(field)).to_not be(nil)
 end

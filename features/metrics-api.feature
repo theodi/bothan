@@ -212,3 +212,14 @@ Feature: Metrics API
       """
       10
       """
+
+  Scenario: DELETing simple data
+    Given there is a metric in the database with the name "delete-me"
+    When I send a GET request to "metrics"
+    Then the response status should be "200"
+    And the JSON response should have "$.metrics[0].name" with the text "delete-me"
+    Given I authenticate as the user "foo" with the password "bar"
+    Then I send a DELETE request to "metrics/delete-me"
+    And I send a GET request to "metrics"
+    Then the response status should be "200"
+    And the JSON response should not have "$.metrics[0].name" with the text "delete-me"

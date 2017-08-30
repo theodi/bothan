@@ -39,6 +39,8 @@ Capybara::Webkit.configure do |config|
   config.allow_url("maxcdn.bootstrapcdn.com")
   config.allow_url("fonts.googleapis.com")
   config.allow_url("ajax.googleapis.com")
+  config.allow_url("certificates.theodi.org")
+  config.allow_url("licensebuttons.net")
   # used to ensure that all JS loads for the dashboard
 end
 

@@ -10,6 +10,7 @@ require 'helpers/auth_helpers'
 require 'helpers/metrics_helpers'
 require 'helpers/views_helpers'
 require 'helpers/dashboard_helpers'
+require 'byebug'
 
 class Bothan::App < Sinatra::Base
   helpers Bothan::Helpers::App, Bothan::Helpers::Auth, Bothan::Helpers::Metrics, Bothan::Helpers::Views, Bothan::Helpers::Dashboard
