@@ -91,7 +91,8 @@ describe Bothan::App do
       end
 
       it 'if the slug is duplicated' do
-        Dashboard.create(name: 'Original', slug: 'my-awesome-dashboard', rows: 1, columns: 1)
+        Metric.create(name: "dashboard-0")
+        Dashboard.create(name: 'Original', slug: 'my-awesome-dashboard', rows: 1, columns: 1, metrics: "dashboard-0")
 
         post '/dashboards', dashboard_hash
 
@@ -116,13 +117,14 @@ describe Bothan::App do
     end
 
     it 'edits a dashboard' do
-      dashboard = Dashboard.create(name: 'Original', slug: 'my-awesome-dashboard', rows: 1, columns: 1)
+      Metric.create(name: "dashboard-0")
+      dashboard = Dashboard.create(name: 'Original', slug: 'my-awesome-dashboard', rows: 1, columns: 1, metrics: "dashboard-0")
 
       put "/dashboards/#{dashboard.slug}", {
         dashboard: {
           name: 'My Awesome Dashboard',
           metrics: {
-            '0': {
+            '1': {
               name: 'my-first-metric',
               boxcolour: '#000',
               textcolour: '#fff',

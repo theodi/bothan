@@ -61,7 +61,7 @@
         <label for='metric' class='text-right'>Metric</label>
         <div class="input-group col-md-12">
           <select id="metric-template-select" class="form-control metric input-sm">
-            <option>-- Select a metric--</options>
+            <option selected disabled value=0>-- Select a metric--</option>
             <% @metrics.each do |metric| %>
               <% get_settings({'metric' => metric.name}, metric) %>
               <option data-visualisations="<%= get_alternatives(metric.value).join(',') %>" data-default="<%= @type %>"><%= metric.name %></option>
