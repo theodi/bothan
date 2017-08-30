@@ -5,7 +5,6 @@ module Bothan
 
       app.post '/metrics/:metric' do
         protected!
-
         body = JSON.parse request.body.read
 
         update_metric(params[:metric], body["time"], body["value"])

@@ -25,6 +25,7 @@ Scenario: un-authenticated user
     And I should see "edit metadata" within "tr"
 
   Scenario: delete an existing metric
-    pending
-#    Then there should be no more metric
-#    And the homepage should display no metrics
+    Given I am logged in as "foo" with "bar"
+    And there is a metric in the database with the name "delete-me"
+    When I go to "the home page"
+    When I click the button "delete-metric"
