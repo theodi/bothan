@@ -20,10 +20,5 @@ Feature: Authenticated HTML User Interactions
     Given I am logged in as "foo" with "bar"
     And there is a metric in the database with the name "delete me"
     When I go to "the home page"
-    # GARBAGE - below are not actually testing ANYTHING
-    Then I should see "metric" within "table"
-    And I should see "delete" within "tr"
-    And I should see "edit metadata" within "tr"
-    Then I should not see "metric" within "table"
-    And I should not see "delete" within "tr"
-    And I should not see "edit metadata" within "tr"
+    Then the page should contain an element with id "edit-metadata"
+    Then the page should contain an element with id "delete-metric"
