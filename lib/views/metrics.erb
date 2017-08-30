@@ -43,7 +43,7 @@
             </a>
           </td>
           <% if authorized? %>
-              <td id="edit-metadata">edit metadata</td>
+              <td id="edit-metadata"><a href='<%= "#{metric[:url].gsub('.json', '')}/metadata" %>'>edit metadata</a></td>
               <td id="delete-metric">
                 <form action='metrics/<%= metric[:name] %>' method='POST' class='pull-right'>
                   <input type='hidden' name='_method' value='DELETE'/>
