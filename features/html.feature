@@ -4,12 +4,11 @@ Feature: Metrics API
     Given I send and accept HTML
 
   Scenario: GET list of all metrics
-    pending
     Given there is a metric in the database with the name "membership-coverage"
     And there is a metric in the database with the name "membership-count"
     When I send a GET request to "metrics"
     Then the response status should be "200"
-    And the XML response should have "//ul[@id='metrics']"
+    And the XML response should have "//table[@id='metrics']"
     # And then it all happens client-side and Cucumber is out of its depth
 
   Scenario: Redirected to default daterange
