@@ -116,10 +116,7 @@ module Bothan
 
       app.delete '/metrics/:metric' do
         protected!
-        Metric.where(name: params[:metric]).each do |metric|
-          metric.delete
-          # not sure if this should be destroy to invoke callbacks
-        end
+        Metric.where(name: params[:metric]).destroy_all
         redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
       end
 
