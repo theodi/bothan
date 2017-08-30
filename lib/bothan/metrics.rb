@@ -31,7 +31,6 @@ module Bothan
         protected!
 
         @metric = Metric.find_by(name: params[:metric].parameterize)
-        byebug
         @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter)
 
