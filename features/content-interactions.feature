@@ -21,12 +21,9 @@ Feature: Authenticated HTML User Interactions
     And there is a metric in the database with the name "delete me"
     When I go to "the home page"
     # GARBAGE - below are not actually testing ANYTHING
-#    Then I should see "metric" within "table"
-#    And I should see "delete" within "tr"
-#    And I should see "edit metadata" within "tr"
-
-  Scenario: delete an existing metric
-    Given I am logged in as "foo" with "bar"
-    Given there is a metric in the database with the name "delete-me"
-    pending
-    # there is no way to mock this
+    Then I should see "metric" within "table"
+    And I should see "delete" within "tr"
+    And I should see "edit metadata" within "tr"
+    Then I should not see "metric" within "table"
+    And I should not see "delete" within "tr"
+    And I should not see "edit metadata" within "tr"
