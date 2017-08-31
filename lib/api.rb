@@ -1,5 +1,19 @@
+$:.unshift File.dirname(__FILE__)
+
+require 'mongoid'
+require 'pusher'
+require 'grape'
+require 'models/metrics'
+require 'models/metadata'
+require 'models/dashboard'
+
+require 'bothan/extensions/date_wrangler'
+
+Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
+Metric.create_indexes
+
 module Bothan
-  module Api
+  class Api < Grape::API
 
     def self.registered(app)
 
