@@ -68,6 +68,33 @@ module Bothan
         [Hash, Array, BSON::Document].include?(metric.class) || datetime == "single"
       end
 
+      def range_alias(endpoint)
+
+        if /\w+-(.*)/.match(endpoint)
+          # catch hypenathed endpoints, convert them to the supported ranges in DateAndTime::Calculations
+          endpoint = $1.gsub(/-/, '_') # discard since preface
+          params[:from] = DateTime.now.send(endpoint.to_sym).to_s
+          params[:to] = DateTime.now.to_s
+        else
+          case endpoint
+            when 'latest'
+              @latest = get_single_metric(params)
+            when 'all'
+              params[:from] = '*'
+              params[:to] = '*'
+            when 'today' || 'midnight'
+              # then
+              params[:from] = DateTime.now.beginning_of_day.to_s
+              params[:to] = DateTime.now.to_s
+          end
+        end
+        if params[:from].present?
+          get_metric_range(params)
+        else
+          @latest # return single metric
+        end
+      end
+
       def datetime_path(metric, datetime)
         now = Time.now.iso8601
         if single?(metric.value, datetime)
@@ -187,30 +214,9 @@ module Bothan
         time ||= DateTime.now
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last
-
-        if params['default-dates'].present?
-          url = generate_url(metric, keep_params(params))
-          redirect to url
-        end
-
         @metric = (metric.nil? ? {} : metric).to_json
-
-        @date = time.to_s
-        @earliest_date = metrics.first.time rescue nil
-
-        respond_to do |wants|
-          wants.json { @metric }
-
-          wants.html do
-            metric = JSON.parse(@metric, {:symbolize_names => true})
-            @alternatives = get_alternatives(metric[:value])
-
-            get_settings(params, metric)
-            erb :metric, layout: "layouts/#{@layout}".to_sym
-          end
-
-          wants.other { error_406 }
-        end
+        metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
+        metric
       end
 
       def get_metric_range(params)
