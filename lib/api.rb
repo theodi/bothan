@@ -14,7 +14,7 @@ Metric.create_indexes
 
 module Bothan
   class Api < Grape::API
-
+    content_type :json, 'application/json; charset=UTF-8'
     def self.registered(app)
 
       app.post '/metrics/:metric' do

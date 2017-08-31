@@ -46,19 +46,26 @@ class Bothan::App < Sinatra::Base
     conneg.set :fallback, :html
     conneg.ignore_contents_of 'lib/public'
     conneg.provide [
-                       :json,
-                       :html
-                   ]
+         :html
+     ]
   end
 
   before do
     @config = config
 
-    headers 'Vary' => 'Accept'
-
-    if negotiated?
-      content_type negotiated_type
+    # If the client wants something we can't provide (i.e. JSON) then throw a 406
+    if request.negotiated?
+      unless [nil, "", ".html"].include?(request.negotiated_ext)
+        error_406
+      end
+      accept = request.accept.map(&:to_s)
+      if accept!=["*/*"] && !accept.include?(request.negotiated_type)
+        error_406
+      end
     end
+
+    content_type 'text/html'
+    headers 'Content-Type' => "text/html;charset=utf-8"
   end
 
   register Bothan::Api
