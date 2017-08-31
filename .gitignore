@@ -12,3 +12,4 @@ _site
 
 # ignore byebug
 /.byebug_history
+Guardfile
