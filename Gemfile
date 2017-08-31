@@ -4,6 +4,7 @@ ruby "2.4.1"
 
 gem 'rake'
 gem 'sinatra'
+gem 'grape'
 gem 'github-pages'
 gem 'jekyll'
 gem 'github-markup'
