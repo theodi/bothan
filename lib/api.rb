@@ -98,6 +98,14 @@ module Bothan
         update_metric(params[:metric], DateTime.now, value)
       end
 
+      desc 'delete an entire metric endpoint'
+      delete do
+        params do
+          requires :metric, type: String, desc: 'metric names'
+        end
+        Metric.where(name: params[:metric]).destroy_all
+      end
+
     end
 
     namespace 'metrics/:metric/metadata' do
