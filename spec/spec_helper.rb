@@ -16,7 +16,7 @@ Dotenv.load
 module RSpecMixin
   include Rack::Test::Methods
   def app
-    Bothan::App
+    Rack::Cascade.new [ Bothan::App, Bothan::Api], [406]
   end
 end
 
