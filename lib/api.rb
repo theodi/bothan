@@ -21,6 +21,21 @@ module Bothan
     helpers Bothan::Helpers::Metrics
 
     namespace :metrics do
+
+      desc 'list all available metrics' # conflicts with sinatra
+
+      get do
+        @metrics = {
+            metrics: Metric.all.distinct(:name).sort.map do |name|
+              {
+                  name: name,
+                  url: "#{request.base_url}/metrics/#{name}.json"
+              }
+            end
+        }
+        @metrics
+      end
+
       desc 'create a single metric'
 
       post '/:metric' do
@@ -36,6 +51,38 @@ module Bothan
     end
 
     namespace 'metrics/:metric' do
+
+      desc 'show latest value for given metric' # /metrics/{metric_name}[.json]
+      params do
+        requires :metric, type: String, desc: 'metric names'
+      end
+      get do
+        @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
+        @metric
+      end
+
+      desc 'time and date range endpoints'
+      params do
+        # requires :endpoint, types: [DateTime, String]
+        requires :endpoint, types: String
+
+      end
+      get '/:endpoint' do
+        @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year']
+        # case params[:endpoint]
+        # when DateTime
+        #   then
+        #   get_single_metric(params, params[:endpoint])
+        # when String
+        # end
+        if @supported_aliases.include?(params[:endpoint])
+          range_alias(params[:endpoint])
+        elsif params[:endpoint].to_datetime.instance_of? DateTime
+          get_single_metric(params, params[:endpoint].to_datetime)
+        else
+          {error: 'endpoint not supported'} # TODO recuperate the Time rescue from original endpoint, no longer possible to use Grape validation for this because bug above
+        end
+      end
 
       desc 'increment a metric' # home/metrics/:metric/increment"
       params do
