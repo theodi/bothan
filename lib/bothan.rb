@@ -10,7 +10,6 @@ require 'rack/conneg'
 require 'iso8601'
 require 'dotenv'
 require 'kramdown'
-require 'exception_notification'
 
 module Bothan
 end
