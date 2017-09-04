@@ -37,8 +37,8 @@ class Bothan::App < Sinatra::Base
   # Disable JSON CSRF protection - this is a JSON API goddammit.
   set :protection, :except => [:json_csrf, :frame_options]
 
-  set :views, Proc.new { File.join(root, "..", "views") }
-  set :public_folder, Proc.new { File.join(root, "..", "public") }
+  set :views, Proc.new { File.join(root, "views") }
+  set :public_folder, Proc.new { File.join(root, "public") }
 
   use Rack::Conneg do |conneg|
     conneg.set :accept_all_extensions, false
@@ -67,11 +67,12 @@ class Bothan::App < Sinatra::Base
     headers 'Content-Type' => "text/html;charset=utf-8"
   end
 
-  register Bothan::Api
+  # register Bothan::Api
   register Bothan::Metrics
   register Bothan::Dashboards
 
   get '/' do
+    'hello world'
     redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
   end
 
@@ -95,5 +96,5 @@ class Bothan::App < Sinatra::Base
   end
 
   # start the server if ruby file executed directly
-  run! if app_file == $0
+  # run! if app_file == $0
 end
