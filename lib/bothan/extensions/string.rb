@@ -1,6 +1,3 @@
-$:.unshift File.dirname(__FILE__)
-require 'date_wrangler'
-
 class String
   def titleise
     self.split(' ').map { |w| "#{w[0].upcase}#{w[1..-1]}" }.join ' '

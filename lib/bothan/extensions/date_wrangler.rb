@@ -1,3 +1,5 @@
+require 'bothan/extensions/string'
+
 class DateWrangler
   def initialize left, right
     @left = left
