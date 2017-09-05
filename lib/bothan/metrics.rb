@@ -4,27 +4,14 @@ module Bothan
     def self.registered(app)
 
       app.get '/metrics' do
-        @metrics = {
-          metrics: Metric.all.distinct(:name).sort.map do |name|
-            {
-              name: name,
-              url: "#{request.base_url}/metrics/#{name}.json"
-            }
-          end
-        }
 
-        respond_to do |wants|
-          wants.json { @metrics.to_json }
+        @metrics = list_metrics
+        byebug
+        @title = 'Metrics API'
+        @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
+        @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
+        erb :metrics, layout: 'layouts/default'.to_sym
 
-          wants.html do
-            @title = 'Metrics API'
-            @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
-            @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
-            erb :metrics, layout: 'layouts/default'.to_sym
-          end
-
-          wants.other { error_406 }
-        end
       end
 
       app.get '/metrics/:metric/metadata' do

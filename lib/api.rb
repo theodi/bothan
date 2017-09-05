@@ -25,16 +25,11 @@ module Bothan
       desc 'list all available metrics' # conflicts with sinatra
 
       get do
-        @metrics = {
-            metrics: Metric.all.distinct(:name).sort.map do |name|
-              {
-                  name: name,
-                  url: "#{request.base_url}/metrics/#{name}.json"
-              }
-            end
-        }
-        @metrics
+
+       list_metrics
+
       end
+
 
       desc 'create a single metric'
 
@@ -109,6 +104,7 @@ module Bothan
     end
 
     namespace 'metrics/:metric/metadata' do
+      
       post do
         # format :json #TODO - when refactoring into classes make this explicit at top of class
         @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)

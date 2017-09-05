@@ -2,6 +2,17 @@ module Bothan
   module Helpers
     module Metrics
 
+      def list_metrics()
+        return {
+            metrics: Metric.all.distinct(:name).sort.map do |name|
+              {
+                  name: name,
+                  url: "#{request.base_url}/metrics/#{name}.json"
+              }
+            end
+        }
+      end
+
       def update_metric(name, time, value)
         @metric = Metric.new({
           "name" => name.parameterize,
@@ -229,13 +240,13 @@ module Bothan
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
-        if params['default-dates'].present?
-          url = generate_url(metrics.first, keep_params(params))
-          redirect to url
-        end
-
-        @earliest_date = metrics.first.time
-        @latest_date = metrics.last.time
+        # if params['default-dates'].present?
+        #   url = generate_url(metrics.first, keep_params(params))
+        #   redirect to url
+        # end
+        #
+        # @earliest_date = metrics.first.time
+        # @latest_date = metrics.last.time
 
         metrics = metrics.where(:time.gte => dates.from) if dates.from
         metrics = metrics.where(:time.lte => dates.to) if dates.to
@@ -253,21 +264,21 @@ module Bothan
             :value => metric.value
           }
         end
-
-        respond_to do |wants|
-          wants.json { data.to_json }
-
-          wants.html do
-            value = data[:values].first || { value: '' }
-            @alternatives = get_alternatives(value[:value])
-
-            get_settings(params, value)
-
-            erb :metric, layout: "layouts/#{@layout}".to_sym
-          end
-
-          wants.other { error_406 }
-        end
+        data
+        # respond_to do |wants|
+        #   wants.json { data.to_json }
+        #
+        #   wants.html do
+        #     value = data[:values].first || { value: '' }
+        #     @alternatives = get_alternatives(value[:value])
+        #
+        #     get_settings(params, value)
+        #
+        #     erb :metric, layout: "layouts/#{@layout}".to_sym
+        #   end
+        #
+        #   wants.other { error_406 }
+        # end
       end
 
     end
