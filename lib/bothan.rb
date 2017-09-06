@@ -21,7 +21,6 @@ require 'bothan/dashboards'
 require 'action_view'
 require 'github/markup'
 
-require 'bothan/extensions/string'
 
 require 'bothan/helpers/app_helpers'
 require 'bothan/helpers/auth_helpers'
