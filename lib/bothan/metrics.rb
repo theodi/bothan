@@ -6,7 +6,6 @@ module Bothan
       app.get '/metrics' do
 
         @metrics = list_metrics
-        byebug
         @title = 'Metrics API'
         @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
         @updated = Metric.last.time rescue DateTime.parse("2016-01-01T00:00:00Z")
@@ -16,7 +15,6 @@ module Bothan
 
       app.get '/metrics/:metric/metadata' do
         protected!
-
         @metric = Metric.find_by(name: params[:metric].parameterize)
         @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter)
@@ -100,13 +98,6 @@ module Bothan
         date_redirect(params)
         get_metric_range(params)
       end
-
-      app.delete '/metrics/:metric' do
-        protected!
-        Metric.where(name: params[:metric]).destroy_all
-        redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
-      end
-
 
     end
 
