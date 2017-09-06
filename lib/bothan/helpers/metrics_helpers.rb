@@ -221,8 +221,7 @@ module Bothan
         @tiles = params.fetch('tiles', 'OpenStreetMap.Mapnik')
       end
 
-      def get_single_metric(params, time)
-        time ||= DateTime.now
+      def get_single_metric(params, time = DateTime.now)
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last
         @metric = (metric.nil? ? {} : metric).to_json
