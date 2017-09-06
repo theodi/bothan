@@ -104,7 +104,24 @@ module Bothan
     end
 
     namespace 'metrics/:metric/metadata' do
-      
+
+      get do
+        @metric = Metric.find_by(name: params[:metric].parameterize)
+        @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
+        # @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter) # TODO methods in metrics_helpers.rb, N2K if this is to be retained
+        @metadata
+      end
+
+
+      params do
+          requires :metric, type: String, desc: 'metric to be meta-dated and fed to mongo'
+          requires :type, type: String, desc: 'default metric visualisation', values: ['chart', 'tasklist', 'target', 'pie', 'number']
+          requires :datatype, type: String, desc: 'type of metrics, e.g. currency or percentage', values: ['percentage', 'currency']
+          optional :title, type: Hash, desc: 'metric title'
+          optional :description, type: Hash, desc: 'metric description'
+          # optional :title, type: String, desc: 'metric title'
+          # optional :description, type: String, desc: 'metric description'
+      end
       post do
         # format :json #TODO - when refactoring into classes make this explicit at top of class
         @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
