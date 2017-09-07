@@ -28,8 +28,9 @@ Feature: Metrics API
     Then the response status should be "201"
     And the "membership-count" "type" should be "chart"
 
-  Scenario: Creating metric defaults with an invalid type
+  Scenario: Do not create metric defaults when passed an invalid type
     Given I authenticate as the user "foo" with the password "bar"
+    And there is a metric in the database with the name "membership-count"
     When I send a POST request to "metrics/membership-count/metadata" with the following:
       """
       {
@@ -37,7 +38,8 @@ Feature: Metrics API
       }
       """
     Then the response status should be "400"
-    And the "membership-count" "type" should be ""
+    And there should be no metadata persisted for "membership-count"
+#    And the "membership-count" "type" should be ""
 
   Scenario: Creating metric metadata
     Given I authenticate as the user "foo" with the password "bar"
