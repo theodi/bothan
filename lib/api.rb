@@ -33,6 +33,10 @@ module Bothan
       error!(ae, 400)
     end
 
+    rescue_from Grape::Exceptions::ValidationErrors do |e|
+      error!(e, 400)
+    end
+
     namespace :metrics do
 
       desc 'list all available metrics' # conflicts with sinatra
@@ -138,6 +142,7 @@ module Bothan
     namespace 'metrics/:metric/metadata' do
 
       get do
+        byebug
         @metric = Metric.find_by(name: params[:metric].parameterize)
         @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         # @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter) # TODO methods in metrics_helpers.rb, N2K if this is to be retained
@@ -146,15 +151,16 @@ module Bothan
 
 
       params do
-          requires :metric, type: String, desc: 'metric to be meta-dated and fed to mongo'
-          requires :type, type: String, desc: 'default metric visualisation', values: ['chart', 'tasklist', 'target', 'pie', 'number']
-          requires :datatype, type: String, desc: 'type of metrics, e.g. currency or percentage', values: ['percentage', 'currency']
+          optional :metric, type: String, desc: 'metric to be meta-dated and fed to mongo'
+          optional :type, type: String, desc: 'default metric visualisation', values: ['chart', 'tasklist', 'target', 'pie', 'number']
+          optional :datatype, type: String, desc: 'type of metrics, e.g. currency or percentage', values: ['percentage', 'currency']
           optional :title, type: Hash, desc: 'metric title'
           optional :description, type: Hash, desc: 'metric description'
           # optional :title, type: String, desc: 'metric title'
           # optional :description, type: String, desc: 'metric description'
       end
       post do
+        # byebug
         # format :json #TODO - when refactoring into classes make this explicit at top of class
         @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
         @meta.type = params[:type].presence
