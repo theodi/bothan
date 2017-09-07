@@ -28,6 +28,11 @@ module Bothan
       error!(e, 400)
     end
 
+    rescue_from ArgumentError do |ae|
+      # byebug
+      error!(ae, 400)
+    end
+
     namespace :metrics do
 
       desc 'list all available metrics' # conflicts with sinatra
@@ -78,8 +83,8 @@ module Bothan
         requires :endpoint, types: String
 
       end
-
       get '/:endpoint' do
+        # byebug
         @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year']
         # case params[:endpoint]
         # when DateTime
@@ -95,7 +100,6 @@ module Bothan
         else
           {error: 'endpoint not supported'}
           # TODO recuperate the Time rescue from original endpoint, no longer possible to use Grape validation for this because bug above
-          # TODO - test to exercise this feature
         end
       end
 
@@ -105,12 +109,15 @@ module Bothan
       desc 'increment a metric' # home/metrics/:metric/increment"
 
       post do
+        # byebug
         increment_metric(1)
       end
 
       post '/:amount' do
+
         params do
           requires :amount, type: {value: Integer}, desc: 'amount to increase by'
+          # requires :amount, coerce: Integer
         end
         increment = (params[:amount] || 1).to_i
         increment_metric(increment)
@@ -118,10 +125,11 @@ module Bothan
       end
     end
 
+
     desc 'ranges'
 
     get 'metrics/:metric/:from/:to' do
-
+      # byebug
       date_redirect(params)
       get_metric_range(params)
 

@@ -246,7 +246,13 @@ module Bothan
 
         dates = DateWrangler.new @from, @to
 
-        error_400 dates.errors.join ' ' if dates.errors
+        # error_400 dates.errors.join ' ' if dates.errors
+
+
+        if dates.errors
+          (dates.errors.join ' ')
+          # raise ArgumentError, @failures
+        end
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
