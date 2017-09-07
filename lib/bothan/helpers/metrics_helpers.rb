@@ -35,6 +35,17 @@ module Bothan
         end
       end
 
+      def increment_metric(increment)
+        last_metric = Metric.where(name: params[:metric].parameterize).last
+        last_amount = last_metric.try(:[], 'value') || 0
+        if last_amount.class == BSON::Document # TODO this is the exception that should return for incrementing-metrics.feature:50
+          raise MetricEndpointError
+        else
+          value = last_amount + increment
+          update_metric(params[:metric], DateTime.now, value)
+        end
+      end
+
       def title_from_slug_or_params(params)
         title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
         title.to_s.empty? ? title_from_slug(params['metric']) : title
@@ -263,6 +274,7 @@ module Bothan
             :value => metric.value
           }
         end
+        # byebug
         data
         # respond_to do |wants|
         #   wants.json { data.to_json }
