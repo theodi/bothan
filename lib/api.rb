@@ -118,6 +118,15 @@ module Bothan
       end
     end
 
+    desc 'ranges'
+
+    get 'metrics/:metric/:from/:to' do
+
+      date_redirect(params)
+      get_metric_range(params)
+
+    end
+
     namespace 'metrics/:metric/metadata' do
 
       get do
