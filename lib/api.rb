@@ -10,6 +10,7 @@ require 'models/dashboard'
 require 'bothan/extensions/date_wrangler'
 
 require 'bothan/helpers/metrics_helpers'
+require 'bothan/helpers/auth_helpers'
 
 Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
 Metric.create_indexes
@@ -23,6 +24,7 @@ module Bothan
     content_type :json, 'application/json; charset=UTF-8'
 
     helpers Bothan::Helpers::Metrics
+    helpers Bothan::Helpers::Auth
 
     rescue_from MetricEndpointError do |e|
       error!(e, 400)
@@ -51,6 +53,7 @@ module Bothan
       desc 'create a single metric'
 
       post '/:metric' do
+        protected!
         params do
           # requires :metric, type: String, desc: 'new metric'
           requires :time, type: String, desc: 'metric timestamp'
@@ -69,12 +72,13 @@ module Bothan
         requires :metric, type: String, desc: 'metric names'
       end
       get do
-        @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
-        @metric
+        metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
+        metric
       end
 
       desc 'delete an entire metric endpoint'
       delete do
+        protected!
         params do
           requires :metric, type: String, desc: 'metric names'
         end
@@ -112,13 +116,16 @@ module Bothan
     namespace 'metrics/:metric/increment' do
       desc 'increment a metric' # home/metrics/:metric/increment"
 
+      # TODO auth protected
       post do
+        protected!
         # byebug
         increment_metric(1)
       end
 
       post '/:amount' do
 
+        protected!
         params do
           requires :amount, type: {value: Integer}, desc: 'amount to increase by'
           # requires :amount, coerce: Integer
@@ -142,11 +149,9 @@ module Bothan
     namespace 'metrics/:metric/metadata' do
 
       get do
-        byebug
-        @metric = Metric.find_by(name: params[:metric].parameterize)
-        @metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
-        # @allowed_datatypes = MetricMetadata.validators.find { |v| v.attributes == [:datatype] }.send(:delimiter) # TODO methods in metrics_helpers.rb, N2K if this is to be retained
-        @metadata
+
+        metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
+        metadata
       end
 
 
@@ -160,19 +165,15 @@ module Bothan
           # optional :description, type: String, desc: 'metric description'
       end
       post do
-        # byebug
+        protected!
         # format :json #TODO - when refactoring into classes make this explicit at top of class
-        @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
-        @meta.type = params[:type].presence
-        @meta.datatype = params[:datatype].presence
-        @meta.title.merge!(params[:title] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
-        @meta.description.merge!(params[:description] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
-        if @meta.save # TODO - this endpoint exits here
-          status 201
-        else
-          status 400
-          # maybe superfluous given Grape automatically returns this on POST success
-        end
+        meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
+        meta.type = params[:type].presence
+        meta.datatype = params[:datatype].presence
+        meta.title.merge!(params[:title] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
+        meta.description.merge!(params[:description] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
+        meta.save
+
       end
     end
 
