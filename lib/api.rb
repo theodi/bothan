@@ -1,6 +1,6 @@
 $:.unshift File.dirname(__FILE__)
 
-require 'mongoid'
+
 require 'pusher'
 require 'grape'
 require 'models/metrics'
@@ -11,9 +11,6 @@ require 'bothan/extensions/date_wrangler'
 
 require 'bothan/helpers/metrics_helpers'
 require 'bothan/helpers/auth_helpers'
-
-Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
-Metric.create_indexes
 
 module Bothan
   class MetricEndpointError < StandardError
@@ -63,6 +60,7 @@ module Bothan
       desc 'create a single metric'
 
       post '/:metric' do
+
         endpoint_protected!
         params do
           requires :time, type: String, desc: 'metric timestamp'
@@ -99,6 +97,7 @@ module Bothan
         optional :time, type: {value: DateTime, message: 'is not a valid ISO8601 date/time.'}, desc: 'return metric value for timestamp'
       end
       get ':time' do
+        # byebug
         get_single_metric(params, params[:time].to_datetime)
       end
     end
