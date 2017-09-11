@@ -33,7 +33,11 @@ module Bothan
 
     rescue_from ArgumentError do |e|
       # byebug
-      error!({status: "passed parameters are not a valid ISO8601 date/time."}, 400)
+      if e.message == "invalid date"
+        error!({status: "passed parameters are not a valid ISO8601 date/time."}, 400)
+      else
+        error!({status: e.message}, 400)
+      end
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|

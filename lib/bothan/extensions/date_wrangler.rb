@@ -1,4 +1,3 @@
-
 class DateWrangler
   def initialize left, right
     @left = left
@@ -28,8 +27,8 @@ class DateWrangler
       else
         to - start
       end
-    else
-      @left.to_datetime
+      else
+        @left.to_datetime
     end
   end
 
@@ -41,7 +40,6 @@ class DateWrangler
       begin
         self.send(method)
       rescue ArgumentError => ae
-        # byebug
         accrue_failures "'#{attribute}' is not a valid ISO8601 date/time." if ae.message == 'invalid date'
       rescue ISO8601::Errors::UnknownPattern
         accrue_failures "'#{attribute}' is not a valid ISO8601 duration."
@@ -51,7 +49,6 @@ class DateWrangler
     check_ordering
 
     @failures.uniq if @failures
-    # byebug
   end
 
   def check_ordering
@@ -59,6 +56,7 @@ class DateWrangler
       unless[from, to].include? nil
         unless from < to
           accrue_failures "'from' date must be before 'to' date."
+          raise ArgumentError, "'from' date must be before 'to' date."
         end
       end
     end
@@ -83,7 +81,6 @@ class String
   end
 
   def to_datetime
-    # byebug
     return nil if self == '*'
     DateTime.parse self
     # begin
