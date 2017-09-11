@@ -28,7 +28,6 @@ module Bothan
 
 
     rescue_from MetricEndpointError do |e|
-      # byebug
       error!({status: e}, 400)
     end
 
@@ -39,12 +38,10 @@ module Bothan
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
       byebug
-      # TODO - might this built in exception have info on the params ??
       error!({status: e.message}, 400)
     end
 
     rescue_from ISO8601::Errors::UnknownPattern do |e|
-      # byebug
       error!({status: "parameters is not a valid ISO8601 date/time."}, 400)
     end
 
@@ -64,7 +61,6 @@ module Bothan
       post '/:metric' do
         protected!
         params do
-          # requires :metric, type: String, desc: 'new metric'
           requires :time, type: String, desc: 'metric timestamp'
           requires :value, types: [Integer, Hash], desc: 'metric value or values'
         end
@@ -118,7 +114,6 @@ module Bothan
         protected!
         params do
           requires :amount, type: {value: Integer}, desc: 'amount to increase by'
-          # requires :amount, coerce: Integer
         end
         increment = (params[:amount] || 1).to_i
         increment_metric(increment)
@@ -153,8 +148,6 @@ module Bothan
           optional :datatype, type: String, desc: 'type of metrics, e.g. currency or percentage', values: ['percentage', 'currency']
           optional :title, type: Hash, desc: 'metric title'
           optional :description, type: Hash, desc: 'metric description'
-          # optional :title, type: String, desc: 'metric title'
-          # optional :description, type: String, desc: 'metric description'
       end
       post do
         protected!
