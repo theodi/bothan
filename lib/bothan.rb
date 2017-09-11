@@ -21,14 +21,18 @@ require 'bothan/dashboards'
 require 'action_view'
 require 'github/markup'
 
-
+require 'models/metrics'
+require 'models/metadata'
 require 'bothan/helpers/app_helpers'
 require 'bothan/helpers/auth_helpers'
 require 'bothan/helpers/metrics_helpers'
 require 'bothan/helpers/views_helpers'
 require 'bothan/helpers/dashboard_helpers'
+require 'mongoid'
 
 Dotenv.load unless ENV['RACK_ENV'] == 'test'
+Mongoid.load!(File.expand_path("../mongoid.yml", File.dirname(__FILE__)), ENV['RACK_ENV'])
+Metric.create_indexes
 
 class Bothan::App < Sinatra::Base
   helpers Bothan::Helpers::App, Bothan::Helpers::Auth, Bothan::Helpers::Metrics, Bothan::Helpers::Views, Bothan::Helpers::Dashboard
