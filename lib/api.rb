@@ -32,8 +32,8 @@ module Bothan
     end
 
     rescue_from ArgumentError do |e|
-      byebug
-      error!({status: "parameters is not a valid ISO8601 date/time."}, 400)
+      # byebug
+      error!({status: "passed parameters are not a valid ISO8601 date/time."}, 400)
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
@@ -42,7 +42,7 @@ module Bothan
     end
 
     rescue_from ISO8601::Errors::UnknownPattern do |e|
-      error!({status: "parameters is not a valid ISO8601 date/time."}, 400)
+      error!({status: "passed parameters are not a valid ISO8601 date/time."}, 400)
     end
 
     namespace :metrics do
