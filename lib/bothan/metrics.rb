@@ -87,7 +87,7 @@ module Bothan
 
       app.get '/metrics/:metric/:time' do
         # byebug
-        date_redirect(params)
+        date_set_and_redirect(params)
 
         if params['default-dates'].present?
           url = generate_url(metrics.first, keep_params(params))
@@ -110,7 +110,7 @@ module Bothan
       end
 
       app.get '/metrics/:metric/:from/:to' do
-        date_redirect(params)
+        date_set_and_redirect(params)
 
         if params['default-dates'].present?
           url = generate_url(metrics.first, keep_params(params))

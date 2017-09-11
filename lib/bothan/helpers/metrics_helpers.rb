@@ -128,7 +128,12 @@ module Bothan
         end
       end
 
-      def date_redirect params
+      def date_set_and_redirect params
+        # byebug
+        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+        @earliest_date = metrics.first.time
+        @latest_date = metrics.last.time
+
         if params['oldest'].present? && params['newest'].present?
           params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
           redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
@@ -214,6 +219,7 @@ module Bothan
       end
 
       def get_settings(params, data)
+
         metadata = metadata(params['metric'])
 
         @layout = params.fetch('layout', 'rich')
@@ -237,6 +243,8 @@ module Bothan
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last
         @metric = (metric.nil? ? {} : metric).to_json
+        @date = time.to_s
+        @earliest_date = metrics.first.time rescue nil
         metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
         metric
       end
@@ -258,14 +266,6 @@ module Bothan
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
 
-        # if params['default-dates'].present?
-        #   url = generate_url(metrics.first, keep_params(params))
-        #   redirect to url
-        # end
-        #
-        # @earliest_date = metrics.first.time
-        # @latest_date = metrics.last.time
-
         metrics = metrics.where(:time.gte => dates.from) if dates.from
         metrics = metrics.where(:time.lte => dates.to) if dates.to
 
@@ -282,7 +282,8 @@ module Bothan
             :value => metric.value
           }
         end
-        data
+
+        data # maybe should return metrics?
         # respond_to do |wants|
         #   wants.json { data.to_json }
         #
