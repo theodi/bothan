@@ -4,7 +4,7 @@ module Bothan
     def self.registered(app)
 
       app.get '/metrics' do
-
+        # byebug
         @metrics = list_metrics
         @title = 'Metrics API'
         @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
@@ -33,13 +33,13 @@ module Bothan
       end
 
       app.get '/metrics/:metric/?' do
+        # byebug
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
         respond_to do |wants|
-          wants.json { @metric.to_json }
+          # wants.json { @metric.to_json }
 
           wants.html do
             url = generate_url(@metric, keep_params(request.params))
-
             redirect to url
           end
 
@@ -86,17 +86,51 @@ module Bothan
       end
 
       app.get '/metrics/:metric/:time' do
+        # byebug
         date_redirect(params)
 
-        time = params[:time].to_datetime rescue
-          error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
+        if params['default-dates'].present?
+          url = generate_url(metrics.first, keep_params(params))
+          redirect to url
+        end
 
-        get_single_metric(params, time)
+        respond_to do |wants|
+          wants.html do
+            time = params[:time].to_datetime rescue
+                error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
+
+            metric = get_single_metric(params, time)
+            @alternatives = get_alternatives(metric[:value])
+
+            get_settings(params, metric)
+            erb :metric, layout: "layouts/#{@layout}".to_sym
+          end
+        end
+
       end
 
       app.get '/metrics/:metric/:from/:to' do
         date_redirect(params)
-        get_metric_range(params)
+
+        if params['default-dates'].present?
+          url = generate_url(metrics.first, keep_params(params))
+          redirect to url
+        end
+
+        respond_to do |wants|
+
+          wants.html do
+            data = get_metric_range(params)
+            value = data[:values].first || { value: '' }
+            @alternatives = get_alternatives(value[:value])
+
+            get_settings(params, value)
+
+            erb :metric, layout: "layouts/#{@layout}".to_sym
+          end
+
+          wants.other { error_406 }
+        end
       end
 
     end
