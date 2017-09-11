@@ -39,7 +39,7 @@ module Bothan
         last_metric = Metric.where(name: params[:metric].parameterize).last
         last_amount = last_metric.try(:[], 'value') || 0
         if last_amount.class == BSON::Document # TODO this is the exception that should return for incrementing-metrics.feature:50
-          raise MetricEndpointError
+          raise MetricEndpointError, "the metric type cannot be incremented"
         else
           value = last_amount + increment
           update_metric(params[:metric], DateTime.now, value)
@@ -233,6 +233,7 @@ module Bothan
       end
 
       def get_single_metric(params, time = DateTime.now)
+        # byebug
         metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
         metric = metrics.last
         @metric = (metric.nil? ? {} : metric).to_json
@@ -241,6 +242,7 @@ module Bothan
       end
 
       def get_metric_range(params)
+        # byebug
         @from = params[:from]
         @to = params[:to]
 
@@ -280,7 +282,6 @@ module Bothan
             :value => metric.value
           }
         end
-        # byebug
         data
         # respond_to do |wants|
         #   wants.json { data.to_json }
