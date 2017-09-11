@@ -26,17 +26,26 @@ module Bothan
     helpers Bothan::Helpers::Metrics
     helpers Bothan::Helpers::Auth
 
+
     rescue_from MetricEndpointError do |e|
-      error!(e, 400)
+      # byebug
+      error!({status: e}, 400)
     end
 
-    rescue_from ArgumentError do |ae|
-      # byebug
-      error!(ae, 400)
+    rescue_from ArgumentError do |e|
+      byebug
+      error!({status: "parameters is not a valid ISO8601 date/time."}, 400)
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      error!(e, 400)
+      byebug
+      # TODO - might this built in exception have info on the params ??
+      error!({status: e.message}, 400)
+    end
+
+    rescue_from ISO8601::Errors::UnknownPattern do |e|
+      # byebug
+      error!({status: "parameters is not a valid ISO8601 date/time."}, 400)
     end
 
     namespace :metrics do
@@ -85,32 +94,13 @@ module Bothan
         Metric.where(name: params[:metric]).destroy_all
       end
 
-      desc 'time and date range endpoints'
+      desc 'time'
       params do
-        # requires :endpoint, types: [DateTime, String]
-        requires :endpoint, types: String
-
+        optional :time, type: {value: DateTime, message: 'is not a valid ISO8601 date/time.'}, desc: 'return metric value for timestamp'
       end
-      get '/:endpoint' do
-        # byebug
-        @supported_aliases = ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year']
-        # case params[:endpoint]
-        # when DateTime
-        #   TODO - was this handling the Ruby DateTime String error
-        #   then
-        #   get_single_metric(params, params[:endpoint])
-        # when String
-        # end
-        if @supported_aliases.include?(params[:endpoint])
-          range_alias(params[:endpoint])
-        elsif params[:endpoint].to_datetime.instance_of? DateTime
-          get_single_metric(params, params[:endpoint].to_datetime)
-        else
-          {error: 'endpoint not supported'}
-          # TODO recuperate the Time rescue from original endpoint, no longer possible to use Grape validation for this because bug above
-        end
+      get ':time' do
+        get_single_metric(params, params[:time].to_datetime)
       end
-
     end
 
     namespace 'metrics/:metric/increment' do
@@ -139,11 +129,13 @@ module Bothan
 
     desc 'ranges'
 
-    get 'metrics/:metric/:from/:to' do
-      # byebug
-      date_redirect(params)
-      get_metric_range(params)
+    params do
+      requires :from
+      optional :to
+    end
 
+    get 'metrics/:metric/:from/:to' do
+      get_metric_range(params)
     end
 
     namespace 'metrics/:metric/metadata' do
