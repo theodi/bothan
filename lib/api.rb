@@ -37,7 +37,7 @@ module Bothan
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      byebug
+      # byebug
       error!({status: e.message}, 400)
     end
 
@@ -59,7 +59,7 @@ module Bothan
       desc 'create a single metric'
 
       post '/:metric' do
-        protected!
+        endpoint_protected!
         params do
           requires :time, type: String, desc: 'metric timestamp'
           requires :value, types: [Integer, Hash], desc: 'metric value or values'
@@ -83,7 +83,7 @@ module Bothan
 
       desc 'delete an entire metric endpoint'
       delete do
-        protected!
+        endpoint_protected!
         params do
           requires :metric, type: String, desc: 'metric names'
         end
@@ -104,14 +104,14 @@ module Bothan
 
       # TODO auth protected
       post do
-        protected!
+        endpoint_protected!
         # byebug
         increment_metric(1)
       end
 
       post '/:amount' do
 
-        protected!
+        endpoint_protected!
         params do
           requires :amount, type: {value: Integer}, desc: 'amount to increase by'
         end
@@ -150,7 +150,7 @@ module Bothan
           optional :description, type: Hash, desc: 'metric description'
       end
       post do
-        protected!
+        endpoint_protected!
         # format :json #TODO - when refactoring into classes make this explicit at top of class
         meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
         meta.type = params[:type].presence
