@@ -89,7 +89,7 @@ module Bothan
         # byebug
         date_set_and_redirect(params)
 
-        if params['default-dates'].present?
+        if params['default-dates'].present? #TODO refactor into a method that both functions can call
           url = generate_url(metrics.first, keep_params(params))
           redirect to url
         end
@@ -97,12 +97,13 @@ module Bothan
         respond_to do |wants|
           wants.html do
             time = params[:time].to_datetime rescue
-                error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
+                error_400("'#{params[:time]}' is not a valid ISO8601 date/time.") #TODO maybe redundant
 
             metric = get_single_metric(params, time)
             @alternatives = get_alternatives(metric[:value])
 
             get_settings(params, metric)
+
             erb :metric, layout: "layouts/#{@layout}".to_sym
           end
         end

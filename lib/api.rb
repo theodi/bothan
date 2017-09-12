@@ -98,14 +98,16 @@ module Bothan
       end
       get ':time' do
         # byebug
-        get_single_metric(params, params[:time].to_datetime)
+        metric = single_metric(params[:metric], params[:time].to_datetime)
+        # metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
+        # metric = metrics.last
+        metric
       end
     end
 
     namespace 'metrics/:metric/increment' do
       desc 'increment a metric' # home/metrics/:metric/increment"
 
-      # TODO auth protected
       post do
         endpoint_protected!
         # byebug

@@ -194,6 +194,12 @@ module Bothan
         MetricMetadata.where(name: metric_name).first
       end
 
+      def single_metric(metric_name, time)
+        metrics = Metric.where(name: metric_name.parameterize, :time.lte => time).order_by(:time.asc)
+        metric = metrics.last
+        metric
+      end
+
       def visualisation_type(type, data)
         if type.nil?
           guess_type(data)
@@ -239,9 +245,7 @@ module Bothan
       end
 
       def get_single_metric(params, time = DateTime.now)
-        # byebug
-        metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
-        metric = metrics.last
+        metric = single_metric(params[:metric], time)
         @metric = (metric.nil? ? {} : metric).to_json
         @date = time.to_s
         @earliest_date = metrics.first.time rescue nil
@@ -258,10 +262,9 @@ module Bothan
 
         # error_400 dates.errors.join ' ' if dates.errors
 
-
         if dates.errors
           (dates.errors.join ' ')
-          # raise ArgumentError, @failures
+          # raise ArgumentError, @failures TODO - no longer certain if this is being used
         end
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
@@ -283,21 +286,7 @@ module Bothan
           }
         end
 
-        data # maybe should return metrics?
-        # respond_to do |wants|
-        #   wants.json { data.to_json }
-        #
-        #   wants.html do
-        #     value = data[:values].first || { value: '' }
-        #     @alternatives = get_alternatives(value[:value])
-        #
-        #     get_settings(params, value)
-        #
-        #     erb :metric, layout: "layouts/#{@layout}".to_sym
-        #   end
-        #
-        #   wants.other { error_406 }
-        # end
+        data
       end
 
     end
