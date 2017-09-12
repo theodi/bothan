@@ -14,7 +14,6 @@ require 'kramdown'
 module Bothan
 end
 
-# require 'bothan/api'
 require 'bothan/metrics'
 require 'bothan/dashboards'
 
@@ -69,6 +68,7 @@ class Bothan::App < Sinatra::Base
     content_type 'text/html'
     headers 'Content-Type' => "text/html;charset=utf-8"
   end
+
 
   # register Bothan::Api
   register Bothan::Metrics

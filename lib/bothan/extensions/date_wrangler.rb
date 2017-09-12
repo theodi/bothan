@@ -1,4 +1,5 @@
 class DateWrangler
+
   def initialize left, right
     @left = left
     @right = right
@@ -40,6 +41,7 @@ class DateWrangler
       begin
         self.send(method)
       rescue ArgumentError => ae
+        # change this Error to a more decsciptive rescue and a descriptive message, do not inherit from ArgumenError, cDateWranglerError
         accrue_failures "'#{attribute}' is not a valid ISO8601 date/time." if ae.message == 'invalid date'
       rescue ISO8601::Errors::UnknownPattern
         accrue_failures "'#{attribute}' is not a valid ISO8601 duration."
@@ -83,10 +85,6 @@ class String
   def to_datetime
     return nil if self == '*'
     DateTime.parse self
-    # begin
-    #   DateTime.parse self
-    #   raise ArgumentError, "#{self} is NOT a valid ISO8601 date/time."
-    # end
   end
 
   def is_duration?

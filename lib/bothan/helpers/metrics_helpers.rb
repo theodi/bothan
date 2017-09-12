@@ -117,7 +117,6 @@ module Bothan
       end
 
       def date_set_and_redirect params
-        # byebug
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
         @earliest_date = metrics.first.time
         @latest_date = metrics.last.time
@@ -242,17 +241,13 @@ module Bothan
       end
 
       def get_metric_range(params)
-        # byebug
         @from = params[:from]
         @to = params[:to]
 
         dates = DateWrangler.new @from, @to
 
-        # error_400 dates.errors.join ' ' if dates.errors
-
         if dates.errors
           (dates.errors.join ' ')
-          # raise ArgumentError, @failures TODO - no longer certain if this is being used
         end
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
@@ -278,7 +273,6 @@ module Bothan
       end
 
       def range_alias(endpoint)
-        # byebug
         if /\w+-(.*)/.match(endpoint)
           # catch hypenathed endpoints, convert them to the supported ranges in DateAndTime::Calculations
           endpoint = $1.gsub(/-/, '_') # discard since preface

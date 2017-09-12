@@ -4,7 +4,6 @@ module Bothan
     def self.registered(app)
 
       app.get '/metrics' do
-        # byebug
         @metrics = list_metrics
         @title = 'Metrics API'
         @created = Metric.first.time rescue DateTime.parse("2015-01-01T00:00:00Z")
@@ -52,7 +51,6 @@ module Bothan
       end
 
       app.get '/metrics/:metric/?' do
-        # byebug
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
         respond_to do |wants|
           # wants.json { @metric.to_json }

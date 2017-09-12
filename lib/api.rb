@@ -52,7 +52,6 @@ module Bothan
     end
 
     rescue_from ArgumentError do |e|
-      # byebug
       if e.message == "invalid date"
         error!({status: "passed parameters are not a valid ISO8601 date/time."}, 400)
       else
@@ -61,7 +60,6 @@ module Bothan
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      # byebug
       if e.message == "timespan is invalid"
         error!({status: "time is not a valid ISO8601 date/time."}, 400)
       else
@@ -124,7 +122,6 @@ module Bothan
         optional :timespan, type: TimeSpanQueries
       end
       get ':timespan' do
-        # byebug
         if %w(all latest today since-midnight since-beginning-of-month since-beginning-of-week since-beginning-of-year).include?(params[:timespan].value)
           range_alias(params[:timespan].value)
         else
