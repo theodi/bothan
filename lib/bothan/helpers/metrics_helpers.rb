@@ -35,6 +35,13 @@ module Bothan
         end
       end
 
+      def render_visualisation (params,data)
+        @alternatives = get_alternatives(data[:value])
+        get_settings(params, data)
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+      end
+
+
       def increment_metric(increment)
         last_metric = Metric.where(name: params[:metric].parameterize).last
         last_amount = last_metric.try(:[], 'value') || 0
@@ -90,33 +97,6 @@ module Bothan
         [Hash, Array, BSON::Document].include?(metric.class) || datetime == "single"
       end
 
-      def range_alias(endpoint)
-
-        if /\w+-(.*)/.match(endpoint)
-          # catch hypenathed endpoints, convert them to the supported ranges in DateAndTime::Calculations
-          endpoint = $1.gsub(/-/, '_') # discard since preface
-          params[:from] = DateTime.now.send(endpoint.to_sym).to_s
-          params[:to] = DateTime.now.to_s
-        else
-          case endpoint
-            when 'latest'
-              @latest = get_single_metric(params)
-            when 'all'
-              params[:from] = '*'
-              params[:to] = '*'
-            when 'today' || 'midnight'
-              # then
-              params[:from] = DateTime.now.beginning_of_day.to_s
-              params[:to] = DateTime.now.to_s
-          end
-        end
-        if params[:from].present?
-          get_metric_range(params)
-        else
-          @latest # return single metric
-        end
-      end
-
       def datetime_path(metric, datetime)
         now = Time.now.iso8601
         if single?(metric.value, datetime)
@@ -125,6 +105,14 @@ module Bothan
           days = 30
           before = (Time.now - (60 * 60 * 24 * days)).iso8601
           "#{request.scheme}://#{request.host_with_port}/metrics/#{metric.name}/#{before}/#{now}"
+        end
+      end
+
+      def default_date_redirect params
+        date_set_and_redirect(params)
+        if params['default-dates'].present?
+          url = generate_url(metrics.first, keep_params(params))
+          redirect to url
         end
       end
 
@@ -287,6 +275,33 @@ module Bothan
         end
 
         data
+      end
+
+      def range_alias(endpoint)
+        # byebug
+        if /\w+-(.*)/.match(endpoint)
+          # catch hypenathed endpoints, convert them to the supported ranges in DateAndTime::Calculations
+          endpoint = $1.gsub(/-/, '_') # discard since preface
+          params[:from] = DateTime.now.send(endpoint.to_sym).to_s
+          params[:to] = DateTime.now.to_s
+        else
+          case endpoint
+            when 'latest'
+              @latest = get_single_metric(params)
+            when 'all'
+              params[:from] = '*'
+              params[:to] = '*'
+            when 'today' || 'midnight'
+              # then
+              params[:from] = DateTime.now.beginning_of_day.to_s
+              params[:to] = DateTime.now.to_s
+          end
+        end
+        if params[:from].present?
+          get_metric_range(params)
+        else
+          @latest # return single metric
+        end
       end
 
     end

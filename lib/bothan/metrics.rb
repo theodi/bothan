@@ -32,6 +32,25 @@ module Bothan
         end
       end
 
+      app.post '/metrics/:metric/metadata' do
+        protected!
+        begin
+          data = JSON.parse request.body.read
+          @meta = MetricMetadata.find_or_create_by(name: params[:metric].parameterize)
+          @meta.type = data["type"].presence
+          @meta.datatype = data["datatype"].presence
+          @meta.title.merge!(data["title"] || {})
+          @meta.description.merge!(data["description"] || {})
+          if @meta.save
+            return 201
+          else
+            return 400
+          end
+        rescue
+          return 500
+        end
+      end
+
       app.get '/metrics/:metric/?' do
         # byebug
         @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
@@ -50,7 +69,9 @@ module Bothan
       app.get '/metrics/:metric/all' do
         params[:from] = '*'
         params[:to] = '*'
-        get_metric_range(params)
+        data = get_metric_range(params)
+        value = data[:values].first || { value: '' }
+        render_visualisation(params, value)
       end
 
       app.get '/metrics/:metric/latest' do
@@ -64,35 +85,28 @@ module Bothan
       app.get '/metrics/:metric/since-midnight' do
         params[:from] = DateTime.now.beginning_of_day.to_s
         params[:to] = DateTime.now.to_s
-        get_metric_range(params)
       end
 
       app.get '/metrics/:metric/since-beginning-of-month' do
+        byebug
         params[:from] = DateTime.now.beginning_of_month.to_s
         params[:to] = DateTime.now.to_s
-        get_metric_range(params)
       end
 
       app.get '/metrics/:metric/since-beginning-of-week' do
         params[:from] = DateTime.now.beginning_of_week.to_s
         params[:to] = DateTime.now.to_s
-        get_metric_range(params)
       end
 
       app.get '/metrics/:metric/since-beginning-of-year' do
         params[:from] = DateTime.now.beginning_of_year.to_s
         params[:to] = DateTime.now.to_s
-        get_metric_range(params)
       end
 
       app.get '/metrics/:metric/:time' do
         # byebug
         date_set_and_redirect(params)
-
-        if params['default-dates'].present? #TODO refactor into a method that both functions can call
-          url = generate_url(metrics.first, keep_params(params))
-          redirect to url
-        end
+        default_date_redirect(params)
 
         respond_to do |wants|
           wants.html do
@@ -100,11 +114,7 @@ module Bothan
                 error_400("'#{params[:time]}' is not a valid ISO8601 date/time.") #TODO maybe redundant
 
             metric = get_single_metric(params, time)
-            @alternatives = get_alternatives(metric[:value])
-
-            get_settings(params, metric)
-
-            erb :metric, layout: "layouts/#{@layout}".to_sym
+            render_visualisation(params, metric)
           end
         end
 
@@ -112,22 +122,14 @@ module Bothan
 
       app.get '/metrics/:metric/:from/:to' do
         date_set_and_redirect(params)
-
-        if params['default-dates'].present?
-          url = generate_url(metrics.first, keep_params(params))
-          redirect to url
-        end
+        default_date_redirect(params)
 
         respond_to do |wants|
 
           wants.html do
             data = get_metric_range(params)
             value = data[:values].first || { value: '' }
-            @alternatives = get_alternatives(value[:value])
-
-            get_settings(params, value)
-
-            erb :metric, layout: "layouts/#{@layout}".to_sym
+            render_visualisation(params, value)
           end
 
           wants.other { error_406 }
