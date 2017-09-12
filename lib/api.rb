@@ -17,7 +17,7 @@ module Bothan
 
   end
 
-  class MetricAliases
+  class TimeSpanQueries
     attr_reader :value
     def initialize(aliased)
       @value = aliased
@@ -30,6 +30,15 @@ module Bothan
       new(value)
     end
   end
+
+  # class EndpointAliases < Grape::Validations::Base
+  # TODO - use this block if/when this Ruby bug is fixed https://bugs.ruby-lang.org/issues/13661
+  #   def validate_param!(attr_name, params)
+  #     unless ['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'].include?(params[attr_name])
+  #       fail Grape::Exceptions::Validation, params: [@scope.full_name(attr_name)], message: 'must be a recognised endpoint alias'
+  #     end
+  #   end
+  # end
 
   class Api < Grape::API
     content_type :json, 'application/json; charset=UTF-8'
@@ -52,7 +61,8 @@ module Bothan
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      if e.message == "aliased is invalid"
+      # byebug
+      if e.message == "timespan is invalid"
         error!({status: "time is not a valid ISO8601 date/time."}, 400)
       else
         error!({status: e.message}, 400)
@@ -109,20 +119,35 @@ module Bothan
         Metric.where(name: params[:metric]).destroy_all
       end
 
-      desc 'time'
+      desc 'time queries'
       params do
-        # optional :time, type: {value: DateTime, message: 'is not a valid ISO8601 date/time.'}, desc: 'return metric value for timestamp'
-        optional :aliased, type: MetricAliases
+        optional :timespan, type: TimeSpanQueries
       end
-      get ':aliased' do
+      get ':timespan' do
         # byebug
-        if %w(all latest today since-midnight since-beginning-of-month since-beginning-of-week since-beginning-of-year).include?(params[:aliased].value)
-          range_alias(params[:aliased].value)
+        if %w(all latest today since-midnight since-beginning-of-month since-beginning-of-week since-beginning-of-year).include?(params[:timespan].value)
+          range_alias(params[:timespan].value)
         else
-          metric = single_metric(params[:metric], params[:aliased].value.to_datetime)
+          metric = single_metric(params[:metric], params[:timespan].value.to_datetime)
           metric
         end
       end
+
+      # desc 'time queries'
+      # TODO - use this block instead of above block of same desc if/when this Ruby bug is fixed https://bugs.ruby-lang.org/issues/13661
+      # TODO - currently the below logic, and associated Grape::Validations::Base class EndpointAliases do not work because of 'since-beginning-month'
+      # params do
+      #   requires :timespan, types: [DateTime, EndpointAliases]
+      # end
+      # get '/:timespan' do
+      #   if params[:timespan].to_datetime.instance_of?(DateTime)
+      #       metric = single_metric(params[:metric], params[:timespan].to_datetime)
+      #       metric
+      #   else
+      #     range_alias(params[:timespan])
+      #   end
+      # end
+
     end
 
     namespace 'metrics/:metric/increment' do
@@ -160,11 +185,9 @@ module Bothan
     namespace 'metrics/:metric/metadata' do
 
       get do
-
         metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
         metadata
       end
-
 
       params do
           optional :metric, type: String, desc: 'metric to be meta-dated and fed to mongo'
