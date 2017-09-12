@@ -17,6 +17,20 @@ module Bothan
 
   end
 
+  class MetricAliases
+    attr_reader :value
+    def initialize(aliased)
+      @value = aliased
+    end
+
+    def self.parse(value)
+      if !['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'].include?(value) && !value.to_datetime.instance_of?(DateTime)
+        fail 'Invalid alias'
+      end
+      new(value)
+    end
+  end
+
   class Api < Grape::API
     content_type :json, 'application/json; charset=UTF-8'
 
@@ -38,8 +52,11 @@ module Bothan
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      # byebug
-      error!({status: e.message}, 400)
+      if e.message == "aliased is invalid"
+        error!({status: "time is not a valid ISO8601 date/time."}, 400)
+      else
+        error!({status: e.message}, 400)
+      end
     end
 
     rescue_from ISO8601::Errors::UnknownPattern do |e|
@@ -94,14 +111,17 @@ module Bothan
 
       desc 'time'
       params do
-        optional :time, type: {value: DateTime, message: 'is not a valid ISO8601 date/time.'}, desc: 'return metric value for timestamp'
+        # optional :time, type: {value: DateTime, message: 'is not a valid ISO8601 date/time.'}, desc: 'return metric value for timestamp'
+        optional :aliased, type: MetricAliases
       end
-      get ':time' do
+      get ':aliased' do
         # byebug
-        metric = single_metric(params[:metric], params[:time].to_datetime)
-        # metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
-        # metric = metrics.last
-        metric
+        if %w(all latest today since-midnight since-beginning-of-month since-beginning-of-week since-beginning-of-year).include?(params[:aliased].value)
+          range_alias(params[:aliased].value)
+        else
+          metric = single_metric(params[:metric], params[:aliased].value.to_datetime)
+          metric
+        end
       end
     end
 
@@ -110,7 +130,6 @@ module Bothan
 
       post do
         endpoint_protected!
-        # byebug
         increment_metric(1)
       end
 
