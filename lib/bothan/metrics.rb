@@ -123,7 +123,7 @@ module Bothan
         respond_to do |wants|
           wants.html do
             time = params[:time].to_datetime rescue
-                error_400("'#{params[:time]}' is not a valid ISO8601 date/time.") #TODO maybe redundant
+                error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
             metric = get_single_metric(params, time)
             render_visualisation(params, metric)
@@ -139,7 +139,13 @@ module Bothan
         respond_to do |wants|
 
           wants.html do
-            data = get_metric_range(params)
+            begin
+              data = get_metric_range(params)
+            rescue ArgumentError => e
+              # called a hash rocket
+              error_400 e
+            end
+
             value = data[:values].first || { value: '' }
             render_visualisation(params, value)
           end
