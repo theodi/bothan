@@ -75,7 +75,8 @@ module Bothan
       end
 
       app.get '/metrics/:metric/latest' do
-        get_single_metric(params, DateTime.now)
+        metric = get_single_metric(params, DateTime.now)
+        render_visualisation(params, metric)
       end
 
       app.get '/metrics/:metric/today' do
@@ -85,26 +86,37 @@ module Bothan
       app.get '/metrics/:metric/since-midnight' do
         params[:from] = DateTime.now.beginning_of_day.to_s
         params[:to] = DateTime.now.to_s
+        data = get_metric_range(params)
+        value = data[:values].first || { value: '' }
+        render_visualisation(params, value)
       end
 
       app.get '/metrics/:metric/since-beginning-of-month' do
-        byebug
+
         params[:from] = DateTime.now.beginning_of_month.to_s
         params[:to] = DateTime.now.to_s
+        data = get_metric_range(params)
+        value = data[:values].first || { value: '' }
+        render_visualisation(params, value)
       end
 
       app.get '/metrics/:metric/since-beginning-of-week' do
         params[:from] = DateTime.now.beginning_of_week.to_s
         params[:to] = DateTime.now.to_s
+        data = get_metric_range(params)
+        value = data[:values].first || { value: '' }
+        render_visualisation(params, value)
       end
 
       app.get '/metrics/:metric/since-beginning-of-year' do
         params[:from] = DateTime.now.beginning_of_year.to_s
         params[:to] = DateTime.now.to_s
+        data = get_metric_range(params)
+        value = data[:values].first || { value: '' }
+        render_visualisation(params, value)
       end
 
       app.get '/metrics/:metric/:time' do
-        # byebug
         date_set_and_redirect(params)
         default_date_redirect(params)
 
