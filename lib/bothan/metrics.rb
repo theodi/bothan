@@ -51,7 +51,7 @@ module Bothan
       end
 
       app.get '/metrics/:metric/?' do
-        @metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
+        @metric = metric(params[:metric])
         respond_to do |wants|
           # wants.json { @metric.to_json }
 
@@ -67,13 +67,13 @@ module Bothan
       app.get '/metrics/:metric/all' do
         params[:from] = '*'
         params[:to] = '*'
-        data = get_metric_range(params)
+        data = get_timeseries(params)
         value = data[:values].first || { value: '' }
         render_visualisation(params, value)
       end
 
       app.get '/metrics/:metric/latest' do
-        metric = get_single_metric(params, DateTime.now)
+        metric = get_measurement(params, DateTime.now)
         render_visualisation(params, metric)
       end
 
@@ -84,7 +84,7 @@ module Bothan
       app.get '/metrics/:metric/since-midnight' do
         params[:from] = DateTime.now.beginning_of_day.to_s
         params[:to] = DateTime.now.to_s
-        data = get_metric_range(params)
+        data = get_timeseries(params)
         value = data[:values].first || { value: '' }
         render_visualisation(params, value)
       end
@@ -93,7 +93,7 @@ module Bothan
 
         params[:from] = DateTime.now.beginning_of_month.to_s
         params[:to] = DateTime.now.to_s
-        data = get_metric_range(params)
+        data = get_timeseries(params)
         value = data[:values].first || { value: '' }
         render_visualisation(params, value)
       end
@@ -101,7 +101,7 @@ module Bothan
       app.get '/metrics/:metric/since-beginning-of-week' do
         params[:from] = DateTime.now.beginning_of_week.to_s
         params[:to] = DateTime.now.to_s
-        data = get_metric_range(params)
+        data = get_timeseries(params)
         value = data[:values].first || { value: '' }
         render_visualisation(params, value)
       end
@@ -109,7 +109,7 @@ module Bothan
       app.get '/metrics/:metric/since-beginning-of-year' do
         params[:from] = DateTime.now.beginning_of_year.to_s
         params[:to] = DateTime.now.to_s
-        data = get_metric_range(params)
+        data = get_timeseries(params)
         value = data[:values].first || { value: '' }
         render_visualisation(params, value)
       end
@@ -123,7 +123,7 @@ module Bothan
             time = params[:time].to_datetime rescue
                 error_400("'#{params[:time]}' is not a valid ISO8601 date/time.")
 
-            metric = get_single_metric(params, time)
+            metric = get_measurement(params, time)
             render_visualisation(params, metric)
           end
         end
@@ -138,7 +138,7 @@ module Bothan
 
           wants.html do
             begin
-              data = get_metric_range(params)
+              data = get_timeseries(params)
             rescue ArgumentError => e
               # called a hash rocket
               error_400 e

@@ -4,22 +4,22 @@ require 'grape-entity'
 module Bothan
   module Entities
 
-    class Metrics < Grape::Entity
-
-      expose :metrics
-
-    end
-
     class Metric < Grape::Entity
 
       expose :name
+
+    end
+
+    class Measurement < Grape::Entity
+
+
       expose :time
       expose :value
 
     end
 
 
-    class MetricRange < Metric
+    class TimeSeries < Grape::Entity
 
       unexpose :name
       expose :count

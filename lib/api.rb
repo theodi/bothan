@@ -81,7 +81,8 @@ module Bothan
       get do
 
         metrics = list_metrics
-        present metrics, with: Bothan::Entities::Metrics
+        # byebug
+        # present metrics, with: Bothan::Entities::Metrics
 
       end
 
@@ -98,6 +99,7 @@ module Bothan
 
         # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
         update_metric(params[:metric], params[:time], params[:value])
+        # present @metric, with: Bothan::Entities::Metric
       end
     end
 
@@ -108,8 +110,10 @@ module Bothan
         requires :metric, type: String, desc: 'metric names'
       end
       get do
-        metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
-        present metric, with: Bothan::Entities::Metric
+        # metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
+        metric = metric(params[:metric])
+        # byebug
+        # present metric, with: Bothan::Entities::Measurement
       end
 
       desc 'delete an entire metric endpoint'
@@ -129,8 +133,8 @@ module Bothan
         if %w(all latest today since-midnight since-beginning-of-month since-beginning-of-week since-beginning-of-year).include?(params[:timespan].value)
           range_alias(params[:timespan].value)
         else
-          metric = single_metric(params[:metric], params[:timespan].value.to_datetime)
-          present metric, with: Bothan::Entities::Metric
+          metric = metric(params[:metric], params[:timespan].value.to_datetime)
+          # present metric, with: Bothan::Entities::Metric
         end
       end
 
@@ -180,15 +184,15 @@ module Bothan
     end
 
     get 'metrics/:metric/:from/:to' do
-      metrics = get_metric_range(params)
-      present metrics, with: Bothan::Entities::MetricRange
+      metrics = get_timeseries(params)
+      # present metrics, with: Bothan::Entities::MetricRange
     end
 
     namespace 'metrics/:metric/metadata' do
 
       get do
         metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
-        present metadata, with: Bothan::Entities::MetricMetadata
+        # present metadata, with: Bothan::Entities::MetricMetadata
       end
 
       params do

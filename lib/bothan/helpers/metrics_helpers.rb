@@ -2,7 +2,20 @@ module Bothan
   module Helpers
     module Metrics
 
+      # pseudo controller functions, ones returning objects, ergo ones grape-entity concerns itself with
+
+      def metadata(metric_name)
+        # return Mongo MetricMetadata
+        MetricMetadata.where(name: metric_name).first
+      end
+
+      def metric(metric_name, time = DateTime.now)
+        # return Mongo Metric
+        Metric.where(name: metric_name.parameterize, :time.lte => time).order_by(:time.asc).last
+      end
+
       def list_metrics()
+        # returns hash of mongo derived data and code generated URL
         return {
             metrics: Metric.all.distinct(:name).sort.map do |name|
               {
@@ -11,6 +24,58 @@ module Bothan
               }
             end
         }
+      end
+
+      def get_measurement(params, time = DateTime.now)
+        # return Hash, sets some instance vars
+        metric = metric(params[:metric], time)
+        @metric = (metric.nil? ? {} : metric).to_json
+        @date = time.to_s
+        @earliest_date = metrics.first.time rescue nil
+        metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
+        metric
+      end
+
+      def get_timeseries(params)
+        @from = params[:from]
+        @to = params[:to]
+
+        dates = DateWrangler.new @from, @to
+
+        if dates.errors
+          (dates.errors.join ' ')
+        end
+
+        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+
+        metrics = metrics.where(:time.gte => dates.from) if dates.from
+        metrics = metrics.where(:time.lte => dates.to) if dates.to
+
+        metrics = metrics.order_by(:time.asc)
+
+        data = {
+            :count => metrics.count,
+            :values => []
+        }
+
+        metrics.each do |metric|
+          data[:values] << {
+              :time => metric.time,
+              :value => metric.value
+          }
+        end
+        data
+      end
+
+      def increment_metric(increment)
+        last_metric = Metric.where(name: params[:metric].parameterize).last
+        last_amount = last_metric.try(:[], 'value') || 0
+        if last_amount.class == BSON::Document # TODO this is the exception that should return for incrementing-metrics.feature:50
+          raise MetricEndpointError, "the metric type cannot be incremented"
+        else
+          value = last_amount + increment
+          update_metric(params[:metric], DateTime.now, value)
+        end
       end
 
       def update_metric(name, time, value)
@@ -35,23 +100,14 @@ module Bothan
         end
       end
 
+      # ACTUAL helper methods
+
       def render_visualisation (params,data)
         @alternatives = get_alternatives(data[:value])
         get_settings(params, data)
         erb :metric, layout: "layouts/#{@layout}".to_sym
       end
 
-
-      def increment_metric(increment)
-        last_metric = Metric.where(name: params[:metric].parameterize).last
-        last_amount = last_metric.try(:[], 'value') || 0
-        if last_amount.class == BSON::Document # TODO this is the exception that should return for incrementing-metrics.feature:50
-          raise MetricEndpointError, "the metric type cannot be incremented"
-        else
-          value = last_amount + increment
-          update_metric(params[:metric], DateTime.now, value)
-        end
-      end
 
       def title_from_slug_or_params(params)
         title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
@@ -177,16 +233,6 @@ module Bothan
         a.join '&'
       end
 
-      def metadata(metric_name)
-        MetricMetadata.where(name: metric_name).first
-      end
-
-      def single_metric(metric_name, time)
-        metrics = Metric.where(name: metric_name.parameterize, :time.lte => time).order_by(:time.asc)
-        metric = metrics.last
-        metric
-      end
-
       def visualisation_type(type, data)
         if type.nil?
           guess_type(data)
@@ -231,46 +277,7 @@ module Bothan
         @tiles = params.fetch('tiles', 'OpenStreetMap.Mapnik')
       end
 
-      def get_single_metric(params, time = DateTime.now)
-        metric = single_metric(params[:metric], time)
-        @metric = (metric.nil? ? {} : metric).to_json
-        @date = time.to_s
-        @earliest_date = metrics.first.time rescue nil
-        metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
-        metric
-      end
-
-      def get_metric_range(params)
-        @from = params[:from]
-        @to = params[:to]
-
-        dates = DateWrangler.new @from, @to
-
-        if dates.errors
-          (dates.errors.join ' ')
-        end
-
-        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
-
-        metrics = metrics.where(:time.gte => dates.from) if dates.from
-        metrics = metrics.where(:time.lte => dates.to) if dates.to
-
-        metrics = metrics.order_by(:time.asc)
-
-        data = {
-          :count => metrics.count,
-          :values => []
-        }
-
-        metrics.each do |metric|
-          data[:values] << {
-            :time => metric.time,
-            :value => metric.value
-          }
-        end
-
-        data
-      end
+      # mongrel methods
 
       def range_alias(endpoint)
         if /\w+-(.*)/.match(endpoint)
@@ -281,7 +288,7 @@ module Bothan
         else
           case endpoint
             when 'latest'
-              @latest = get_single_metric(params)
+              @latest = get_measurement(params)
             when 'all'
               params[:from] = '*'
               params[:to] = '*'
@@ -292,7 +299,7 @@ module Bothan
           end
         end
         if params[:from].present?
-          get_metric_range(params)
+          get_timeseries(params)
         else
           @latest # return single metric
         end
