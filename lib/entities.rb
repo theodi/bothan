@@ -18,6 +18,19 @@ module Bothan
 
     end
 
+
+    class MetricRange < Metric
+
+      unexpose :name
+      expose :count
+      # expose :values, using: Bothan::Entities::Metric, as: :values
+      # doesn't work because :name persists in the response, no seeming way to easily scrub it
+      expose :values
+      # this feels like bad code - inherting and then reexposing but nothing native in grape to support
+
+    end
+
+
     class MetricMetadata < Grape::Entity
 
       expose :name
