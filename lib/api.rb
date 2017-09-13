@@ -180,16 +180,14 @@ module Bothan
     end
 
     get 'metrics/:metric/:from/:to' do
-      metrics = get_metric_range(params)
-      # byebug
-      # present metrics, with: Bothan::Entities::Metric
+      get_metric_range(params)
     end
 
     namespace 'metrics/:metric/metadata' do
 
       get do
         metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
-        metadata
+        present metadata, with: Bothan::Entities::MetricMetadata
       end
 
       params do

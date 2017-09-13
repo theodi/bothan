@@ -18,5 +18,15 @@ module Bothan
 
     end
 
+    class MetricMetadata < Grape::Entity
+
+      expose :name
+      expose :type
+      expose :title
+      expose :description
+      expose :datatype
+
+    end
+
   end
 end
