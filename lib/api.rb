@@ -3,6 +3,7 @@ $:.unshift File.dirname(__FILE__)
 
 require 'pusher'
 require 'grape'
+require 'grape-entity'
 require 'models/metrics'
 require 'models/metadata'
 require 'models/dashboard'
@@ -11,6 +12,8 @@ require 'bothan/extensions/date_wrangler'
 
 require 'bothan/helpers/metrics_helpers'
 require 'bothan/helpers/auth_helpers'
+
+require 'entities' # needed
 
 module Bothan
   class MetricEndpointError < StandardError
@@ -77,7 +80,8 @@ module Bothan
 
       get do
 
-       list_metrics
+        metrics = list_metrics
+        present metrics, with: Bothan::Entities::Metrics
 
       end
 
@@ -105,7 +109,7 @@ module Bothan
       end
       get do
         metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
-        metric
+        present metric, with: Bothan::Entities::Metric
       end
 
       desc 'delete an entire metric endpoint'
@@ -126,7 +130,7 @@ module Bothan
           range_alias(params[:timespan].value)
         else
           metric = single_metric(params[:metric], params[:timespan].value.to_datetime)
-          metric
+          present metric, with: Bothan::Entities::Metric
         end
       end
 
@@ -176,7 +180,9 @@ module Bothan
     end
 
     get 'metrics/:metric/:from/:to' do
-      get_metric_range(params)
+      metrics = get_metric_range(params)
+      # byebug
+      # present metrics, with: Bothan::Entities::Metric
     end
 
     namespace 'metrics/:metric/metadata' do
