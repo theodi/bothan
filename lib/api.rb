@@ -188,12 +188,6 @@ module Bothan
 
     namespace 'metrics/:metric/metadata' do
 
-      get do
-        metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
-
-        present metadata, with: Bothan::Entities::MetricMetadata
-      end
-
       params do
           optional :metric, type: String, desc: 'metric to be meta-dated and fed to mongo'
           optional :type, type: String, desc: 'default metric visualisation', values: ['chart', 'tasklist', 'target', 'pie', 'number']
