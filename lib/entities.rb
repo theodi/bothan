@@ -11,7 +11,7 @@ module Bothan
 
     class Metric < Grape::Entity
 
-      expose :url
+      # expose :url
       expose :name
       expose :time
       expose :value
