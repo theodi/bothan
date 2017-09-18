@@ -81,9 +81,7 @@ module Bothan
       get do
 
         metrics = list_metrics
-        # byebug
-        # present metrics, with: Bothan::Entities::Metrics
-
+        present metrics, with: Bothan::Entities::Metrics
       end
 
 
@@ -99,7 +97,7 @@ module Bothan
 
         # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
         update_metric(params[:metric], params[:time], params[:value])
-        # present @metric, with: Bothan::Entities::Metric
+        # present @metric, with: Bothan::Entities::Metric - running aground because Im dum at grape-entity
       end
     end
 
@@ -113,7 +111,7 @@ module Bothan
         # metric = Metric.where(name: params[:metric].parameterize).order_by(:time.asc).last
         metric = metric(params[:metric])
         # byebug
-        # present metric, with: Bothan::Entities::Measurement
+        present metric, with: Bothan::Entities::Metric
       end
 
       desc 'delete an entire metric endpoint'
@@ -192,7 +190,8 @@ module Bothan
 
       get do
         metadata = MetricMetadata.find_or_initialize_by(name: params[:metric].parameterize)
-        # present metadata, with: Bothan::Entities::MetricMetadata
+
+        present metadata, with: Bothan::Entities::MetricMetadata
       end
 
       params do
