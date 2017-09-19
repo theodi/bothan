@@ -81,7 +81,7 @@ module Bothan
       get do
 
         metrics = list_metrics
-        present metrics, with: Bothan::Entities::Metrics
+        present metrics, with: Bothan::Entities::MetricList
       end
 
 
@@ -97,7 +97,7 @@ module Bothan
 
         # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
         update_metric(params[:metric], params[:time], params[:value])
-        # present @metric, with: Bothan::Entities::Metric - running aground because Im dum at grape-entity
+        # present @metric, with: Bothan::Entities::Metric # - running aground because Im dum at grape-entity
       end
     end
 
@@ -132,7 +132,7 @@ module Bothan
           range_alias(params[:timespan].value)
         else
           metric = metric(params[:metric], params[:timespan].value.to_datetime)
-          # present metric, with: Bothan::Entities::Metric
+          present metric, with: Bothan::Entities::Metric
         end
       end
 
@@ -183,7 +183,7 @@ module Bothan
 
     get 'metrics/:metric/:from/:to' do
       metrics = get_timeseries(params)
-      # present metrics, with: Bothan::Entities::MetricRange
+      present metrics, with: Bothan::Entities::MetricCollection
     end
 
     namespace 'metrics/:metric/metadata' do
