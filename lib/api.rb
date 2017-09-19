@@ -28,7 +28,7 @@ module Bothan
     end
 
     def self.parse(value)
-      if !['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'].include?(value) && !value.to_datetime.instance_of?(DateTime)
+        if !['all','latest', 'today', 'since-midnight','since-beginning-of-month','since-beginning-of-week', 'since-beginning-of-year'].include?(value) && !value.to_datetime.instance_of?(DateTime)
         fail 'Invalid alias'
       end
       new(value)
@@ -125,7 +125,7 @@ module Bothan
 
         desc 'time based queries, return a timestamped value or values for an alias of time'
         params do
-          optional :timespan, type: TimeSpanQueries, desc: 'Either an alias for common timespans or a Time value'
+          optional :timespan, type: TimeSpanQueries, desc: 'Either an alias for common timespans or a Time value. Supported aliases include: "all","latest", "today", "since-midnight","since-beginning-of-month","since-beginning-of-week", "since-beginning-of-year"'
         end
         get ':timespan' do
           if %w(all latest today since-midnight since-beginning-of-month since-beginning-of-week since-beginning-of-year).include?(params[:timespan].value)
