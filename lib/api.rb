@@ -4,6 +4,7 @@ $:.unshift File.dirname(__FILE__)
 require 'pusher'
 require 'grape'
 require 'grape-entity'
+require 'grape-swagger'
 require 'models/metrics'
 require 'models/metadata'
 require 'models/dashboard'
@@ -82,6 +83,7 @@ module Bothan
 
         metrics = list_metrics
         present metrics, with: Bothan::Entities::MetricList
+        # Bothan::Entities::MetricList.represent(metrics)
       end
 
 
@@ -97,7 +99,9 @@ module Bothan
 
         # format :json #TODO - when refactoring into classes make this explicit at top of class to reduce Headers passed via curl
         update_metric(params[:metric], params[:time], params[:value])
-        # present @metric, with: Bothan::Entities::Metric # - running aground because Im dum at grape-entity
+        if @metric.save
+          present @metric, with: Bothan::Entities::Metric
+        end
       end
     end
 
@@ -159,6 +163,8 @@ module Bothan
       post do
         endpoint_protected!
         increment_metric(1)
+        status 201
+        present @metric, with: Bothan::Entities::Metric
       end
 
       post '/:amount' do
@@ -169,6 +175,11 @@ module Bothan
         end
         increment = (params[:amount] || 1).to_i
         increment_metric(increment)
+
+        if @metric.save
+          status 201
+          present @metric, with: Bothan::Entities::Metric
+        end
 
       end
     end
@@ -204,9 +215,11 @@ module Bothan
         meta.title.merge!(params[:title] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
         meta.description.merge!(params[:description] || {}) # TODO these are breaking when used with grape, because they are set as hash in mongo document, N2K if they are to be kept as such
         meta.save
+        status 201
+        present meta, with: Bothan::Entities::MetricMetadata
 
       end
     end
-
+    
   end
 end
