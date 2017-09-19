@@ -130,7 +130,6 @@ Feature: Metrics API
       """
     When I send a GET request to "metrics/membership-coverage"
     Then the response status should be "200"
-    Then the JSON response should have "$.name" with the text "membership-coverage"
     And the JSON response should have "$.time" with the text "2013-12-25T15:00:00.000+00:00"
     And the JSON response should have "$.value.health" with the text "0.34"
     And the JSON response should have "$.value.telecoms" with the text "0.34"
@@ -151,7 +150,6 @@ Feature: Metrics API
       """
     When I send a GET request to "metrics/membership-count"
     Then the response status should be "200"
-    Then the JSON response should have "$.name" with the text "membership-count"
     And the JSON response should have "$.time" with the text "2013-12-25T15:00:00.000+00:00"
     And the JSON response should have "$.value" with the text "11"
 
@@ -176,7 +174,6 @@ Feature: Metrics API
       """
     When I send a GET request to "metrics/membership-coverage/2013-12-25T12:00:00+00:00"
     Then the response status should be "200"
-    Then the JSON response should have "$.name" with the text "membership-coverage"
     And the JSON response should have "$.time" with the text "2013-12-24T15:00:00.000+00:00"
     And the JSON response should have "$.value.health" with the text "0.33"
     And the JSON response should have "$.value.telecoms" with the text "0.33"
