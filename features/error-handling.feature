@@ -40,6 +40,12 @@ Feature: Error handling
     
   Scenario: POSTing data with incorrect credentials
     When I authenticate as the user "fake" with the password "password"
-    And I send a POST request to "metrics/membership-coverage"
+    And I send a POST request to "metrics/membership-coverage" with the following:
+      """
+      {
+        "time": "2013-12-25T15:00:00+00:00",
+        "value": 10
+      }
+      """
     Then the response status should be "401"
   

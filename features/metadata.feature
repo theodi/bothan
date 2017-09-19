@@ -38,8 +38,7 @@ Feature: Metrics API
       }
       """
     Then the response status should be "400"
-    And there should be no metadata persisted for "membership-count"
-#    And the "membership-count" "type" should be ""
+    And the "membership-count" "type" should be ""
 
   Scenario: Creating metric metadata
     Given I authenticate as the user "foo" with the password "bar"
