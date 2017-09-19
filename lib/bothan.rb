@@ -98,6 +98,10 @@ class Bothan::App < Sinatra::Base
     end
   end
 
+  get '/swagger_doc' do
+    erb :swagger_ui
+  end
+
   # start the server if ruby file executed directly
   # run! if app_file == $0
 end
