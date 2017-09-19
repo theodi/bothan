@@ -217,6 +217,7 @@ module Bothan
 
     end # end metrics namespace
 
-    add_swagger_documentation
+    add_swagger_documentation \
+     mount_path: '/api_documentation'
   end
 end

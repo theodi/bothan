@@ -98,7 +98,7 @@ class Bothan::App < Sinatra::Base
     end
   end
 
-  get '/swagger_doc' do
+  get '/api_documentation' do
     erb :swagger_ui
   end
 
