@@ -9,7 +9,7 @@ require 'rack/test'
 require 'webmock/rspec'
 require 'database_cleaner'
 require 'nokogiri'
-
+require 'byebug'
 require 'dotenv'
 Dotenv.load
 

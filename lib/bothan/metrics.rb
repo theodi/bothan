@@ -114,6 +114,13 @@ module Bothan
         get_metric_range(params)
       end
 
+      app.delete '/metrics/:metric' do
+        protected!
+        Metric.where(name: params[:metric]).destroy_all
+        redirect to "#{request.scheme}://#{request.host_with_port}/metrics"
+      end
+
+
     end
 
   end

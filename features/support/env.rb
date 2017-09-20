@@ -21,32 +21,17 @@ require 'cucumber/rspec/doubles'
 require 'database_cleaner'
 require 'database_cleaner/cucumber'
 require 'timecop'
+require 'byebug'
+require 'launchy'
 
 DatabaseCleaner.strategy = :truncation
-
-# TODO HEADLESS CHROME "SOLUTION"
-
-# Capybara.register_driver :chrome do |app|
-#   Capybara::Selenium::Driver.new(app, options = {browser: :chrome})
-# end
-#
-# Capybara.register_driver :headless_chrome do |app|
-#   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-#       chromeOptions: { args: %w(headless disable-gpu) }
-#   )
-#
-#   Capybara::Selenium::Driver.new (app, options = {browser: :chrome, desired_capabilities: capabilities})
-# end
-#
-# Capybara.javascript_driver = :headless_chrome
-
-# TODO CAPYBARA WEBKIT SOLUTION
 
 Capybara.javascript_driver = :webkit # not sure why this isn't enabled, doesnt impede existing features
 Capybara::Webkit.configure do |config|
   config.allow_url("0.0.0.0")
   # used for pathing for dashboard tests (see below .app_host)
   config.allow_url("stats.pusher.com")
+  config.allow_url("timeline33-clientstats1.pusher.com/")
   config.allow_url("js.pusher.com")
   config.allow_url("cdn.plot.ly")
   config.allow_url("unpkg.com")
@@ -54,6 +39,8 @@ Capybara::Webkit.configure do |config|
   config.allow_url("maxcdn.bootstrapcdn.com")
   config.allow_url("fonts.googleapis.com")
   config.allow_url("ajax.googleapis.com")
+  config.allow_url("certificates.theodi.org")
+  config.allow_url("licensebuttons.net")
   # used to ensure that all JS loads for the dashboard
 end
 
