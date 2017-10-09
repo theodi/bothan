@@ -190,7 +190,7 @@ GEM
       spoon
     haml (4.0.7)
       tilt
-    hashdiff (0.3.4)
+    hashdiff (0.3.7)
     highline (1.7.8)
     html-pipeline (2.6.0)
       activesupport (>= 2)
@@ -464,7 +464,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.4)
     unicode-display_width (1.2.1)
-    webmock (3.0.1)
+    webmock (3.1.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
