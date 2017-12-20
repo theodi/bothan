@@ -43,7 +43,8 @@ module Bothan
         dates = DateWrangler.new @from, @to
 
         if dates.errors
-          (dates.errors.join ' ')
+          # TODO This should raise a proper validation error instead
+          raise ArgumentError.new(dates.errors.join(', '))
         end
 
         metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)

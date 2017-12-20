@@ -49,18 +49,15 @@ class DateWrangler
     end
 
     check_ordering
-
     @failures.uniq if @failures
   end
 
   def check_ordering
-    unless @failures
-      unless[from, to].include? nil
-        unless from < to
-          accrue_failures "'from' date must be before 'to' date."
-        end
-      end
+    if from && to && from >= to
+      accrue_failures "'from' date must be before 'to' date."
     end
+  rescue ISO8601::Errors::UnknownPattern, ArgumentError
+    # Absord errors here, they will be thrown elsewhere
   end
 
   def accrue_failures failure
