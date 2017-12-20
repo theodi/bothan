@@ -153,15 +153,22 @@ module Bothan
         # end
 
         desc 'list a time-series range of measurements for a given metric'
-
         params do
           requires :from, type: String, desc: 'the commencement date/time for your time-series range'
           optional :to, type: String, desc: 'the conclusion date/time for your time-series range'
         end
-
         get ':from/:to' do
           metrics = get_timeseries(params)
           present metrics, with: Bothan::Entities::MetricCollection
+        end
+
+        desc 'delete a single value'
+        params do
+          requires :time, type: DateTime, desc: 'the timestamp associated with a stored value'
+        end
+        delete ':time' do
+          endpoint_protected!
+          Metric.where(name: params[:metric], time: params[:time]).destroy_all
         end
 
         namespace '/increment' do
