@@ -2,6 +2,83 @@ module Bothan
   module Helpers
     module Metrics
 
+      # pseudo controller functions, ones returning objects, ergo ones grape-entity concerns itself with
+
+      def metadata(metric_name)
+        # return Mongo MetricMetadata
+        MetricMetadata.where(name: metric_name).first
+      end
+
+      def metric(metric_name, time = DateTime.now)
+        # return Mongo Metric
+        Metric.where(name: metric_name.parameterize, :time.lte => time).order_by(:time.asc).last
+      end
+
+      def list_metrics()
+        # returns hash of mongo derived data and code generated URL
+        return {
+            metrics: Metric.all.distinct(:name).sort.map do |name|
+              {
+                  name: name,
+                  url: "#{request.base_url}/metrics/#{name}.json"
+              }
+            end
+        }
+      end
+
+      def get_measurement(params, time = DateTime.now)
+        # return Hash, sets some instance vars
+        metric = metric(params[:metric], time)
+        @metric = (metric.nil? ? {} : metric).to_json
+        @date = time.to_s
+        @earliest_date = metrics.first.time rescue nil
+        metric = JSON.parse(@metric, {:symbolize_names => true}) # what is returned?
+        metric
+      end
+
+      def get_timeseries(params)
+        @from = params[:from]
+        @to = params[:to]
+
+        dates = DateWrangler.new @from, @to
+
+        if dates.errors
+          # TODO This should raise a proper validation error instead
+          raise ArgumentError.new(dates.errors.join(', '))
+        end
+
+        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+
+        metrics = metrics.where(:time.gte => dates.from) if dates.from
+        metrics = metrics.where(:time.lte => dates.to) if dates.to
+
+        metrics = metrics.order_by(:time.asc)
+
+        data = {
+            :count => metrics.count,
+            :values => []
+        }
+
+        metrics.each do |metric|
+          data[:values] << {
+              :time => metric.time,
+              :value => metric.value
+          }
+        end
+        data
+      end
+
+      def increment_metric(increment)
+        last_metric = Metric.where(name: params[:metric].parameterize).last
+        last_amount = last_metric.try(:[], 'value') || 0
+        if last_amount.class == BSON::Document # TODO this is the exception that should return for incrementing-metrics.feature:50
+          raise MetricEndpointError, "the metric type cannot be incremented"
+        else
+          value = last_amount + increment
+          update_metric(params[:metric], DateTime.now, value)
+        end
+      end
+
       def update_metric(name, time, value)
         @metric = Metric.new({
           "name" => name.parameterize,
@@ -23,6 +100,15 @@ module Bothan
           return 500
         end
       end
+
+      # ACTUAL helper methods
+
+      def render_visualisation (params,data)
+        @alternatives = get_alternatives(data[:value])
+        get_settings(params, data)
+        erb :metric, layout: "layouts/#{@layout}".to_sym
+      end
+
 
       def title_from_slug_or_params(params)
         title = ActionView::Base.full_sanitizer.sanitize(URI.unescape params['title']) if params['title']
@@ -79,7 +165,19 @@ module Bothan
         end
       end
 
-      def date_redirect params
+      def default_date_redirect params
+        date_set_and_redirect(params)
+        if params['default-dates'].present?
+          url = generate_url(metrics.first, keep_params(params))
+          redirect to url
+        end
+      end
+
+      def date_set_and_redirect params
+        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
+        @earliest_date = metrics.first.time
+        @latest_date = metrics.last.time
+
         if params['oldest'].present? && params['newest'].present?
           params['type'] = 'chart' if  ['pie', 'number', 'target'].include?(params['type'])
           redirect to "#{request.scheme}://#{request.host_with_port}/metrics/#{params[:metric]}/#{DateTime.parse(params['oldest']).to_s}/#{DateTime.parse(params['newest']).to_s}?#{sanitise_params params}"
@@ -136,10 +234,6 @@ module Bothan
         a.join '&'
       end
 
-      def metadata(metric_name)
-        MetricMetadata.where(name: metric_name).first
-      end
-
       def visualisation_type(type, data)
         if type.nil?
           guess_type(data)
@@ -165,6 +259,7 @@ module Bothan
       end
 
       def get_settings(params, data)
+
         metadata = metadata(params['metric'])
 
         @layout = params.fetch('layout', 'rich')
@@ -183,84 +278,31 @@ module Bothan
         @tiles = params.fetch('tiles', 'OpenStreetMap.Mapnik')
       end
 
-      def get_single_metric(params, time)
-        time ||= DateTime.now
-        metrics = Metric.where(name: params[:metric].parameterize, :time.lte => time).order_by(:time.asc)
-        metric = metrics.last
+      # mongrel methods
 
-        if params['default-dates'].present?
-          url = generate_url(metric, keep_params(params))
-          redirect to url
-        end
-
-        @metric = (metric.nil? ? {} : metric).to_json
-
-        @date = time.to_s
-        @earliest_date = metrics.first.time rescue nil
-
-        respond_to do |wants|
-          wants.json { @metric }
-
-          wants.html do
-            metric = JSON.parse(@metric, {:symbolize_names => true})
-            @alternatives = get_alternatives(metric[:value])
-
-            get_settings(params, metric)
-            erb :metric, layout: "layouts/#{@layout}".to_sym
+      def range_alias(endpoint)
+        if /\w+-(.*)/.match(endpoint)
+          # catch hypenathed endpoints, convert them to the supported ranges in DateAndTime::Calculations
+          endpoint = $1.gsub(/-/, '_') # discard since preface
+          params[:from] = DateTime.now.send(endpoint.to_sym).to_s
+          params[:to] = DateTime.now.to_s
+        else
+          case endpoint
+            when 'latest'
+              @latest = get_measurement(params)
+            when 'all'
+              params[:from] = '*'
+              params[:to] = '*'
+            when 'today' || 'midnight'
+              # then
+              params[:from] = DateTime.now.beginning_of_day.to_s
+              params[:to] = DateTime.now.to_s
           end
-
-          wants.other { error_406 }
         end
-      end
-
-      def get_metric_range(params)
-        @from = params[:from]
-        @to = params[:to]
-
-        dates = DateWrangler.new @from, @to
-
-        error_400 dates.errors.join ' ' if dates.errors
-
-        metrics = Metric.where(:name => params[:metric].parameterize).asc(:time)
-
-        if params['default-dates'].present?
-          url = generate_url(metrics.first, keep_params(params))
-          redirect to url
-        end
-
-        @earliest_date = metrics.first.time
-        @latest_date = metrics.last.time
-
-        metrics = metrics.where(:time.gte => dates.from) if dates.from
-        metrics = metrics.where(:time.lte => dates.to) if dates.to
-
-        metrics = metrics.order_by(:time.asc)
-
-        data = {
-          :count => metrics.count,
-          :values => []
-        }
-
-        metrics.each do |metric|
-          data[:values] << {
-            :time => metric.time,
-            :value => metric.value
-          }
-        end
-
-        respond_to do |wants|
-          wants.json { data.to_json }
-
-          wants.html do
-            value = data[:values].first || { value: '' }
-            @alternatives = get_alternatives(value[:value])
-
-            get_settings(params, value)
-
-            erb :metric, layout: "layouts/#{@layout}".to_sym
-          end
-
-          wants.other { error_406 }
+        if params[:from].present?
+          get_timeseries(params)
+        else
+          @latest # return single metric
         end
       end
 

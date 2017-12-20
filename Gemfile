@@ -4,6 +4,10 @@ ruby "2.4.1"
 
 gem 'rake'
 gem 'sinatra'
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-swagger'
+gem 'grape-swagger-entity'
 gem 'github-pages'
 gem 'jekyll'
 gem 'github-markup'

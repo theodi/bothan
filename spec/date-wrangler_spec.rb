@@ -1,3 +1,5 @@
+require 'bothan/extensions/date_wrangler'
+
 describe DateWrangler do
   context 'two cromulent dates' do
     let(:two_dates) { described_class.new '1903-12-17T10:35:00', '1969-07-20T20:17:00' }

@@ -6,7 +6,7 @@ Feature: Error handling
   Scenario: GETing data for a single date
     When I send a GET request to "metrics/membership-coverage/wtf"
     Then the response status should be "400"
-    Then the JSON response should have "$.status" with the text "'wtf' is not a valid ISO8601 date/time."
+    Then the JSON response should have "$.status" with the text "time is not a valid ISO8601 date/time."
     
   Scenario: GETing a range with invalid from date
     When I send a GET request to "metrics/membership-coverage/wtf/2013-01-01"
@@ -21,7 +21,7 @@ Feature: Error handling
   Scenario: GETing a range with two invalid dates
     When I send a GET request to "metrics/membership-coverage/wtf/bbq"
     Then the response status should be "400"
-    Then the JSON response should have "$.status" with the text "'wtf' is not a valid ISO8601 date/time. 'bbq' is not a valid ISO8601 date/time."
+    Then the JSON response should have "$.status" with the text "'wtf' is not a valid ISO8601 date/time., 'bbq' is not a valid ISO8601 date/time."
     
   Scenario: GETing a range with from date after to date
     When I send a GET request to "metrics/membership-coverage/2013-02-02/2013-01-01"
@@ -40,6 +40,12 @@ Feature: Error handling
     
   Scenario: POSTing data with incorrect credentials
     When I authenticate as the user "fake" with the password "password"
-    And I send a POST request to "metrics/membership-coverage"
+    And I send a POST request to "metrics/membership-coverage" with the following:
+      """
+      {
+        "time": "2013-12-25T15:00:00+00:00",
+        "value": 10
+      }
+      """
     Then the response status should be "401"
   

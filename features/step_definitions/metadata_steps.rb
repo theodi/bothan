@@ -3,6 +3,10 @@ Then(/^the "([a-z\-]+)" "([a-z\-]+)" should be "(.*?)"$/) do |metric_name, field
   expect(metadata.send(field)).to eql value == "" ? nil : value
 end
 
+Then(/^there should be no metadata persisted for "(.*?)"$/) do |metric_name|
+  expect(MetricMetadata.where(name: metric_name).exists?).to eql false
+end
+
 Then(/^the "([a-z\-]+)" "([a-z\-]+)" in locale "([a-z\-]+)" should be "(.*?)"$/) do |metric_name, field, locale, value|
   metadata = MetricMetadata.where(name: metric_name).last
   expect(metadata.send(field)[locale]).to eql value
