@@ -168,7 +168,8 @@ module Bothan
         end
         delete ':time' do
           endpoint_protected!
-          Metric.where(name: params[:metric], time: params[:time]).destroy_all
+          a = Metric.where(name: params[:metric])
+          a.to_a.find{|x| x.time === params[:time]}.delete
         end
 
         namespace '/increment' do
