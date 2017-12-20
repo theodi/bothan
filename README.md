@@ -25,6 +25,10 @@ Read the Documentation for the [API here](https://bothan.io/api.html)
 
 Follow the [public feature roadmap for Bothan](https://trello.com/b/2xc7Q0kd/labs-public-toolbox-roadmap?menu=filter&filter=label:Bothan)
 
+## Upgrading
+
+Most updates should not require intervention, but manual steps are occasionally required. If you are experiencing deployment problems, see [the upgrade guide](UPGRADING.md).
+
 ## Development
 
 ### Requirements
@@ -127,4 +131,3 @@ Bothan can deploy a personal instance to Heroku.
 You can employ this as an alternative to running a full local dev instance if you couple your heroku instance with the heroku toolbelt.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
