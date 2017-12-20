@@ -58,7 +58,6 @@ class DateWrangler
       unless[from, to].include? nil
         unless from < to
           accrue_failures "'from' date must be before 'to' date."
-          raise ArgumentError, "'from' date must be before 'to' date."
         end
       end
     end
