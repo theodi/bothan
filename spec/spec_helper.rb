@@ -4,6 +4,7 @@ Coveralls.wear_merged!
 ENV['RACK_ENV'] = 'test'
 
 require 'bothan'
+require 'api'
 require 'data_kitten'
 require 'rack/test'
 require 'webmock/rspec'
