@@ -85,7 +85,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.3)
-    cucumber (2.4.0)
+    cucumber (2.99.0)
       builder (>= 2.1.2)
       cucumber-core (~> 1.5.0)
       cucumber-wire (~> 0.0.1)
