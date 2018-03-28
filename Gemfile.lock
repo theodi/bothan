@@ -349,7 +349,7 @@ GEM
       multi_json (~> 1.0)
       pusher-signature (~> 0.1.8)
     pusher-signature (0.1.8)
-    rack (2.0.3)
+    rack (2.0.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-conneg (0.1.6)
@@ -357,7 +357,7 @@ GEM
     rack-cors (1.0.2)
     rack-protection (2.0.0)
       rack
-    rack-test (0.8.2)
+    rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
