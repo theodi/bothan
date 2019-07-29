@@ -1,14 +1,10 @@
-[![Build Status](http://img.shields.io/travis/theodi/bothan.svg?style=flat-square)](https://travis-ci.org/theodi/bothan)
-[![Dependency Status](http://img.shields.io/gemnasium/theodi/bothan.svg?style=flat-square)](https://gemnasium.com/theodi/bothan)
-[![Coverage Status](http://img.shields.io/coveralls/theodi/bothan.svg?style=flat-square)](https://coveralls.io/r/theodi/bothan)
-[![Code Climate](http://img.shields.io/codeclimate/github/theodi/bothan.svg?style=flat-square)](https://codeclimate.com/github/theodi/bothan)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://theodi.mit-license.org)
 
 # Bothan
 
 A simple platform for publishing metrics, both as JSON, and as embeddable visualisations and dashboards.
 
-[Bothan's live instance](https://bothan.io/) contains [API documentation](https://bothan.io/api.html) and tutorials on deploying your [personal instance of Bothan to Heroku](https://bothan.io/get-started.html) and intergrating with [Zapier](https://bothan.io/tutorials.html)
+Bothan was an experiment by [the ODI](https://theodi.org/). *As of 2019, Bothan is no longer maintained*, but this source code remains available, as well as tutorials on deploying your [personal instance of Bothan to Heroku](https://bothan.io/get-started.html) and intergrating with [Zapier](https://bothan.io/tutorials.html)
 
 There are also two software libraries that make interfacing with Bothan super easy:
 
