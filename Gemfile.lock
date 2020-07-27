@@ -268,7 +268,7 @@ GEM
       gemoji (~> 2.0)
       html-pipeline (~> 2.2)
       jekyll (>= 3.0)
-    json (2.1.0)
+    json (2.3.1)
     json-ld (1.99.2)
       multi_json (~> 1.11)
       rdf (~> 1.99)
