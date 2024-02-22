@@ -38,7 +38,7 @@ GEM
       sass (>= 3.3.4)
     bson (4.2.2)
     builder (3.2.3)
-    byebug (9.1.0)
+    byebug (10.0.2)
     capybara (2.13.0)
       addressable
       mime-types (>= 1.16)
